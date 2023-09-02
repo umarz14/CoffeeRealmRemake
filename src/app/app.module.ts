@@ -7,11 +7,17 @@ import {HttpClientModule, HttpClientJsonpModule} from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoffeeSearchComponent } from './coffee-search/coffee-search.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HomeComponent } from './home/home.component';
+import { ShopLocationComponent } from './shop-location/shop-location.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CoffeeSearchComponent
+    CoffeeSearchComponent,
+    NavbarComponent,
+    HomeComponent,
+    ShopLocationComponent
   ],
   imports: [
     BrowserModule,

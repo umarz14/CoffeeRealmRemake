@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';  
 import { catchError, map } from 'rxjs/operators';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { environment } from 'enviroment';
+import { environment } from 'environment';
 
 @Component({
   selector: 'app-coffee-search',

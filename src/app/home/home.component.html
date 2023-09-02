@@ -1,0 +1,9 @@
+<section>
+    <form>
+        <input type="text" placeholder="filter by zipcode">
+        <button class="primary" type="button">Search</button>
+    </form>
+</section>
+<section class="results">
+    <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"></app-shop-location>
+</section>
