@@ -10,6 +10,7 @@ import { CoffeeSearchComponent } from './coffee-search/coffee-search.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { ShopLocationComponent } from './shop-location/shop-location.component';
+import { ShopDetailsComponent } from './shop-details/shop-details.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ShopLocationComponent } from './shop-location/shop-location.component';
     CoffeeSearchComponent,
     NavbarComponent,
     HomeComponent,
-    ShopLocationComponent
+    ShopLocationComponent,
+    ShopDetailsComponent
   ],
   imports: [
     BrowserModule,

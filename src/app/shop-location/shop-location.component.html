@@ -2,4 +2,9 @@
     <img class="shop-photo" [src]="shopLocation.photo" alt="Photo of {{shopLocation.name}}">
     <h2 class="shop-heading">{{shopLocation.name}}</h2>
     <p class="shop-location">"lat:{{shopLocation.latitude}}, lon:{{shopLocation.longitude}}"</p>
+    <!--
+        The [] enable property binding in angular 
+        dont really understand atm but it makes sense
+     -->
+    <a [routerLink]="['/details', shopLocation.placeId]">learn more</a>
 </section>
