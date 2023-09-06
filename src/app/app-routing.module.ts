@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ShopLocationComponent } from './shop-location/shop-location.component';
 import { ShopDetailsComponent } from './shop-details/shop-details.component';
+import { CoffeeSearchComponent } from './coffee-search/coffee-search.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,13 @@ const routes: Routes = [
     path: 'details/:placeId',
     component: ShopDetailsComponent,
     title: 'Shop Details'
-  }
+  },
+  {
+    path: 'coffeeSearch',
+    component: CoffeeSearchComponent,
+    title: 'Coffee Shop Search'
+  },
+
 ];
 
 @NgModule({

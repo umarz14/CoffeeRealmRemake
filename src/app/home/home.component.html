@@ -1,9 +1,28 @@
-<section>
-    <form>
+<!-- <section>
+    <div class="card">
+        <div class="card-body mx-auto">
+            <h1 class="card-title">LETS GET YOUR DAY <br> STARTED WITH COFFEE.</h1>
+        </div>
+        <img class="card-img-bottom" src="assets\img\home\home1.jpg" alt="Card image cap">
+    </div> -->
+    <!-- <form>
         <input type="text" placeholder="filter by zipcode">
-        <button class="primary" type="button">Search</button>
-    </form>
-</section>
-<section class="results">
-    <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"></app-shop-location>
-</section>
+        <a class="btn btn-secondary" routerLink="coffeeSearch">hello</a>
+    </form> -->
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-left">Lets Get Your Day Started With Coffee</h1>
+                    <h5 class="card-subtitle mb-2 text-body-secondary text-left">Explore and review coffee shops in your area with BeanTracker, the ultimate coffee lover's guide</h5>
+                    <a class="btn btn-lg btn-secondary text-center" routerLink="coffeeSearch">Search Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <img src="assets\img\home\home1.jpg" alt="photo of coffee" class="img-fluid mt-3">
+        </div>
+    </div>
+</div>
+      

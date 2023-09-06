@@ -1,9 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';  
 import { catchError, map } from 'rxjs/operators';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { environment } from 'environment';
+import { ShopLocation } from '../shop-location';
+import { ShopsService } from '../shops.service';
 
 @Component({
   selector: 'app-coffee-search',
@@ -14,8 +16,14 @@ export class CoffeeSearchComponent {
 // Loading the Google Maps JS API
   apiLoaded: Observable<boolean>;
   //MY_API_KEY = environment.apiKey;
+  shopLocationList: ShopLocation[] = [];
+  shopService: ShopsService = inject(ShopsService);
 
   constructor(httpClient: HttpClient) {
+
+    // Non Google Stuff this might be a placeholde might switch to another component later
+    this.shopLocationList = this.shopService.getAllShopLocations();
+    
     // If you're using the `<map-heatmap-layer>` directive, you also have to include the `visualization` library 
     // when loading the Google Maps API. To do so, you can add `&libraries=visualization` to the script URL:
     // https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization
