@@ -20,3 +20,74 @@
     background-color: #E3E0DE;
     padding-bottom: auto;
 } */
+/* .home-card{
+    padding: 40px;
+} */
+/* BOX DIAGRAM
++--------------------------------------------------+
+|                      Margin                      |
+|  +--------------------------------------------+  |
+|  |                    Border                  |  |
+|  |  +--------------------------------------+  |  |
+|  |  |                Padding               |  |  |
+|  |  |  +--------------------------------+  |  |  |
+|  |  |  |           Content              |  |  |  |
+|  |  |  +--------------------------------+  |  |  |
+|  |  +--------------------------------------+  |  |
+|  +--------------------------------------------+  |
++--------------------------------------------------+ 
+*/
+/*
+In the CSS box model:
+    The Content: box is where your content, such as text, images, or other media, is displayed.
+    The Padding: box surrounds the content box. Padding is the space between the content and the border. It’s transparent.
+    The Border: box wraps the padding and content. It extends the padding box to include the border thickness.
+    The Margin: box is outside the border. It’s the space around the element. It’s also transparent.
+*/
+.item-2{
+    padding-top: 0px;
+    border: solid black 2px;
+    margin-bottom: 10px;
+
+}
+.test{
+ color: yellow;
+ font-size: 10px;
+}
+.test-2{
+    font-size: 22px;
+    border: solid black 2px;
+}
+.card{
+    background-color: #E3E0DE;
+    border-radius: 15px;
+    border: 0;
+}
+.home-btn-search{
+    margin-top: 15px;
+    background-color: #2C3337;
+}
+.home-card-subtitle{
+    margin-top: 20px;
+}
+.home-card-title{
+    font-weight: bold;
+}
+.home-col-1{
+    padding-top:  40px;
+    padding-left: 75px;
+    padding-right: 65px;
+}
+.home-col-2{
+    padding-bottom: 10px;
+    /* padding-left: 90px; */
+    padding-top: 25px;
+}
+.home-row{
+    padding: 0px;
+    margin: 0px;
+}
+.home-photo-1{
+    border: 1px lightgray solid;
+    border-radius: 20px;
+}
