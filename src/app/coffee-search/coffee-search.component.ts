@@ -46,41 +46,39 @@ export class CoffeeSearchComponent {
   lat = 24;
   lng = 12;
   
-  center: google.maps.LatLngLiteral = {lat: this.lat, lng: this.lng};
-  zoom = 4;
+  myCenter: google.maps.LatLngLiteral = {lat: this.lat, lng: this.lng};
+  zoom = 10;
   markerOptions: google.maps.MarkerOptions = {draggable: false};
-  markerPositions: google.maps.LatLngLiteral[] = [this.center];
+  markerPositions: google.maps.LatLngLiteral[] = [this.myCenter];
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow; // Don't really understand this
 
   // Init Map
-  initMap() {
-    const sydney = { lat: -33.867, lng: 151.195 };
+  async initMap() {
+    //const sydney = { lat: -33.867, lng: 151.195 };
+    await this.getCurLocation();
+    console.log(this.myCenter);
+  
     this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-      center: sydney,
-      zoom: this.zoom,
+      center: this.myCenter,
+      zoom: 14,
     });
 
     const request = {
-      query: 'Museum of Contemporary Art Australia',
-      fields: ['name', 'geometry', 'formatted_address'],
-    }
+      query: 'coffee shop',
+      radius: .5,
+      location: this.myCenter,
+    };
 
     this.service = new google.maps.places.PlacesService(this.gmap);
-
-    this.service.findPlaceFromQuery(
+    this.service.textSearch(
       request,
       (
         results: google.maps.places.PlaceResult[] | null,
         status: google.maps.places.PlacesServiceStatus
       ) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-          // for (let i = 0; i < results.length; i++) {
-          //   console.log(results[);
-          // }
           console.log(results);
-        
-  
-          //map.setCenter(results[0].geometry!.location!);
+          console.log(results.length);
         }
       }
     );
@@ -101,7 +99,7 @@ export class CoffeeSearchComponent {
           (pos) => {
             this.lat = pos.coords.latitude;
             this.lng = pos.coords.longitude;
-            this.center = {lat: this.lat, lng: this.lng};
+            this.myCenter = {lat: this.lat, lng: this.lng};
             resolve();
           },
           (err) => {
@@ -115,9 +113,10 @@ export class CoffeeSearchComponent {
     });
   }
 
+
   test () {
     this.getCurLocation().then(() => {
-      console.log(this.center);
+      console.log(this.myCenter);
     }); 
   }
 
@@ -127,8 +126,8 @@ export class CoffeeSearchComponent {
     this.getCurLocation().then(() => {
       // Update map
       //this.center = {lat: this.lat, lng: this.lng};
-      this.markerPositions = [this.center];
-      this.zoom = 10;
+      this.markerPositions = [this.myCenter];
+      this.zoom = 15;
       this.display = true;
       console.log(`${this.lat}, ${this.lng}`);
     });
