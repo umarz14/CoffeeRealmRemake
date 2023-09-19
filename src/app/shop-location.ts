@@ -5,4 +5,11 @@ export interface ShopLocation {
     latitude: number,
     longitude: number,
     photo: string,
+    phone_number: string,
+    address: string,
+    website: string,
+    rating: number,
+    times_open: string,
+
+
 }

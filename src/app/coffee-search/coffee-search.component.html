@@ -1,9 +1,12 @@
-<section class="results">
-    <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"></app-shop-location>
-</section>
+<!-- <div class="container grid-container">
+  <div class="row">
+    <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
+  </div>
+</div> -->
 <!-- google-maps-demo.component.html -->
 <div *ngIf="apiLoaded | async">
   <button (click)="displayCurLocation()">ClickMe!</button>
+  <button (click)="initMap()">hello!</button>
   <!-- google-maps-demo.component.html -->
   <google-map *ngIf="display"
               height="400px"
@@ -17,4 +20,5 @@
                 (mapClick)="openInfoWindow(marker)"></map-marker>
     <map-info-window>This is your current location</map-info-window>
   </google-map>
+  <div id="map"></div>
 </div>

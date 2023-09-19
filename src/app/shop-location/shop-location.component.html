@@ -1,10 +1,10 @@
-<section class="listing">
-    <img class="shop-photo" [src]="shopLocation.photo" alt="Photo of {{shopLocation.name}}">
-    <h2 class="shop-heading">{{shopLocation.name}}</h2>
-    <p class="shop-location">"lat:{{shopLocation.latitude}}, lon:{{shopLocation.longitude}}"</p>
-    <!--
-        The [] enable property binding in angular 
-        dont really understand atm but it makes sense
-     -->
-    <a [routerLink]="['/details', shopLocation.placeId]">learn more</a>
+<section>
+    <div class="card bg-white" style="width: 18rem;">
+      <img class="card-img-top shop-photo" [src]="shopLocation.photo" alt="Photo of {{shopLocation.name}}">
+        <div class="card-body">
+            <h2 class="card-title">{{shopLocation.name}}</h2>
+            <a [routerLink]="['/details', shopLocation.placeId]" class="btn btn-primary opacity-100">Learn More</a>
+        </div>
+      </div>
 </section>
+  

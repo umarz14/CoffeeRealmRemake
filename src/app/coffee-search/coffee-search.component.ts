@@ -19,7 +19,7 @@ export class CoffeeSearchComponent {
   shopLocationList: ShopLocation[] = [];
   shopService: ShopsService = inject(ShopsService);
 
-  constructor(httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient) {
 
     // Non Google Stuff this might be a placeholde might switch to another component later
     this.shopLocationList = this.shopService.getAllShopLocations();
@@ -28,7 +28,7 @@ export class CoffeeSearchComponent {
     // when loading the Google Maps API. To do so, you can add `&libraries=visualization` to the script URL:
     // https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization
 
-    this.apiLoaded = httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.apiKey}`, 'callback')
+    this.apiLoaded = httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.apiKey}&libraries=places`, 'callback')
         .pipe(
           map(() => true),
           catchError(() => of(false)),
@@ -38,14 +38,55 @@ export class CoffeeSearchComponent {
 // After Loading API
 // Maps Stuff Docs -> https://github.com/angular/components/tree/main/src/google-maps
 // Variables
+  gmap!: google.maps.Map;
+  service!: google.maps.places.PlacesService; 
+
+  display = false;
+
   lat = 24;
   lng = 12;
-  display = false;
+  
   center: google.maps.LatLngLiteral = {lat: this.lat, lng: this.lng};
   zoom = 4;
   markerOptions: google.maps.MarkerOptions = {draggable: false};
   markerPositions: google.maps.LatLngLiteral[] = [this.center];
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow; // Don't really understand this
+
+  // Init Map
+  initMap() {
+    const sydney = { lat: -33.867, lng: 151.195 };
+    this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+      center: sydney,
+      zoom: this.zoom,
+    });
+
+    const request = {
+      query: 'Museum of Contemporary Art Australia',
+      fields: ['name', 'geometry', 'formatted_address'],
+    }
+
+    this.service = new google.maps.places.PlacesService(this.gmap);
+
+    this.service.findPlaceFromQuery(
+      request,
+      (
+        results: google.maps.places.PlaceResult[] | null,
+        status: google.maps.places.PlacesServiceStatus
+      ) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+          // for (let i = 0; i < results.length; i++) {
+          //   console.log(results[);
+          // }
+          console.log(results);
+        
+  
+          //map.setCenter(results[0].geometry!.location!);
+        }
+      }
+    );
+
+  
+  }
 
   // When click on marker open window
   openInfoWindow(marker: MapMarker) {
@@ -60,6 +101,7 @@ export class CoffeeSearchComponent {
           (pos) => {
             this.lat = pos.coords.latitude;
             this.lng = pos.coords.longitude;
+            this.center = {lat: this.lat, lng: this.lng};
             resolve();
           },
           (err) => {
@@ -73,17 +115,26 @@ export class CoffeeSearchComponent {
     });
   }
 
+  test () {
+    this.getCurLocation().then(() => {
+      console.log(this.center);
+    }); 
+  }
+
   // Display map and geolocation
   displayCurLocation() {
     // Make sure to get approx cur loc
     this.getCurLocation().then(() => {
       // Update map
-      this.center = {lat: this.lat, lng: this.lng};
+      //this.center = {lat: this.lat, lng: this.lng};
       this.markerPositions = [this.center];
       this.zoom = 10;
       this.display = true;
       console.log(`${this.lat}, ${this.lng}`);
     });
   }
+
+  
+
   
 }
