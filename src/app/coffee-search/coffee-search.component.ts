@@ -52,7 +52,7 @@ export class CoffeeSearchComponent {
   markerPositions: google.maps.LatLngLiteral[] = [this.myCenter];
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow; // Don't really understand this
 
-  // Init Map
+  // Init Map this is my function that I used to test the google maps api to retrieve coffee shops json
   async initMap() {
     //const sydney = { lat: -33.867, lng: 151.195 };
     await this.getCurLocation();
@@ -82,9 +82,62 @@ export class CoffeeSearchComponent {
         }
       }
     );
-
-  
   }
+
+  // This returns a list of 20 coffee shops near the user in json format
+  async getShopsNearby() {
+
+    // This gets the current location of the user
+    await this.getCurLocation();
+    
+    // This creates a new map to pass to the service to get nearby coffee shops
+    this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+      center: this.myCenter,
+      zoom: 14,
+    });
+
+    // This is the request to get coffee shops
+    const request = {
+      query: 'coffee shop',
+      radius: 1, // This does not really work at least when tested in initmap();
+      location: this.myCenter, // This is your center of search for the api call
+    };
+      
+    // This is the service that gets the coffee shops and returns them in a list json
+    // I need to figure out what type of call I wanted to make to the service.
+    // I believe the textSearch is the best option for now as it returns a list of 
+    // coffee shops near the user by default it returns 20 coffee shops
+    this.service = new google.maps.places.PlacesService(this.gmap);
+      return new Promise((resolve, reject) => {
+        this.service.textSearch(request, (results: 
+          google.maps.places.PlaceResult[] | null, 
+          status: google.maps.places.PlacesServiceStatus) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+              console.log(results);
+              console.log(results.length);
+              resolve(results);
+            } else {
+              reject(status);
+            }
+          }); // End of this.service.textSearch
+      }); // End of return new Promise
+     
+      
+      // this.service.textSearch(
+      //   request,
+      //   (
+      //     results: google.maps.places.PlaceResult[] | null,
+      //     status: google.maps.places.PlacesServiceStatus
+      //   ) => {
+      //     if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+      //       console.log(results);
+      //       console.log(results.length);
+      //       return results;
+      //     }
+      //   }
+      // );
+  
+  } // End of getShopNearby()
 
   // When click on marker open window
   openInfoWindow(marker: MapMarker) {

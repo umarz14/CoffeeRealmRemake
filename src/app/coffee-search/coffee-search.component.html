@@ -5,8 +5,10 @@
 </div> -->
 <!-- google-maps-demo.component.html -->
 <div *ngIf="apiLoaded | async">
+  
   <button (click)="displayCurLocation()">ClickMe!</button>
   <button (click)="initMap()">hello!</button>
+
   <!-- google-maps-demo.component.html -->
   <google-map *ngIf="display"
               height="400px"
@@ -20,5 +22,8 @@
                 (mapClick)="openInfoWindow(marker)"></map-marker>
     <map-info-window>This is your current location</map-info-window>
   </google-map>
-  <div id="map"></div>
+
+  <!-- This is the div the contains the map -->
+  <div id="map" *ngIf="display"></div>  
+
 </div>
