@@ -8,6 +8,7 @@
   
   <button (click)="displayCurLocation()">ClickMe!</button>
   <button (click)="initMap()">hello!</button>
+  <button (click)="getShopsNearby2()">nearby</button>
 
   <!-- google-maps-demo.component.html -->
   <google-map *ngIf="display"
@@ -24,6 +25,6 @@
   </google-map>
 
   <!-- This is the div the contains the map -->
-  <div id="map" *ngIf="display"></div>  
+  <div id="map"></div>  
 
 </div>
