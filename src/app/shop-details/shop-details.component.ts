@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ShopsService } from '../shops.service';
+import { ShopsService } from '../services/shops/shops.service';
 import { ShopLocation } from '../shop-location';
 @Component({
   selector: 'app-shop-details',

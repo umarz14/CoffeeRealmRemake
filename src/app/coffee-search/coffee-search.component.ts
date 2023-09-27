@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { environment } from 'environment';
 import { ShopLocation } from '../shop-location';
-import { ShopsService } from '../shops.service';
+import { ShopsService } from '../services/shops/shops.service';
 
 @Component({
   selector: 'app-coffee-search',
@@ -14,50 +14,112 @@ import { ShopsService } from '../shops.service';
 })
 export class CoffeeSearchComponent {
 
-  // Loading the Google Maps JS API
-  apiLoaded: Observable<boolean>;
   //MY_API_KEY = environment.apiKey;
   shopLocationList: ShopLocation[] = [];
   shopService: ShopsService = inject(ShopsService);
+ 
+  // This is the variable that is used to check if the google maps api is loaded
+  apiLoaded: Observable<boolean>;
+
+  // These are variables used to initialize the google map
+  gmap!: google.maps.Map;
+  service!: google.maps.places.PlacesService; 
+  myCenter!: google.maps.LatLngLiteral;
+  // Maps Stuff Docs -> https://github.com/angular/components/tree/main/src/google-maps
 
   constructor(private httpClient: HttpClient) {
-
-    // Non Google Stuff this might be a placeholde might switch to another component later
-    //this.shopLocationList = this.shopService.getAllShopLocations();
+  
     
     // If you're using the `<map-heatmap-layer>` directive, you also have to include the `visualization` library 
     // when loading the Google Maps API. To do so, you can add `&libraries=visualization` to the script URL:
     // https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization
+
+    // This is the call to load the google maps api
+    // If you look at the comment above you can see that you can add libraries to the call
+    // I added the places library to the call so that I can use the places api
+
+    // So since the constructor is called when the component is created and is used to i
+    // initialize variables for the component I am using it to load the google maps api
+    // I'm not sure if this is the best way to do this but it works for now
+
+    // I might need to make another call in the constuctor to get the coffee shops near the user
+    // but im not 100% sure yet if that is the best way to do **LOOK AT NGONINIT()**
 
     this.apiLoaded = httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.apiKey}&libraries=places`, 'callback')
         .pipe(
           map(() => true),
           catchError(() => of(false)),
         );
-    //this.shopLocationList = await this.getShopsNearby2();
   } // End of constructor
 
-// After Loading API
-// Maps Stuff Docs -> https://github.com/angular/components/tree/main/src/google-maps
-// Variables
-  gmap!: google.maps.Map;
-  service!: google.maps.places.PlacesService; 
+  async ngOnInit() {
+    // Apperatly it is best to call initMap() in ngOnInit() instead of the constructor
+    // because the constructor is called when the component is created and ngOnInit() is called
+    // after the component is created so its better to load the api first then initilize the map
+    try{
+      await this.initMap();
+    } catch(err) {
+      console.log(err);
+    }
+
+  } // End of ngOnInit()
+
+
+  // This is the function that will initilize the map
+  // we will then me able to pass gmap to the google maps places service
+  // to get coffee shops near the user
+  async initMap() {
+    try {
+      await this.getUserCurLocation();
+      console.log(this.myCenter);
+      this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+        center: this.myCenter,
+        zoom: 14,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  } // End of initMap()
+
+  // This function will get the users current location which will then be
+  // used to intilize the maps center which is needed in init map
+  getUserCurLocation() {
+    return new Promise<void>((resolve, reject) => {
+      if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            this.myCenter = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+            resolve();
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+      } else {
+        alert('Please Enable Location');
+        reject();
+      }
+    });
+  } // End of getUserCurLocation()
+
+
+
+
 
   display = false;
 
   lat = 24;
   lng = 12;
   
-  myCenter: google.maps.LatLngLiteral = {lat: this.lat, lng: this.lng};
   zoom = 10;
   markerOptions: google.maps.MarkerOptions = {draggable: false};
   markerPositions: google.maps.LatLngLiteral[] = [this.myCenter];
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow; // Don't really understand this
 
   // Init Map this is my function that I used to test the google maps api to retrieve coffee shops json
-  async initMap() {
+  async initMap1() {
     //const sydney = { lat: -33.867, lng: 151.195 };
-    await this.getCurLocation();
+    await this.getUserCurLocation();
     console.log(this.myCenter);
   
     this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
@@ -89,7 +151,7 @@ export class CoffeeSearchComponent {
   async getShopsNearby2() {
 
     // This gets the current location of the user
-    await this.getCurLocation();
+    await this.getUserCurLocation();
     
     // This creates a new map to pass to the service to get nearby coffee shops
     this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
@@ -140,7 +202,7 @@ export class CoffeeSearchComponent {
   async getShopsNearby() {
 
     // This gets the current location of the user
-    await this.getCurLocation();
+    await this.getUserCurLocation();
     
     // This creates a new map to pass to the service to get nearby coffee shops
     this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
@@ -181,39 +243,10 @@ export class CoffeeSearchComponent {
     this.infoWindow.open(marker);
   }
   
-  // Get location using geolocation api
-  getCurLocation() {
-    return new Promise<void>((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            this.lat = pos.coords.latitude;
-            this.lng = pos.coords.longitude;
-            this.myCenter = {lat: this.lat, lng: this.lng};
-            resolve();
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-      } else {
-        alert('Please Enable Location');
-        reject();
-      }
-    });
-  }
-
-
-  test () {
-    this.getCurLocation().then(() => {
-      console.log(this.myCenter);
-    }); 
-  }
-
   // Display map and geolocation
   displayCurLocation() {
     // Make sure to get approx cur loc
-    this.getCurLocation().then(() => {
+    this.getUserCurLocation().then(() => {
       // Update map
       //this.center = {lat: this.lat, lng: this.lng};
       this.markerPositions = [this.myCenter];

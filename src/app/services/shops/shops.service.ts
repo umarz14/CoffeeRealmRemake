@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
-import { ShopLocation } from './shop-location';
+import { HttpClient } from '@angular/common/http';
+
+import { ShopLocation } from '../../shop-location';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopsService {
 
-  constructor() { }
+
+  constructor(private httpClient: HttpClient) {
+
+  } // End of constructor
 
   // async agetAllShopLocations() : Promise<ShopLocation[]>{
-  //   return await ;
+  //   return await getN();
   // }
 
   getShopLocationId(id: string) : ShopLocation | undefined {
