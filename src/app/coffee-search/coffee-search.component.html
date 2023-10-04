@@ -12,7 +12,7 @@
   loading the google maps places library.
   !GOOGLE WILL NOT BE DEFINED IF THE API IS NOT LOADED!
 -->
-<div *ngIf="apiLoaded | async">
+<!-- <div *ngIf="apiLoaded | async">
   <div *ngIf="display">
     <div class="container grid-container">
       <div class="row">
@@ -20,5 +20,13 @@
       </div>
     </div>
   </div>  
+</div> -->
+
+<div *ngIf="display">
+    <div class="container grid-container">
+      <div class="row">
+        <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
+      </div>
+    </div>
 </div>
 
