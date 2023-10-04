@@ -1,9 +1,24 @@
-<div class="container grid-container">
-  <div class="row">
-    <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
-  </div>
-</div>
+ <!-- 
+  This is the div the contains the map class we pass to initMap();
+  we declare it outside of the apiloader because we need to access
+  the map object if we dont have access to it it will return an error
+-->
+ <div id="map"></div> 
 
-  <!-- This is the div the contains the map -->
-  <div id="map"></div>  
+ <!-- 
+  This is part of the website to work it makes sure that 
+  the google maps api is loaded before it tries to load the map
+  or any other libraries that are needed. In our case we are
+  loading the google maps places library.
+  !GOOGLE WILL NOT BE DEFINED IF THE API IS NOT LOADED!
+-->
+<div *ngIf="apiLoaded | async">
+  <div *ngIf="display">
+    <div class="container grid-container">
+      <div class="row">
+        <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
+      </div>
+    </div>
+  </div>  
+</div>
 
