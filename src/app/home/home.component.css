@@ -19,25 +19,37 @@ In the CSS box model:
     The Border: box wraps the padding and content. It extends the padding box to include the border thickness.
     The Margin: box is outside the border. It’s the space around the element. It’s also transparent.
 */
-/* html{
+html{
     scroll-behavior: smooth;
 }
 
-.card{
+.cr-home-card-style{
     background-color: #E3E0DE;
     border-radius: 15px;
     border: 0;
 }
-.home-btn-search{
+.cr-home-card-title-style{
+    font-weight: bold;
+}
+.cr-home-card-subtitle-style{
+    margin-top: 20px;
+}
+.cr-home-btn-search-style{
     margin-top: 15px;
     background-color: #2C3337;
 }
-.home-card-subtitle{
-    margin-top: 20px;
+
+.cr-home-img-01-style{
+    border: 1px lightgray solid;
+    border-radius: 20px;
 }
-.home-card-title{
-    font-weight: bold;
+
+.cr-home-r1-c1-style{
+    padding-left: 75px;
+    padding-right: 65px;
 }
+
+/*
 .home-col-1{
     padding-top:  40px;
     padding-left: 75px;
@@ -51,23 +63,7 @@ In the CSS box model:
     border: 1px lightgray solid;
     border-radius: 20px;
 }
-.home-row{
-    padding: 0px;
-    margin-bottom: 10%;
-    margin-right: 10px;
-    margin-top: 30px;
-    
-}
 
-.container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    font-weight: bold;
-}
 .home-card-2{
     margin-top: 10px;
 }
@@ -90,8 +86,8 @@ In the CSS box model:
   /* display: flex;
   justify-content: center;
   align-items: center; */
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
-.col-6{
+/* .col-6{
     border: 2px solid blue;
-}
+} */
