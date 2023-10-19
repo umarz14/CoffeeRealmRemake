@@ -38,8 +38,11 @@ In the CSS box model:
   background-color: #E3E0DE;
   border-radius: 15px;
   border: transparent;
+<<<<<<< HEAD
   height: 100%;
   width: auto;
+=======
+>>>>>>> 53c4049576b787b31cd5603bbeba000b5e8812d5
 }
 
 .cr-home-card-01-subtitle-style{
