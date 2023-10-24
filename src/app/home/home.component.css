@@ -26,20 +26,35 @@ In the CSS box model:
 /* .display-1{
   font-weight: bold;
 } */
+/* Default styles for the div element */
 
-.row-01-col-center{
+.cr-hp-1-viewspace{
+  height: calc(100vh - 63px);/* Subtract the height of the navbar from the maximum viewport height */
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100%;
+  justify-content: center;
+  overflow: auto;
+  flex-direction: column;
+}
+.logo__container {
+  margin-top: -60px;
+  display: flex;
+}
+
+
+
+.cr-home-img-01-style{
+  border: 2px solid white;
+  border-radius: 20px;
+}
+.cr-home-img-01-style2{
+  transform: scale(1.1);
 }
 
 .cr-home-card-style{
   background-color: #E3E0DE;
   border-radius: 15px;
   border: transparent;
-  height: 100%;
-  width: auto;
 }
 
 .cr-home-card-01-subtitle-style{
@@ -53,20 +68,17 @@ In the CSS box model:
   background-color: #2C3337;
 }
 
-
-
-.cr-hp-1-viewspace{
-  height: calc(100vh - 63px);/* Subtract the height of the navbar from the maximum viewport height */
-  /* width: 100vw; */
-  overflow: scroll;
+.container__custom {
+  padding: 2px;
+  
 }
+
 
 .border-test{
-  border: 2px solid red;
+  border: 3px solid red;
 }
 .border-test2{
-  border: 3px solid blue;
-  height: auto;
+  border: 8px solid blue;
 }
 .border-test3{
   border: 5px solid green;
@@ -74,14 +86,6 @@ In the CSS box model:
 .border-test4{
   border: 5px solid yellow;
 }
-
-.cr-home-img-01-style{
-    max-width: 100%;
-    height: auto;
-    border: 1px solid gray;
-    border-radius: 20px;
-}
-
 
 .test01{
   height: auto;
@@ -95,3 +99,13 @@ In the CSS box model:
   align-items: center;
 
 }
+
+
+.row-01-col-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+
