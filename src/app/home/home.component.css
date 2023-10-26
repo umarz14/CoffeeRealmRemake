@@ -19,14 +19,11 @@ In the CSS box model:
     The Border: box wraps the padding and content. It extends the padding box to include the border thickness.
     The Margin: box is outside the border. It’s the space around the element. It’s also transparent.
 */
-/* html{
+/* We want that smooth scrolling affect between our pages */
+html{
     scroll-behavior: smooth;
 }
-*/
-/* .display-1{
-  font-weight: bold;
-} */
-/* Default styles for the div element */
+
 
 .cr-hp-1-viewspace{
   height: calc(100vh - 63px);/* Subtract the height of the navbar from the maximum viewport height */
@@ -36,14 +33,33 @@ In the CSS box model:
   overflow: auto;
   flex-direction: column;
 }
+.container__custom__center__100vh {
+  height: 100vh;/* Subtract the height of the navbar from the maximum viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  flex-direction: column;
+}
+.container__custom__center__100 {
+  height: 100%;/* Subtract the height of the navbar from the maximum viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  flex-direction: column;
+}
+
 .logo__container {
   margin-top: -60px;
   display: flex;
 }
+.container__custom {
+  padding-left: 20px;
+}
 
 
-
-.cr-home-img-01-style{
+.img__round__corners{
   border: 2px solid white;
   border-radius: 20px;
 }
@@ -66,11 +82,6 @@ In the CSS box model:
 
 .cr-home-btn-color{
   background-color: #2C3337;
-}
-
-.container__custom {
-  padding: 2px;
-  
 }
 
 
@@ -100,12 +111,5 @@ In the CSS box model:
 
 }
 
-
-.row-01-col-center{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
 
 
