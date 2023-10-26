@@ -30,7 +30,7 @@ html{
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
+  overflow: hidden;
   flex-direction: column;
 }
 .container__custom__center__100vh {
