@@ -12,6 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { ShopLocationComponent } from './shop-location/shop-location.component';
 import { ShopDetailsComponent } from './shop-details/shop-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BlogsComponent } from './blogs/blogs.component';
+import { BlogPostComponent } from './blog-post/blog-post.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NavbarComponent,
     HomeComponent,
     ShopLocationComponent,
-    ShopDetailsComponent
+    ShopDetailsComponent,
+    BlogsComponent,
+    BlogPostComponent
   ],
   imports: [
     BrowserModule,

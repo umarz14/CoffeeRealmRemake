@@ -1,0 +1,7 @@
+.container__100h__navbar{
+    height: calc(100vh - 63px);
+    overflow: hidden;
+}
+.border-test{
+    border: 2px solid red;
+}

@@ -4,7 +4,7 @@
     border: 0cap;
 }
 .shop-photo{
-    height: 12rem;
+    max-height: 12rem;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     width: 100%;

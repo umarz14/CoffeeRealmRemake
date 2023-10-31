@@ -4,6 +4,8 @@ import { HomeComponent } from './home/home.component';
 import { ShopLocationComponent } from './shop-location/shop-location.component';
 import { ShopDetailsComponent } from './shop-details/shop-details.component';
 import { CoffeeSearchComponent } from './coffee-search/coffee-search.component';
+import { BlogsComponent } from './blogs/blogs.component';
+import { BlogPostComponent } from './blog-post/blog-post.component';
 
 const routes: Routes = [
   {
@@ -17,7 +19,7 @@ const routes: Routes = [
     title: 'Shop Locations'
   },
   {
-    path: 'details/:placeId',
+    path: 'details',
     component: ShopDetailsComponent,
     title: 'Shop Details'
   },
@@ -25,6 +27,16 @@ const routes: Routes = [
     path: 'coffeeSearch',
     component: CoffeeSearchComponent,
     title: 'Coffee Shop Search'
+  },
+  {
+    path: 'blogs',
+    component: BlogsComponent,
+    title: 'Blog Posts'
+  },
+  {
+    path: 'blogPost',
+    component: BlogPostComponent,
+    title: 'Blog Post'
   },
 
 ];

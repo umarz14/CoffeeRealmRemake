@@ -4,11 +4,3 @@
     grid-gap: 20px 5px; 
     margin: 20px 0 0 80px;
   } */
-  .container{
-    border: solid black 2px;
-    padding: 10px;
-  }
-
-.grid-container{
-  padding-left: 20px; 
-}
