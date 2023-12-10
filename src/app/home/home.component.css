@@ -24,6 +24,8 @@ html{
     scroll-behavior: smooth;
 }
 
+/* We are going to have to do some media query so that are mobile veiorsion does not
+have the awkward space whitespace between pages */
 
 .cr-hp-1-viewspace{
   height: calc(100vh - 63px);/* Subtract the height of the navbar from the maximum viewport height */
@@ -51,7 +53,7 @@ html{
 }
 
 .logo__container {
-  margin-top: -60px;
+  /* margin-top: -60px; */
   display: flex;
 }
 .container__custom {

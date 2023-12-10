@@ -7,6 +7,7 @@ import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { environment } from 'environment';
 import { ShopLocation } from '../shop-location';
 import { ShopsService } from '../services/shops/shops.service';
+
 import { GoogleMapsJsApiService } from '../services/google-maps-js-api/google-maps-js-api.service';
 import { GooglePlacesApiService } from '../services/places-api/google-places-api.service';
 
@@ -49,6 +50,7 @@ export class CoffeeSearchComponent implements OnInit{
             this.shopLocationList = await this.googlePlacesApiService.getShopsNearby(this.myCenter);
           }
           catch(err) {
+            console.log('Failed to get shops nearby');
             console.log(err);
           }
           if(this.shopLocationList.length > 0) {
@@ -102,57 +104,6 @@ export class CoffeeSearchComponent implements OnInit{
       }
     });
   } // End of getUserCurLocation()
-
-
-  // async getShopsNearby2() {
-
-  //   // This gets the current location of the user
-  //   await this.getUserCurLocation();
-    
-  //   // This creates a new map to pass to the service to get nearby coffee shops
-  //   this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-  //     center: this.myCenter,
-  //     zoom: 14,
-  //   });
-
-  //   // This is the request to get coffee shops
-  //   const request = {
-  //     query: 'coffee shop',
-  //     radius: 1, // This does not really work at least when tested in initmap();
-  //     location: this.myCenter, // This is your center of search for the api call
-  //   };
-      
-  //   // This is the service that gets the coffee shops and returns them in a list json
-  //   // I need to figure out what type of call I wanted to make to the service.
-  //   // I believe the textSearch is the best option for now as it returns a list of 
-  //   // coffee shops near the user by default it returns 20 coffee shops
-  //   this.service = new google.maps.places.PlacesService(this.gmap);
-  //     return new Promise((resolve, reject) => {
-  //       this.service.textSearch(request, (results: 
-  //         google.maps.places.PlaceResult[] | null, 
-  //         status: google.maps.places.PlacesServiceStatus) => {
-  //           if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-  //             console.log(results);
-  //             console.log(results.length);
-  //             const shopLocationList: ShopLocation[] = results.map(place => ({
-  //               name: place.name || '',
-  //               placeId: place.place_id || '',
-  //               address: place.formatted_address || '',
-  //               location: {lat: place?.geometry?.location?.lat() || 0, lng: place?.geometry?.location?.lng() || 0},
-  //               imageUrl: place.photos && place.photos[0] ? place.photos[0].getUrl() : '',
-  //               iconUrl: place.icon || '',
-  //               phone_number: place.formatted_phone_number || '',
-  //               website: place.website || '',
-  //             }));
-  //             console.log(shopLocationList);
-  //             resolve(shopLocationList);
-  //           } else {
-  //             reject(status);
-  //           }
-  //         }); // End of this.service.textSearch
-  //     }); // End of return new Promise
-  
-  // } // End of getShopNearby()
 
  
 } // End of CoffeeSearchComponent

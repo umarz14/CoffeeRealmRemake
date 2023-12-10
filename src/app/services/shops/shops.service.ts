@@ -9,6 +9,7 @@ import { environment } from 'environment';
   providedIn: 'root'
 })
 export class ShopsService {
+  protected shopLocationList: ShopLocation[]  = []
   
   constructor(private httpClient: HttpClient) {}
 
@@ -48,9 +49,7 @@ export class ShopsService {
         google.maps.places.PlaceResult[] | null, 
         status: google.maps.places.PlacesServiceStatus) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            console.log(results);
-            console.log(results.length);
-            const shopLocationList: ShopLocation[] = results.map(place => ({
+            this.shopLocationList = results.map(place => ({
               name: place.name || '',
               placeId: place.place_id || '',
               address: place.formatted_address || '',
@@ -60,8 +59,9 @@ export class ShopsService {
               phone_number: place.formatted_phone_number || '',
               website: place.website || '',
             }));
-            console.log(shopLocationList);
-            resolve(shopLocationList);
+            console.log('shopLocationList');
+            console.log(this.shopLocationList);
+            resolve(this.shopLocationList);
           } else {
             reject(status);
           }
@@ -71,8 +71,10 @@ export class ShopsService {
   
   }
 
+  getShopLocationList() : ShopLocation[] {
+    return this.shopLocationList;
+  }
   getShopLocationId(id: string) : ShopLocation | undefined {
-    //return this.shopLocationList.find(shopLocation => shopLocation.placeId === id);
-    return undefined;
+    return this.shopLocationList.find(shopLocation => shopLocation.placeId === id);
   }
 }

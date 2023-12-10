@@ -23,9 +23,23 @@
 </div> -->
 
 <div *ngIf="display">
-    <div class="container-fluid grid-container">
-      <div class="row">
-        <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
+    <div class="container-fluid border-test">
+      <div class="row row-cols-3 gy-3 mt-2 mb-2 d-flex justify-content-center align-items-center border-test2 ">
+        <!-- <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location> -->
+        <div *ngFor="let shopLocation of shopLocationList" class="col">
+          <div class="card-container">
+            <div class="card">
+              <figure>
+                <img [src]="shopLocation.imageUrl" class=" img-fluid card-img-top" alt='image of a coffee shop'>
+              </figure>
+              <div class="card-body">
+                <h5 class="card-title">{{shopLocation.name}}</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a [routerLink]="['/details', shopLocation.placeId]" class="btn btn-primary opacity-100">Learn More</a>
+              </div>
+            </div>
+          </div>          
+        </div>
       </div>
     </div>
 </div>

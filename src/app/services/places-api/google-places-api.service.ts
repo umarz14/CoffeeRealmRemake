@@ -47,6 +47,7 @@ export class GooglePlacesApiService {
               phone_number: place.formatted_phone_number || '',
               website: place.website || '',
             }));
+            console.log('heellow');
             console.log(shopLocationList);
             resolve(shopLocationList);
           } else {

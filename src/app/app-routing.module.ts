@@ -19,7 +19,7 @@ const routes: Routes = [
     title: 'Shop Locations'
   },
   {
-    path: 'details',
+    path: 'details/:id',
     component: ShopDetailsComponent,
     title: 'Shop Details'
   },

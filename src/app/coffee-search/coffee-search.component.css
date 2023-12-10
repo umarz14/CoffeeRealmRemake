@@ -4,3 +4,9 @@
     grid-gap: 20px 5px; 
     margin: 20px 0 0 80px;
   } */
+.border-test{
+  border: solid red 2px;
+}
+.border-test2{
+  border: solid green 2px;
+}

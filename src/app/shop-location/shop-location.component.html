@@ -1,10 +1,12 @@
-<section>
-    <div class="card bg-white" style="width: 18rem;">
-      <img class="card-img-top shop-photo" [src]="shopLocation.imageUrl" alt="Photo of {{shopLocation.name}}">
-        <div class="card-body">
-            <h2 class="card-title">{{shopLocation.name}}</h2>
-            <a [routerLink]="['/details', shopLocation]" class="btn btn-primary opacity-100">Learn More</a>
-        </div>
-      </div>
-</section>
-  
+<div class="card-container">
+  <div class="card">
+    <figure>
+      <img [src]="shopLocation.imageUrl" class=" img-fluid card-img-top" alt='image of a coffee shop'>
+    </figure>
+    <div class="card-body">
+      <h5 class="card-title">{{shopLocation.name}}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a [routerLink]="['/details', shopLocation.placeId]" class="btn btn-primary opacity-100">Learn More</a>
+    </div>
+  </div>
+</div>
