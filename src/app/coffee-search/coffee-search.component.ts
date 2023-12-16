@@ -97,19 +97,28 @@ export class CoffeeSearchComponent implements OnInit {
   } // End of initMap()
 
   // This function will get the users current location which will then be
-  // used to intilize the maps center which is needed in init map
+  // used to intilize the maps center which is needed in initmap
   getUserCurLocation() {
     return new Promise<void>((resolve, reject) => {
-      if(navigator.geolocation) {
+      if (navigator.geolocation) {
+        const options: PositionOptions = {
+          enableHighAccuracy: true
+        };
+
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            this.myCenter = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+            console.log('getUserCurLocation');
+            console.log(pos.coords.latitude);
+            console.log(pos.coords.latitude + ' ' + pos.coords.longitude);
+            this.myCenter = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
             console.log(this.myCenter);
-            resolve(); // delete this late in production
+            resolve(); // delete this later in production
           },
           (err) => {
             reject(err);
-          }
+          },
+          options
         );
       } else {
         alert('Please Enable Location');

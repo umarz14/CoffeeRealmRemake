@@ -1,7 +1,31 @@
 .container__100h__navbar{
     height: calc(100vh - 63px);
     overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
+.details-card-container{
+    border-radius: 10px;
+    border: 0cap;
+    height: 420px;
+    width: 85%;
+    min-width: 85%;
+}
+
+.shop-details-photo{
+    width: 98%;  /* Fixed width */
+    height: 300px; /* Fixed height */
+    object-fit: cover; /* This will make sure the image covers the area without stretching */
+    margin: 5px; /* Optional: Adds some space between the images */
+}
+
+.cont-outline{
+    border: 2px solid red;
+}
+.cont-outline-2{
+    border: 2px solid blue;
 }
 .border-test{
-    border: 2px solid red;
+    border: 3px solid green;
 }

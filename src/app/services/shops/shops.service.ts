@@ -9,6 +9,7 @@ import { environment } from 'environment';
   providedIn: 'root'
 })
 export class ShopsService {
+  /*
   protected shopLocationList: ShopLocation[]  = []
   
   constructor(private httpClient: HttpClient) {}
@@ -77,4 +78,5 @@ export class ShopsService {
   getShopLocationId(id: string) : ShopLocation | undefined {
     return this.shopLocationList.find(shopLocation => shopLocation.placeId === id);
   }
+  */
 }

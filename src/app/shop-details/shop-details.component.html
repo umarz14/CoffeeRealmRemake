@@ -1,30 +1,25 @@
-<div class="container__100h__navbar border-test">
-    <div class="row">
-        <div class="col-12 col-lg-6 text-left">
-            <h1 class="display-1 fw-bold">
-                yellow
-            </h1>
-            <h3>
-                this is a test {{shopLocation?.placeId}}
-            </h3>
-            <h3>
-                Coffee Shop Phone Number
-            </h3>
-            <h3>
-                www.CoffeeShopWebsite.com
-            </h3>
-        </div>
-        <div class="col-12 col-lg-6 border-test">
-            <div class="row">
-                <div class="col-12 h-100">
-                    <div class="container">
-                        <img src="assets\img\home\home3.jpg" alt="just atest" class="img-fluid h-50 ">
+<!-- <div class="container__100h__navbar border-test"> -->
+<div class="container-fluid">
+    <div class="row d-flex mt-4">
+        <div class="col-12 col-lg-6 d-flex justify-content-center">
+            <div class="details-card-container">
+                <div class="card">
+                    <figure>
+                    <img [src]="shopLocation?.imageUrl" class="card-img-top shop-details-photo" alt='image of a coffee shop'>
+                    </figure>
+                    <div class="card-body">
+                    <h2 class="card-title">{{shopLocation?.name}}</h2>
+                    <p class="card-text">{{shopLocation?.address}}</p>
                     </div>
-                    <div class="container">
-                        <img src="assets\img\home\home3.jpg" alt="just atest" class="img-fluid h-50">
-                    </div>
-                </div>  
+                </div>
             </div>
+        </div>
+        <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center mx-auto">
+            <google-map
+                [center]="location">
+                <map-marker
+                    [position]="location"/>
+            </google-map>
         </div>
     </div>
 </div>
