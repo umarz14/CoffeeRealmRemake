@@ -8,8 +8,9 @@
                     <img [src]="shopLocation?.imageUrl" class="card-img-top shop-details-photo" alt='image of a coffee shop'>
                     </figure>
                     <div class="card-body">
-                    <h2 class="card-title">{{shopLocation?.name}}</h2>
-                    <p class="card-text">{{shopLocation?.address}}</p>
+                        <h2 class="card-title">{{shopLocation?.name}}</h2>
+                        <p class="card-text">{{shopLocation?.address}}</p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button>
                     </div>
                 </div>
             </div>
@@ -23,4 +24,32 @@
         </div>
     </div>
 </div>
- 
+
+<!-- Modal -->
+<div class="modal fade" id="static" tabindex="-1" aria-labelledby="staticLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticLabel">Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          hello world
+            <!-- star-rating.component.html -->
+            <div class="star-rating">
+                <!-- Each star checks if its value is greater than rating. If it is, the not-filled class is applied, making it grey; otherwise, it remains gold. -->
+                <span class="star" *ngFor="let star of stars" [class.not-filled]="star > rating" (click)="setRating(star)">&#9733;</span>
+                <form [formGroup]="applyForm">
+                    <label for="Review"></label>
+                    <input type="text" id="Review" name="Review" placeholder="Review">
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+

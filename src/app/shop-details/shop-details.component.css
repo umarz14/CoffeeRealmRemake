@@ -29,3 +29,14 @@
 .border-test{
     border: 3px solid green;
 }
+
+/* star-rating.component.css */
+.star {
+    cursor: pointer;
+    color: gold;
+  }
+  
+  .star.not-filled {
+    color: grey;
+  }
+  
