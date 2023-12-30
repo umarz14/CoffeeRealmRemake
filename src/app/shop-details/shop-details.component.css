@@ -34,6 +34,7 @@
 .star {
     cursor: pointer;
     color: gold;
+    font-size: 30px;
   }
   
   .star.not-filled {

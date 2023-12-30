@@ -3,8 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ShopsService } from '../services/shops/shops.service';
 import { ShopLocation } from '../shop-location';
 import { GooglePlacesApiService } from '../services/places-api/google-places-api.service';
-import { FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ViewChild, ElementRef } from '@angular/core';
+import { Modal } from 'bootstrap';
+;
 
 
 @Component({
@@ -25,14 +28,16 @@ export class ShopDetailsComponent implements OnInit{
   shop: ShopLocation | undefined;
   location!: google.maps.LatLng;
 
+  @ViewChild('reviewModal', { static: false }) reviewModal: ElementRef | undefined;
+
   // This is for the rating system
     rating: number = 0;
     stars: number[] = [1, 2, 3, 4, 5];
   
   // This is for the review form
-    applyForm = new FormGroup({
-      Review: new FormControl(''),
-    });
+  applyForm = new FormGroup({
+    Review: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(300)])
+  });
     
 
 
@@ -50,12 +55,29 @@ export class ShopDetailsComponent implements OnInit{
       console.log(this.shopLocation?.location);
       this.location = this.shopLocation?.location as unknown as google.maps.LatLng;
     }
-  }
+  } // End of ngOnInit
 
 
   setRating(newRating: number): void {
     this.rating = newRating;
     console.log(this.rating);
     // Additional logic here if needed, like emitting an event or updating a form control
+  } // End of setRating
+
+  submitReview() {
+    if (this.applyForm.valid) {
+      const review = this.applyForm.value.Review;
+      console.log(review);
+      // handle form submission
+      if (this.reviewModal) {
+        const modal = new Modal(this.reviewModal.nativeElement, {});
+        modal.hide();
+      }
+      window.alert('Thank you for your review!');
+
+      // handle form submission
+    } else {
+      window.alert('Please write more than 10 characters');
+    }
   }
 }

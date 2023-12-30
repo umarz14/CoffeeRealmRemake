@@ -25,8 +25,8 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="static" tabindex="-1" aria-labelledby="staticLabel" aria-hidden="true">
+<!-- Modal # lets us refrence the modal for viewchild -->
+<div class="modal fade" id="static" tabindex="-1" aria-labelledby="staticLabel" aria-hidden="true" #reviewModal>
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -34,21 +34,20 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          hello world
             <!-- star-rating.component.html -->
             <div class="star-rating">
                 <!-- Each star checks if its value is greater than rating. If it is, the not-filled class is applied, making it grey; otherwise, it remains gold. -->
                 <span class="star" *ngFor="let star of stars" [class.not-filled]="star > rating" (click)="setRating(star)">&#9733;</span>
-                <form [formGroup]="applyForm">
-                    <label for="Review"></label>
-                    <input type="text" id="Review" name="Review" placeholder="Review">
+                <form [formGroup]="applyForm" (submit)="submitReview()">        
+                    <label for="Review" class="form-label">Tell Us What You Think</label>
+                    <textarea class="form-control" id="Review" rows="5" formControlName="Review"></textarea>                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal ">Submit</button>
+                    </div>
                 </form>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+
       </div>
     </div>
 </div>
