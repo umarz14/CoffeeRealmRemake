@@ -24,6 +24,15 @@
         </div>
     </div>
 </div>
+<div class="details-card-container">
+    <div class="card">
+        <ul>
+            <li class="text" *ngFor="let item of items$ | async">
+              {{item.name}}
+            </li>
+          </ul>          
+    </div>
+</div>
 
 <!-- Modal # lets us refrence the modal for viewchild -->
 <div class="modal fade" id="static" tabindex="-1" aria-labelledby="staticLabel" aria-hidden="true" #reviewModal>
@@ -40,14 +49,14 @@
                 <span class="star" *ngFor="let star of stars" [class.not-filled]="star > rating" (click)="setRating(star)">&#9733;</span>
                 <form [formGroup]="applyForm" (submit)="submitReview()">        
                     <label for="Review" class="form-label">Tell Us What You Think</label>
-                    <textarea class="form-control" id="Review" rows="5" formControlName="Review"></textarea>                    <div class="modal-footer mt-3">
+                    <textarea class="form-control" id="Review" rows="5" formControlName="Review"></textarea>                    
+                    <div class="modal-footer mt-3">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal ">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
-
       </div>
     </div>
 </div>

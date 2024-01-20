@@ -4,6 +4,9 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClientJsonpModule} from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms'
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { environment } from 'environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +18,9 @@ import { ShopDetailsComponent } from './shop-details/shop-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BlogsComponent } from './blogs/blogs.component';
 import { BlogPostComponent } from './blog-post/blog-post.component';
+import { LoginComponent } from './login/login.component';
+import { getAuth,provideAuth } from '@angular/fire/auth';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +31,8 @@ import { BlogPostComponent } from './blog-post/blog-post.component';
     ShopLocationComponent,
     ShopDetailsComponent,
     BlogsComponent,
-    BlogPostComponent
+    BlogPostComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +43,9 @@ import { BlogPostComponent } from './blog-post/blog-post.component';
     HttpClientJsonpModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
   ],
   providers: [],
   bootstrap: [AppComponent]

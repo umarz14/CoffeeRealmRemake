@@ -6,6 +6,7 @@ import { ShopDetailsComponent } from './shop-details/shop-details.component';
 import { CoffeeSearchComponent } from './coffee-search/coffee-search.component';
 import { BlogsComponent } from './blogs/blogs.component';
 import { BlogPostComponent } from './blog-post/blog-post.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,11 @@ const routes: Routes = [
     path: 'blogPost',
     component: BlogPostComponent,
     title: 'Blog Post'
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    title: 'Login'
   },
 
 ];

@@ -1,13 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ShopsService } from '../services/shops/shops.service';
-import { ShopLocation } from '../shop-location';
+import { ShopLocation } from '../shop-location.modal';
 import { GooglePlacesApiService } from '../services/places-api/google-places-api.service';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Modal } from 'bootstrap';
-;
+
+import { Firestore,collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -19,6 +21,11 @@ import { Modal } from 'bootstrap';
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent implements OnInit{
+  
+  //this is firestore test
+  firestore = inject(Firestore);
+  items$: Observable<any[]>;
+
   // This adds a refrence to the shop service
   placesService = inject(GooglePlacesApiService);
   // This is to get the specific shop from the shop service
@@ -28,7 +35,9 @@ export class ShopDetailsComponent implements OnInit{
   shop: ShopLocation | undefined;
   location!: google.maps.LatLng;
 
-  @ViewChild('reviewModal', { static: false }) reviewModal: ElementRef | undefined;
+  private modal: any; 
+
+  @ViewChild('reviewModal') reviewModal!: ElementRef;
 
   // This is for the rating system
     rating: number = 0;
@@ -42,7 +51,10 @@ export class ShopDetailsComponent implements OnInit{
 
 
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {
+    const aCollection = collection(this.firestore, 'items')
+    this.items$ = collectionData(aCollection);
+  }
 
   ngOnInit() {
     // This gets the id from the url and then gets the shop from the shop service
@@ -57,6 +69,13 @@ export class ShopDetailsComponent implements OnInit{
     }
   } // End of ngOnInit
 
+  // Since the modal is not created until the click of review 
+  // i believe we have to use this lifecycle in order to access it
+  // otherwise it will be null
+  ngAfterViewInit() {
+    this.modal = new Modal(this.reviewModal.nativeElement, {});
+  }
+
 
   setRating(newRating: number): void {
     this.rating = newRating;
@@ -64,20 +83,22 @@ export class ShopDetailsComponent implements OnInit{
     // Additional logic here if needed, like emitting an event or updating a form control
   } // End of setRating
 
+
   submitReview() {
-    if (this.applyForm.valid) {
+    if (this.applyForm.valid && this.rating!=0) {
       const review = this.applyForm.value.Review;
       console.log(review);
       // handle form submission
-      if (this.reviewModal) {
-        const modal = new Modal(this.reviewModal.nativeElement, {});
-        modal.hide();
+      this.modal.hide();
+      // This manually removes the backdrop of the modal for us
+      // it stays when we close it. 
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
       }
-      window.alert('Thank you for your review!');
-
-      // handle form submission
     } else {
-      window.alert('Please write more than 10 characters');
+      window.alert('Please fill out the Rating and Review');
     }
   }
 }
