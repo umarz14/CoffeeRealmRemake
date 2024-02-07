@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ShopsService } from '../services/shops/shops.service';
-import { ShopLocation } from '../shop-location.modal';
-import { GooglePlacesApiService } from '../services/places-api/google-places-api.service';
+import { ShopsService } from '../../services/shops/shops.service';
+import { ShopLocation } from '../../models/shop-location.model';
+import { GooglePlacesApiService } from '../../services/places-api/google-places-api.service';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';

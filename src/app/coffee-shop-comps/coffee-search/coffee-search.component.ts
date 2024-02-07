@@ -5,11 +5,11 @@ import { Observable, Subscription, async } from 'rxjs';
 
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { environment } from 'environment';
-import { ShopLocation } from '../shop-location.modal';
-import { ShopsService } from '../services/shops/shops.service';
+import { ShopLocation } from '../../models/shop-location.model';
+import { ShopsService } from '../../services/shops/shops.service';
 
-import { GoogleMapsJsApiService } from '../services/google-maps-js-api/google-maps-js-api.service';
-import { GooglePlacesApiService } from '../services/places-api/google-places-api.service';
+import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
+import { GooglePlacesApiService } from '../../services/places-api/google-places-api.service';
 
 @Component({
   selector: 'app-coffee-search',

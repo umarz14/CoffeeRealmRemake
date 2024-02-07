@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, Optional } from '@angular/core';
-import { Auth, authState, signInAnonymously, signOut, User, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
-import { EMPTY, Observable, Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, Optional, } from '@angular/core';
+import { Auth, authState, signInAnonymously, signOut, User, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from '@angular/fire/auth';
+import { EMPTY, Observable, Subscription} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { traceUntilFirst } from '@angular/fire/performance';
+
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         this.showLogoutButton = isLoggedIn;
       });
     }
+    
   }
 
   ngOnInit(): void { }
@@ -36,6 +38,21 @@ export class LoginComponent implements OnInit, OnDestroy{
     if (this.userDisposable) {
       this.userDisposable.unsubscribe();
     }
+  }
+
+  async getUSer(){
+    console.log('testing' + this.auth.currentUser?.uid);
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        console.log(uid);
+        // ...
+      } else {
+        console.log('no user');
+      }
+    });
   }
 
   async login() {
@@ -49,6 +66,8 @@ export class LoginComponent implements OnInit, OnDestroy{
   async logout() {
     return await signOut(this.auth);
   }
+
+  
 
 
 }

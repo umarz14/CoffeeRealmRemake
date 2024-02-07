@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ShopLocation } from '../../shop-location.modal';
+import { ShopLocation } from '../../models/shop-location.model';
 
 @Injectable({
   providedIn: 'root'

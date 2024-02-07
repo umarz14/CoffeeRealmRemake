@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ShopLocation } from '../shop-location.modal';
+import { ShopLocation } from '../../models/shop-location.model';
 
 @Component({
   selector: 'app-shop-location',

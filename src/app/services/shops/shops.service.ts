@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';  
 import { catchError, map } from 'rxjs/operators';
-import { ShopLocation } from '../../shop-location.modal';
+import { ShopLocation } from '../../models/shop-location.model';
 import { environment } from 'environment';
 
 @Injectable({

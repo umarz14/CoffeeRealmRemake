@@ -1,0 +1,38 @@
+<!-- <p>
+    Auth!
+    <code>{{ (user | async)?.uid }}</code>
+    <button (click)="login()" *ngIf="showLoginButton">Log in with Google</button>
+    <button (click)="loginAnonymously()" *ngIf="showLoginButton">Log in anonymously</button>
+    <button (click)="logout()" *ngIf="showLogoutButton">Log out</button>
+    <button (click)="getUSer()">getUSer</button>
+</p> -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Login</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small>Don't have an account? <a href="#">Sign up</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
