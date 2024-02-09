@@ -1,28 +1,35 @@
-<!-- <p>
-    Auth!
-    <code>{{ (user | async)?.uid }}</code>
-    <button (click)="login()" *ngIf="showLoginButton">Log in with Google</button>
-    <button (click)="loginAnonymously()" *ngIf="showLoginButton">Log in anonymously</button>
-    <button (click)="logout()" *ngIf="showLogoutButton">Log out</button>
-    <button (click)="getUSer()">getUSer</button>
-</p> -->
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-body">
+            <p>
+                Auth!
+                <code>{{ (user | async)?.uid }}</code>
+                <button (click)="login()" *ngIf="showLoginButton">Log in with Google</button>
+                <button (click)="authService.signInAnonymously()" *ngIf="showLoginButton">Log in anonymously</button>
+                <button (click)="authService.logout()" *ngIf="showLogoutButton">Log out</button>
+                <button (click)="getUser()">getUSer</button>
+            </p>
+        </div>
+    </div>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">Login</h3>
-                    <form>
+                    <form [formGroup]="loginForm" (submit)="tempLogin()">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                            <label for="email">Email Address</label>
+                            <input type="text" id="email" class="form-control" formControlName="email" aria-describedby="emailHelpBlock"
+                                [ngClass]="{ 'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.dirty }">
+                            <!-- <div id="emailHelpBlock" *ngIf="loginForm?.get('email')?.invalid " class="form-text">Please Enter A Valid Email Address.</div> -->
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" class="form-control" formControlName="password">
                         </div>
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Sign In</button>
+                            <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Sign In</button>
                         </div>
                     </form>
                 </div>

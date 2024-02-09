@@ -1,10 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, getAuth, idToken, GoogleAuthProvider, signInWithPopup, signInAnonymously, signOut} from '@angular/fire/auth';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs';
-import { User } from './user.model';
 import { Subscription } from 'rxjs';
+import { idToken, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  GoogleAuthProvider, signInWithPopup, signInAnonymously, signOut} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -48,12 +45,33 @@ export class AuthService {
     }
   }
 
-  logout() {
-    signOut(this.auth).then(() => {
-      console.log("logged out");
+  async logout() {
+    const auth = getAuth();
+    await signOut(auth).then(() => {
+      // Sign-out successful.
     }).catch((error) => {
-      console.log('sign out error: '+error);
-    })
+      // An error happened.
+    });
   }// end logout
 
+  
+
+  async spawnNewUserWithEmailAndPassword(email: string, password: string) {
+    try{
+      await createUserWithEmailAndPassword(this.auth, email, password);
+      console.log("User created successfully");
+    }
+    catch(error) {
+      console.error(error);
+    }
+  } // end createUserWithEmailAndPassword
+
+  async loginWithEmailAndPassword(email: string, password: string) {
+    try {
+      await signInWithEmailAndPassword(this.auth, email, password);
+      console.log("User logged in successfully");
+    } catch(error) {
+      console.error(error);
+    }
+  } // end loginWithEmailAndPassword
 }

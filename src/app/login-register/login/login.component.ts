@@ -3,6 +3,9 @@ import { Auth, authState, signInAnonymously, signOut, User, GoogleAuthProvider, 
 import { EMPTY, Observable, Subscription} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { traceUntilFirst } from '@angular/fire/performance';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { AuthService } from '../../services/auth/auth.service';
 
 
 @Component({
@@ -18,7 +21,17 @@ export class LoginComponent implements OnInit, OnDestroy{
   showLoginButton = false;
   showLogoutButton = false;
 
-  constructor(@Optional() private auth: Auth) {
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators
+      .required, Validators.email]),
+    password: new FormControl(''),
+  });
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  constructor(@Optional() private auth: Auth, public authService: AuthService) {
     if (auth) {
       this.user = authState(this.auth);
       this.userDisposable = authState(this.auth).pipe(
@@ -40,7 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy{
     }
   }
 
-  async getUSer(){
+  async getUser(){
     console.log('testing' + this.auth.currentUser?.uid);
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
@@ -59,13 +72,22 @@ export class LoginComponent implements OnInit, OnDestroy{
     return await signInWithPopup(this.auth, new GoogleAuthProvider());
   }
 
-  async loginAnonymously() {
-    return await signInAnonymously(this.auth);
-  }
+  async signIn() {
+    console.log(this.loginForm.value.email);
+    console.log(this.loginForm.value.password);
+    try{
+      const email = this.loginForm.value.email || '';
+      const password = this.loginForm.value.password || '';
+      await this.authService.loginWithEmailAndPassword(email, password);
+    } catch (error) {
+      console.error(error);
+    }
+  } // end tempLogin
 
-  async logout() {
-    return await signOut(this.auth);
-  }
+  tempLogin() {
+    console.log(this.loginForm.value.email);
+    console.log(this.loginForm.value.password);
+  } // end tempLogin
 
   
 
