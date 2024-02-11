@@ -1,1 +1,38 @@
+.borderview{
+    border: solid 2px black;
+}
+.borderview2{
+    border: solid 2px red;
+}
+.borderview3{
+    border: solid 2px green;
+}
+.divider::before {
+    margin-right: .25em;
+}
+.divider::after {
+    margin-left: .25em;
+}
+.divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #000;
+    }
 
+    .flanked-text {
+        display: flex;
+        align-items: center;
+    }
+    
+    .line {
+        flex: 1;
+        height: 2px; /* height of the line */
+        background-color: black; /* color of the line */
+        margin: 0 10px; /* spacing between the line and the text */
+    }
+    
+    .ltext {
+        color: gray;
+    }
+    
