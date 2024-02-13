@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -9,10 +9,22 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class RegistrationComponent {
   signUpForm = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl(''),
+    username: new FormControl('', [Validators.required,
+      Validators.minLength(4), Validators.maxLength(20),
+      Validators.pattern('^[a-zA-Z0-9]*$')]
+    ),
+    email: new FormControl('',
+      [Validators.required, Validators.email]
+    ),
+    password: new FormControl('', [Validators.required,
+      Validators.minLength(6), Validators.maxLength(20), 
+      Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).*$/)]    
+    ),
+    confirmPassword: new FormControl('', [Validators.required,
+      Validators.minLength(6), Validators.maxLength(20),
+      Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).*$/)
+    ]
+    ),
   });
 
   constructor(private authService: AuthService) {

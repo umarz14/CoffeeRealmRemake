@@ -64,16 +64,16 @@ export class LoginComponent implements OnInit, OnDestroy{
     });
   }
 
-  async login() {
-    return await signInWithPopup(this.auth, new GoogleAuthProvider());
+  async signInGooglelogin() {
+    try {
+      await signInWithPopup(this.auth, new GoogleAuthProvider());
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  async signIn() {
-    console.log(this.loginForm.value.email);
-    console.log(this.loginForm.value.password);
+  async signIn(email: string, password: string) {
     try{
-      const email = this.loginForm.value.email || '';
-      const password = this.loginForm.value.password || '';
       await this.authService.loginWithEmailAndPassword(email, password);
     } catch (error) {
       console.error(error);

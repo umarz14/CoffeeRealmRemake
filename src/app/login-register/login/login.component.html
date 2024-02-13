@@ -20,30 +20,25 @@
             <div class="card shadow-lg">
                 <div class="card-body text-center">
                     <h3 class="card-title text-center mt-2 mb-3">Login</h3>
-                    <button type="button" class="btn btn-light mb-3">
+                    <button type="button" class="btn btn-light mb-2">
                         <div class="container d-flex align-items-center justify-content-center">
                             <img src="../../../assets/img/logos/googleLogo.png" alt="google" class="img-fluid" width="20" height="20">
                             <span class="text-dark" style="padding-left: 8px;">Sign in with Google</span>
                         </div>    
                     </button>
                     <hr>
-                    <figcaption class="mb-2"> or Sign in with Email</figcaption> 
+                    <p class="text-center fs-6 text-secondary">or Sign in with Email</p>
                     <hr>
-                    <div class="flanked-text">
-                        <span class="line"></span>
-                        <span class="ltext">This is the text</span>
-                        <span class="line"></span>
-                    </div>
-                    
                     <div class="container">
-                        <form [formGroup]="loginForm" (submit)="tempLogin()">
+                        <form [formGroup]="loginForm" (submit)="signIn(loginForm.get('email')?.value || '', loginForm.get('password')?.value || '')">
                             <div class="text-start">
                                 <label class="ms-1 fw-bold" for="email">Email:</label>
                                 <input type="text" id="email" class="form-control" formControlName="email" aria-describedby="emailHelpBlock"
                                     [ngClass]="{
                                             'mb-3':loginForm.get('email')?.valid || loginForm.get('email')?.pristine,
                                             'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.dirty 
-                                        }">
+                                    }"
+                                >
                                 <div id="emailHelpBlock" *ngIf="loginForm?.get('email')?.invalid && loginForm.get('email')?.dirty" class="form-text">Please Enter A Valid Email Address.</div>
                             </div>
                             <div class="text-start mb-3">
@@ -58,7 +53,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <small>Don't have an account? <a href="#">Sign up</a></small>
+                    <small>Don't have an account? <a href="register">Sign up</a></small>
                 </div>
             </div>
         </div>
