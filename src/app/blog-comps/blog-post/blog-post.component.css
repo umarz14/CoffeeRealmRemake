@@ -1,3 +1,7 @@
 .avatar__image{
     border-radius: 50%; 
 }
+.card-color {
+    background-color: #E3E0DE;
+    border: none;
+}
