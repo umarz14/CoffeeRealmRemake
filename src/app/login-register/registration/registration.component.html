@@ -8,8 +8,8 @@
                 <div class="card-body">
                   <h3 class="card-title">Create Account</h3>
                   <form [formGroup]="signUpForm" (submit)="tempRegister()">
-                    <div class="text-start ms-1 fw-bold" >
-                        <label for="username">Username</label>
+                    <div class="text-start ms-1" >
+                        <label class="fw-bold" for="username">Username</label>
                         <input type="text" id="username" class="form-control" formControlName="username" aria-describedby="unHelpBlock"
                             [ngClass]="{
                                 'mb-2':signUpForm.get('username')?.valid || signUpForm.get('username')?.pristine,
@@ -20,8 +20,8 @@
                             Minimum length 5 characters & No Special Characters Or Spaces.
                         </div>
                     </div>
-                    <div class="text-start ms-1 fw-bold">
-                        <label for="email">Email</label>
+                    <div class="text-start ms-1">
+                        <label class="fw-bold" for="email">Email</label>
                         <input type="text" id="email" class="form-control" formControlName="email" aria-describedby="emailHelpBlock"
                             [ngClass]="{
                                 'mb-2':signUpForm.get('email')?.valid || signUpForm.get('email')?.pristine,
@@ -30,20 +30,31 @@
                         >
                         <div id="emailHelpBlock" *ngIf="signUpForm?.get('email')?.invalid && signUpForm.get('email')?.dirty" class="form-text">Please Enter A Valid Email Address.</div>
                     </div>
-                    <div class="text-start ms-1 fw-bold">
-                        <label for="password">Password</label>
+                    <div class="text-start ms-1">
+                        <label class="fw-bold" for="password">Password</label>
                         <input type="password" id="password" class="form-control" formControlName="password" aria-describedby="pswdHelpBlock"
                             [ngClass]="{
                                 'mb-2':signUpForm.get('password')?.valid || signUpForm.get('password')?.pristine,
                                 'is-invalid': signUpForm.get('password')?.invalid && signUpForm.get('password')?.dirty
                             }"
                         >
+                        <div id="pswdHelpBlock" *ngIf="signUpForm?.get('password')?.invalid && signUpForm.get('password')?.dirty" >
+                            Minimum 6 Characters
+                            <br>
+                            Password Must Have One Capital letter & one Special Character.
+                        </div>
                     </div>
-                    <div class="text-start ms-1 mb-4 fw-bold">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword">
+                    <div class="text-start ms-1 mb-3">
+                        <label class="fw-bold" for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword" aria-describedby="cph"
+                            [ngClass]="{
+                                'mb-2':signUpForm.get('confirmPassword')?.valid || signUpForm.get('confirmPassword')?.pristine,
+                                'is-invalid': signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.dirty
+                            }"
+                        >
+                        <div id="cph" *ngIf="!pswdMatch() && signUpForm.get('confirmPassword')?.dirty">Password must match</div>
                     </div>
-                    <button type="submit" [disabled]="!signUpForm.valid" class="btn btn-primary" (submit)="tempRegister">Sign Up</button>
+                    <button type="submit" [disabled]="!signUpForm.valid || !pswdMatch()" class="btn btn-primary" (submit)="tempRegister">Sign Up</button>
                 </form>
                 </div>
             </div>

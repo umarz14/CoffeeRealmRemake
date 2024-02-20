@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { idToken, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+import { User,user, Auth, getAuth, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword,
   GoogleAuthProvider, signInWithPopup, signInAnonymously, signOut} from '@angular/fire/auth';
 
 @Injectable({
@@ -9,19 +10,19 @@ import { idToken, Auth, getAuth, createUserWithEmailAndPassword, signInWithEmail
 export class AuthService {
   private provider = new GoogleAuthProvider();
   private auth: Auth = inject(Auth);
-  idToken$ = idToken(this.auth);
-  idTokenSubscription: Subscription;
+  authState$ = authState(this.auth);
+  authStateSubscription: Subscription;
 
-  constructor() {
-    this.idTokenSubscription = this.idToken$.subscribe((token: string | null) => {
-      //handle idToken changes here. Note, that user will be null if there is no currently logged in user.
-      console.log(token);
-    })
+  constructor(private router: Router) {
+    this.authStateSubscription = this.authState$.subscribe((aUser: User | null) => {
+      //handle auth state changes here. Note, that user will be null if there is no currently logged in user.
+   console.log(aUser?.uid);
+  })
   }
 
   ngOnDestroy() {
     // when manually subscribing to an observable remember to unsubscribe in ngOnDestroy
-    this.idTokenSubscription.unsubscribe();
+    this.authStateSubscription.unsubscribe();
   }
 
   async signInAnonymously(){
@@ -48,9 +49,12 @@ export class AuthService {
   async logout() {
     const auth = getAuth();
     await signOut(auth).then(() => {
-      // Sign-out successful.
+      console.log("logout successful");
+      this.router.navigate(['/']);
     }).catch((error) => {
       // An error happened.
+      console.log(error);
+      console.log("Error occured while attempting to logout")
     });
   }// end logout
 
@@ -70,6 +74,7 @@ export class AuthService {
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
       console.log("User logged in successfully");
+      this.router.navigate(['blogs'])
     } catch(error) {
       console.error(error);
     }
