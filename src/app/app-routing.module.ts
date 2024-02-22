@@ -6,6 +6,7 @@ import { ShopDetailsComponent } from './coffee-shop-comps/shop-details/shop-deta
 import { CoffeeSearchComponent } from './coffee-shop-comps/coffee-search/coffee-search.component';
 import { BlogsComponent } from './blog-comps/blogs/blogs.component';
 import { BlogPostComponent } from './blog-comps/blog-post/blog-post.component';
+import { BlogListComponent } from './blog-comps/blog-list/blog-list.component'; 
 import { LoginComponent } from './login-register/login/login.component';
 import { RegistrationComponent } from './login-register/registration/registration.component';
 
@@ -49,8 +50,12 @@ const routes: Routes = [
     path: 'register',
     component: RegistrationComponent,
     title: 'Register'
-  }
-
+  },
+  {
+    path: 'blogList',
+    component: BlogListComponent,
+    title: 'Blog List'
+  },
 ];
 
 @NgModule({

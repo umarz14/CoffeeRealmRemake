@@ -21,6 +21,7 @@ import { BlogPostComponent } from './blog-comps/blog-post/blog-post.component';
 import { LoginComponent } from './login-register/login/login.component';
 import { getAuth,provideAuth } from '@angular/fire/auth';
 import { RegistrationComponent } from './login-register/registration/registration.component';
+import { BlogListComponent } from './blog-comps/blog-list/blog-list.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { RegistrationComponent } from './login-register/registration/registratio
     BlogsComponent,
     BlogPostComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    BlogListComponent
   ],
   imports: [
     BrowserModule,
