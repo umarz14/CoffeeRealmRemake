@@ -1,23 +1,11 @@
-.card{
-    width: 100%;
-    border-radius: 10px;
-    border: 0cap;
+.card-img-top-container {
+    height: 300px; /* Fixed height for the image */
+    overflow: hidden; /* Ensures the image doesn't exceed the container */
 }
-
-.shop-photo{
-    width: 470px;  /* Fixed width */
-    height: 300px; /* Fixed height */
-    max-width: 470px;
-    object-fit: cover; /* This will make sure the image covers the area without stretching */
-    margin: 5px; /* Optional: Adds some space between the images */
-}
-
-.test{
-    opacity: .7;
-}
-
-.card-img-overlay{
-    position: absolute;
-    bottom: 0;
-    left: 0;
+/* I want to use media quieres to fix then on a smaller screen */
+.card-img-top {
+    width: 100%; /* Full width of the container */
+    height: auto;
+    object-fit: cover; /* Ensures the image covers the container without stretching */
+    object-position: center; /* Centers the image */
 }
