@@ -9,6 +9,7 @@ import { BlogPostComponent } from './blog-comps/blog-post/blog-post.component';
 import { BlogListComponent } from './blog-comps/blog-list/blog-list.component'; 
 import { LoginComponent } from './login-register/login/login.component';
 import { RegistrationComponent } from './login-register/registration/registration.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,11 @@ const routes: Routes = [
     component: BlogListComponent,
     title: 'Blog List'
   },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    title: 'Profile'
+  }
 ];
 
 @NgModule({

@@ -1,0 +1,11 @@
+.pfp-img {
+    border-radius: 50%; 
+    overflow: hidden;
+    width: auto; 
+    height: 125px;
+    object-fit: cover;
+}
+.match-bg{
+    background-color: #E3E0DE;
+    border: none;
+}
