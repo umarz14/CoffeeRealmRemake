@@ -1,15 +1,86 @@
-<div class="container mt-4 border border-black d-flex flex-column align-items-center">
-    <img src="/assets/img/pfp.webp" alt="profile picture" class="pfp-img">
-    <div class="card text-center match-bg">
-        <div class="card-body">
-          <h1 class="card-title">Username</h1>
-          <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
-          <p class="card-text mb-5 fs-4">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>   
-</div>
-<div class="container-fluid border border-primary border-2">
-    <div class="ps-5">
-        <h1>hello world</h1>
+<!-- FILEPATH: /c:/Users/SageForest/Desktop/Workspace/WebDev/coffee-realm-remake/src/app/profile/profile.component.html -->
+<!-- BEGIN: abpxx6d04wxr -->
+<div class="container mt-4 d-flex flex-column align-items-center">
+  <img src="/assets/img/pfp.webp" alt="profile picture" class="pfp-img">
+  <div class="card text-center match-bg">
+    <div class="card-body">
+      <h1 class="card-title">Username</h1>
+      <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
+      <p class="card-text mb-5 fs-4">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
     </div>
+  </div>   
+</div>
+<div class="container-fluid bg-test">
+  <div class="container ps-5 pe-5 pt-3">
+    <h1 class="mb-2">Featured Post</h1>
+    <div class="card text-center ps-3 pe-3 pt-3">
+      <div class="row row-cols-2 gx-3 d-flex flex-nowrap overflow-auto">
+        <!-- BEGIN: card-loop -->
+        <div class="col" *ngFor="let item of [1, 2, 3, 4, 5, 6]">
+          <div class="card mb-1">
+            <img src="/assets/img/home/home1.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Post Title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </div>
+        <!-- END: card-loop -->
+      </div>
+    </div>
+    <div class="container mt-4 border border-dark">
+      <div class="row">
+        <div class="col">
+          <h1>
+            Favorite Drinks
+          </h1>
+          <div class="card row row-cols-1 pt-3">
+            <div class="col">
+              <div *ngFor="let drink of[1,2,3,4]" class="card mb-3">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="\assets\img\coffee-cups-sm.jpg" class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <h1>
+            Blogs
+          </h1>
+          <div class="container">
+            <div class="card">
+              <ul class="list-group list-group-flush border-0">
+                <li *ngFor="let blog of [1,2,3,4]" class="list-group-item">
+                  <div class="card mb-3">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="\assets\img\coffee-cups-sm.jpg" class="img-fluid rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                          <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
