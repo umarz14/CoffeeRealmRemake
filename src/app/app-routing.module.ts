@@ -4,7 +4,6 @@ import { HomeComponent } from './home/home.component';
 import { ShopLocationComponent } from './coffee-shop-comps/shop-location/shop-location.component';
 import { ShopDetailsComponent } from './coffee-shop-comps/shop-details/shop-details.component';
 import { CoffeeSearchComponent } from './coffee-shop-comps/coffee-search/coffee-search.component';
-import { BlogsComponent } from './blog-comps/blogs/blogs.component';
 import { BlogPostComponent } from './blog-comps/blog-post/blog-post.component';
 import { BlogListComponent } from './blog-comps/blog-list/blog-list.component'; 
 import { LoginComponent } from './login-register/login/login.component';
@@ -31,11 +30,6 @@ const routes: Routes = [
     path: 'coffeeSearch',
     component: CoffeeSearchComponent,
     title: 'Coffee Shop Search'
-  },
-  {
-    path: 'blogs',
-    component: BlogsComponent,
-    title: 'Blogs'
   },
   {
     path: 'blogPost',

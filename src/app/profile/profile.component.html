@@ -11,27 +11,51 @@
   </div>   
 </div>
 <div class="container-fluid bg-test">
-  <div class="container ps-5 pe-5 pt-3">
-    <h1 class="mb-2">Favorite Coffee Shops</h1>
-    <div class="card text-center ps-3 pe-3 pt-3">
-      <div class="row row-cols-2 gx-3 d-flex flex-nowrap overflow-auto">
-        <!-- BEGIN: card-loop -->
+  <div class="container-fluid ps-5 pe-5 pt-3">
+  <!-- This is the scrolling bar Favorite Coffee Shops -->
+    <!-- <h1 class="mb-2">Favorite Coffee Shops</h1> -->
+    <!-- <div class="card text-center ps-3 pe-3 pt-3">
+      <div class="row row-cols-3 gx-3 d-flex flex-nowrap overflow-auto">
         <div class="col" *ngFor="let item of [1, 2, 3, 4, 5, 6]">
           <div class="card mb-1">
             <img src="/assets/img/home/home1.jpg" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">Post Title</h5>
               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
             </div>
           </div>
         </div>
-        <!-- END: card-loop -->
       </div>
-    </div>
+    </div> -->
     <div class="container mt-4 d-flex align-items-center">
       <div class="row mb-5">
-        <div class="col-6">
+      <!-- This is the colums fav coffee shops -->
+        <div class="col-4">
+          <h1 class="ps-2">Favorite Shops</h1>
+          <div class="container">
+            <div class="card">
+              <ul class="list-group list-group-flush border-0">
+                <li *ngFor="let blog of [1,2,3,4]" class="list-group-item">
+                  <div class="card mb-2 mt-2">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="/assets/img/home/home1.jpg" class="img-fluid h-100 rounded-start img-resize" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">Coffee Shop Name</h5>
+                          <p class="card-text">The Address of the shop</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- ends here -->
+        <div class="col-4">
           <h1 class="ps-2">
             Blogs
           </h1>
@@ -47,8 +71,8 @@
                       <div class="col-md-8">
                         <div class="card-body">
                           <h5 class="card-title">Blog title</h5>
-                          <p class="card-text">Should this be like a summary of the blog? or should i just not include it?</p>
-                          <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                          <!-- <p class="card-text">Should this be like a summary of the blog? or should i just not include it?</p> -->
+                          <p class="card-text"><small class="text-body-secondary">Date Written</small></p>
                         </div>
                       </div>
                     </div>
@@ -58,7 +82,7 @@
             </div>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <h1 class="ps-2">
             Favorite Drinks
           </h1>
