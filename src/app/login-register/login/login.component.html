@@ -1,22 +1,6 @@
-<!-- FILEPATH: /c:/Users/SageForest/Desktop/Workspace/WebDev/coffee-realm-remake/src/app/login-register/login/login.component.html -->
-<!-- BEGIN: abpxx6d04wxr -->
-<!-- <div class="container mt-3">
-    <div class="card">
-        <div class="card-body">
-            <p>
-                Auth!
-                <code>{{ (user | async)?.uid }}</code>
-                <button (click)="login()" *ngIf="showLoginButton">Log in with Google</button>
-                <button (click)="authService.signInAnonymously()" *ngIf="showLoginButton">Log in anonymously</button>
-                <button (click)="authService.logout()" *ngIf="showLogoutButton">Log out</button>
-                <button (click)="getUser()">getUSer</button>
-            </p>
-        </div>
-    </div>
-</div> -->
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-12 col-md-6">
             <div class="card shadow-lg">
                 <div class="card-body text-center">
                     <h3 class="card-title text-center mt-2 mb-3">Login</h3>
@@ -46,7 +30,7 @@
                                 <input type="password" id="password" class="form-control" formControlName="password" aria-describedby="emailHelpBlock"
                                 [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.dirty }">
                             </div>
-                            <div class="d-grid">
+                            <div class="d-grid mb-2">
                                 <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Sign In</button>
                             </div>
                         </form>

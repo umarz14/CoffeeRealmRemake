@@ -17,6 +17,11 @@ const routes: Routes = [
     title: 'Home Page'
   },
   {
+    path: 'home',
+    component: HomeComponent,
+    title: 'Home Page'
+  },
+  {
     path: 'locations',
     component: ShopLocationComponent,
     title: 'Shop Locations'

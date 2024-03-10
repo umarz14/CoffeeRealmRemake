@@ -28,38 +28,30 @@ export class RegistrationComponent {
     ],)
   },);
 
-  constructor(private authService: AuthService) {
+  constructor(public authService: AuthService) {
 
-  }
+  } // END OF constructor
 
   pswdMatch(){
     if(this.signUpForm.value.password != this.signUpForm.value.confirmPassword){
       return false
     }
     return true
-  }
+  } // END OF pswdMatch Validation
 
   async registerWithEmailAndPswd() {
     const email = this.signUpForm.value.email || ''; // Assign an empty string if email is undefined
     const password = this.signUpForm.value.password || ''; // Assign an empty string if password is undefined
     try{
       await this.authService.spawnNewUserWithEmailAndPassword(email, password);
-      await this.authService.logout();
+      if(this.authService.authState$){
+        console.log("User has been created successfully");
+      }
     } catch(error) {
       console.error(error);
     }
+  } // END OF registerWithEmailAndPswd
 
-  }
-
-  async tempRegister() {
-    console.log(this.signUpForm.value.username);
-    console.log(this.signUpForm.value.email);
-    console.log(this.signUpForm.value.password);
-    console.log(this.signUpForm.value.confirmPassword);
-    console.log("Registration in progress...");
-    console.log(this.pswdMatch());
-
-  }
 }
 
 /** can't match the given regular expression */
