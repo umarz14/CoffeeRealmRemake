@@ -77,10 +77,10 @@ export class AuthService {
   } // END OF loginWithEmailAndPassword
   
   // CREATE USER FUNCTIONS
-  async spawnNewUserWithEmailAndPassword(email: string, password: string) {
+  async spawnNewUserWithEmail(un: string, email: string, password: string) {
     try{
       await createUserWithEmailAndPassword(this.auth, email, password);
-      await this.userService.createUserProfile(this.auth.currentUser?.uid ?? '', {name: "test", email: "email"});
+      await this.userService.createUserProfile({ uid: this.auth.currentUser?.uid ?? '', userProfile: { username: un, email: email } });
       if(this.authState$){
         console.log("User has been created successfully");
         this.router.navigate(['home'])

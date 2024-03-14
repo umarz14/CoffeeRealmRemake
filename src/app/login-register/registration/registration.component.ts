@@ -41,9 +41,10 @@ export class RegistrationComponent {
 
   async registerWithEmailAndPswd() {
     const email = this.signUpForm.value.email || ''; // Assign an empty string if email is undefined
-    const password = this.signUpForm.value.password || ''; // Assign an empty string if password is undefined
+    const password = this.signUpForm.value.username || ''; // Assign an empty string if password is undefined
+    const username = this.signUpForm.value.username || ''; // Assign an empty string if username is undefined
     try{
-      await this.authService.spawnNewUserWithEmailAndPassword(email, password);
+      await this.authService.spawnNewUserWithEmail(username,email,password);
       if(this.authService.authState$){
         console.log("User has been created successfully");
       }

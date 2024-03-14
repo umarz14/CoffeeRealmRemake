@@ -8,18 +8,27 @@ import { CollectionReference, doc, setDoc } from 'firebase/firestore';
 })
 export class UserService {
 
-  constructor(private firestore: Firestore,) {}
-  async createUserProfile(uid: string, userProfile:{name: string, email: string}) {
+  constructor(private firestore: Firestore,) { }
+
+  async createUserProfile({ uid, userProfile }: { uid: string; userProfile: { username: string; email: string; }; }) {
     console.log('Creating user profile');
     if(uid) {
       const userCollection = collection(this.firestore, `users`);
       const userDoc = doc(userCollection, uid);
       try {
-        await setDoc(userDoc, userProfile);
+        await setDoc(userDoc, {
+          userProfile: {
+            userProfile, // Copy existing properties
+            // Add or modify properties here
+            newProperty: "Some value",
+            updatedProperty: "Updated value"
+          },
+          additionalData: "Some additional data"
+        });
         console.log('User profile created');
       } catch (e) {
         console.error('Error creating user profile', e);
       }
     }
-  }
+  } // END OF createUserProfile
 }
