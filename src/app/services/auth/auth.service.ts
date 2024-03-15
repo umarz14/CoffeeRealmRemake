@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { User, Auth, getAuth, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  GoogleAuthProvider, signInWithPopup, signInAnonymously, signOut} from '@angular/fire/auth';
+import { Subscription, retry } from 'rxjs';
+import { User, Auth, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  GoogleAuthProvider, signInWithPopup, signOut} from '@angular/fire/auth';
 
 import { UserService } from '../user/user.service';
 
@@ -11,34 +11,27 @@ import { UserService } from '../user/user.service';
 })
 export class AuthService {
   private provider = new GoogleAuthProvider();
-  private auth: Auth = inject(Auth);
-  authState$ = authState(this.auth);
-  authStateSubscription: Subscription;
+  private auth: Auth = inject(Auth);  // Inject the Auth service from angular/fire/auth
+  authState$ = authState(this.auth); // Observable of the current authentication state
+  authStateSubscription: Subscription; // Subscription to the authState$ observable
+  aUser: User | null = null;
 
   constructor(private router: Router, private userService: UserService) {
-    this.authStateSubscription = this.authState$.subscribe((aUser: User | null) => {
+    this.authStateSubscription = this.authState$.subscribe((user) => {
       //handle auth state changes here. Note, that user will be null if there is no currently logged in user.
-   console.log(aUser?.uid);
-  })
+      this.aUser = user;
+      console.log("User has been logged in successfully by AuthService, user: ", this.aUser?.uid);
+    })
   }
 
   ngOnDestroy() {
     // when manually subscribing to an observable remember to unsubscribe in ngOnDestroy
     this.authStateSubscription.unsubscribe();
   }
-
-  getUserUID() {
-    if(this.auth.currentUser)
-      return this.auth.currentUser?.uid;
-    else{
-      return "no user";
-    }
-  }
-
+  
   // LOGOUT FUNCTION
   async logout() {
-    const auth = getAuth();
-    await signOut(auth).then(() => {
+    await signOut(this.auth).then(() => {
       console.log("logout successful");
       this.router.navigate(['/']);
     }).catch((error) => {
@@ -65,6 +58,9 @@ export class AuthService {
   } // END OF loginWithGoogle
 
   async loginWithEmailAndPassword(email: string, password: string) {
+    console.log("Logging in with email and password");
+    console.log("Email: ", email);
+    console.log("password: ", password);
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
       if(this.authState$){
@@ -78,12 +74,15 @@ export class AuthService {
   
   // CREATE USER FUNCTIONS
   async spawnNewUserWithEmail(un: string, email: string, password: string) {
+    console.log("Creating user with email and password");
+    console.log("Email: ", email);
+    console.log("password: ", password);
     try{
       await createUserWithEmailAndPassword(this.auth, email, password);
-      await this.userService.createUserProfile({ uid: this.auth.currentUser?.uid ?? '', userProfile: { username: un, email: email } });
+      await this.userService.createUserProfile(this.auth.currentUser?.uid ?? '', un, email);
       if(this.authState$){
         console.log("User has been created successfully");
-        this.router.navigate(['home'])
+        this.router.navigate(['home']) 
       }
     }
     catch(error) {
