@@ -1,5 +1,5 @@
 ;import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, collectionData, addDoc,getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, addDoc,getDoc, setDoc, docData, docSnapshots } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
@@ -29,22 +29,12 @@ export class UserService {
     }
   } // END OF createUserProfile
 
-  async getUserProfile(uid: string) {
+  getUserProfile(uid: string) {
     console.log('Getting user profile');
     if(uid) {
       const userCollection = collection(this.firestore, `users`);
       const userDoc = doc(userCollection, uid);
-      try {
-        const user = await getDoc(userDoc);
-        if(user.exists()) {
-          console.log('User profile retrieved');
-          return user.data();
-        } else {
-          console.log('User profile does not exist');
-        }
-      } catch (e) {
-        console.error('Error getting user profile', e);
-      }
+      return docData(userDoc);
     }
     return null; // Add this line to return a value outside of the if statement
   } // END OF getUserProfile

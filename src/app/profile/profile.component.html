@@ -1,9 +1,90 @@
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="userProfile">
-  <h1>{{ userProfile.bio }}</h1>
-  
-  <!-- other user profile details -->
+<div *ngIf="!isLoaded">
+  <p>is loading...</p>
 </div>
-<div>
-  <h2>hellow world</h2>
+<div *ngIf="isLoaded" class="container mt-4 d-flex flex-column align-items-center">
+  <img src="/assets/img/pfp.webp" alt="profile picture" class="pfp-img"  loading="lazy">
+  <div class="card text-center match-bg">
+    <div class="card-body">
+      <h1 class="card-title">{{userProfile.userName}}</h1>
+      <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
+      <p class="card-text mb-5 fs-4">{{userProfile.bio}}</p>
+    </div>
+  </div>   
+</div>
+<div class="container-fluid bg-test">
+  <div class="container-fluid ps-5 pe-5 pt-3">
+  <!-- This is the scrolling bar Favorite Coffee Shops -->
+    <h1 class="mb-2">Favorite Coffee Shops</h1>
+    <div class="card text-center ps-3 pe-3 pt-3 pb-1">
+      <div class="row row-cols-3 gx-3 d-flex flex-nowrap overflow-auto horizontal-scroll">
+        <div class="col" *ngFor="let item of [1, 2, 3, 4, 5, 6]">
+          <div class="card mb-1">
+            <img src="/assets/img/home/home1.jpg"  loading="lazy" class="card-img-top" alt="..." >
+            <div class="card-body">
+              <h5 class="card-title">Post Title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-4 d-flex align-items-center">
+      <div class="row mb-5">
+        <div class="col">
+          <h1 class="ps-2">
+            Blogs
+          </h1>
+          <div class="container">
+            <div class="card">
+              <ul class="list-group list-group-flush border-0">
+                <li *ngFor="let blog of [1,2,3,4]" class="list-group-item">
+                  <div class="card mb-2 mt-2">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="assets\img\home\home2.jpg"  loading="lazy" class="img-fluid h-100 rounded-start img-resize" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">Blog title</h5>
+                          <!-- <p class="card-text">Should this be like a summary of the blog? or should i just not include it?</p> -->
+                          <p class="card-text"><small class="text-body-secondary">Date Written</small></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <h1 class="ps-2">
+            Favorite Drinks
+          </h1>
+          <div class="container">
+            <div class="card">
+              <ul class="list-group list-group-flush border-0">
+                <li *ngFor="let blog of [1,2,3,4]" class="list-group-item">
+                  <div class="card mb-2 mt-2">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="\assets\img\home\home3.jpg" class="img-fluid h-100 rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">Camp Mocha</h5>
+                            <h6 class="card-subtitle text-body-secondary fst-italic ps-1">From Camp Coffee</h6>
+                            <p class="card-text fst-italic fw-lighter ps-1">101 N Cleveland St, Oceanside, CA 92054</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
