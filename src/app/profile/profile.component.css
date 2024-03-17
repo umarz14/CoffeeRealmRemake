@@ -1,9 +1,15 @@
 .pfp-img {
     border-radius: 50%; 
     overflow: hidden;
-    width: auto; 
-    height: 125px;
+    width: fit-content; 
+    height: 150px;
     object-fit: cover;
+}
+.postion-right-corner{
+    position: relative;
+    top: 50%;
+    left: 80%;
+
 }
 .match-bg{
     background-color: #E3E0DE;

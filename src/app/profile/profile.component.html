@@ -1,17 +1,19 @@
-<div *ngIf="!isLoaded">
-  <p>is loading...</p>
+<div *ngIf="!isLoaded" class="container align-items-center justify-content-center d-flex m-5">
+    <div class="spinner-border spinner-border-xl" aria-hidden="true"></div>
 </div>
-<div *ngIf="isLoaded" class="container mt-4 d-flex flex-column align-items-center">
-  <img src="/assets/img/pfp.webp" alt="profile picture" class="pfp-img"  loading="lazy">
+<div *ngIf="isLoaded" class="container mt-4 align-items-center">
   <div class="card text-center match-bg">
+    <img src="/assets/img/pfp.webp" alt="profile picture" class="card-img-top pfp-img d-flex align-items-center mx-auto" loading="lazy">
     <div class="card-body">
-      <h1 class="card-title">{{userProfile.userName}}</h1>
+      <h1 class="card-title text-capitalize">{{userProfile.userName}}</h1>
       <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
       <p class="card-text mb-5 fs-4">{{userProfile.bio}}</p>
+      <!-- Button trigger modal -->
+      <button class="btn btn-primary position-absolute top-0 end-0 me-3 px-3" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
     </div>
-  </div>   
+  </div>
 </div>
-<div class="container-fluid bg-test">
+<div *ngIf="isLoaded" class="container-fluid bg-test">
   <div class="container-fluid ps-5 pe-5 pt-3">
   <!-- This is the scrolling bar Favorite Coffee Shops -->
     <h1 class="mb-2">Favorite Coffee Shops</h1>
@@ -88,3 +90,26 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Update Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h1>Storage</h1>
+        <label for="fileUpload">Choose a File</label>
+        <input id="fileUpload" type="file" #upload>
+        <button (click)="uploadFile(upload)">Upload</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Of Modal -->
