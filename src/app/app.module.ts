@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClientJsonpModule} from '@angular/common/http'
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
@@ -48,6 +48,7 @@ import { ProfileComponent } from './profile/profile.component';
     HttpClientJsonpModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
