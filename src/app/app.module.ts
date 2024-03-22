@@ -23,6 +23,7 @@ import { getAuth,provideAuth } from '@angular/fire/auth';
 import { RegistrationComponent } from './login-register/registration/registration.component';
 import { BlogListComponent } from './blog-comps/blog-list/blog-list.component';
 import { ProfileComponent } from './profile/profile.component';
+import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ProfileComponent } from './profile/profile.component';
     LoginComponent,
     RegistrationComponent,
     BlogListComponent,
-    ProfileComponent
+    ProfileComponent,
+    WriteABlogComponent,
   ],
   imports: [
     BrowserModule,

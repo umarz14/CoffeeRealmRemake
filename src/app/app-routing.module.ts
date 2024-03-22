@@ -9,6 +9,7 @@ import { BlogListComponent } from './blog-comps/blog-list/blog-list.component';
 import { LoginComponent } from './login-register/login/login.component';
 import { RegistrationComponent } from './login-register/registration/registration.component';
 import { ProfileComponent } from './profile/profile.component';
+import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,17 @@ const routes: Routes = [
     title: 'Blog Post'
   },
   {
+    path: 'blogList',
+    component: BlogListComponent,
+    title: 'Blog List'
+  },
+  {
+    path: 'writeABlog',
+    component: WriteABlogComponent,
+    title: 'Write a Blog'
+
+  },
+  {
     path: 'login',
     component: LoginComponent,
     title: 'Login'
@@ -50,11 +62,6 @@ const routes: Routes = [
     path: 'register',
     component: RegistrationComponent,
     title: 'Register'
-  },
-  {
-    path: 'blogList',
-    component: BlogListComponent,
-    title: 'Blog List'
   },
   {
     path: 'profile',
