@@ -39,4 +39,39 @@ export class UserService {
     return null; // Add this line to return a value outside of the if statement
   } // END OF getUserProfile
 
+  updateUserProfile(uid: string | null, pfp: string, bio: string) {
+    console.log('Updating user profile');
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      // if there is no bio, only update the pfp
+      if(pfp && !bio){
+        setDoc(userDoc, {
+          pfp: pfp
+        }, { merge: true });
+        console.log('User profile updated');
+      
+      }
+      // if there is no pfp, only update the bio
+      else if(!pfp && bio){
+        setDoc(userDoc, {
+          bio: bio
+        }, { merge: true });
+        console.log('User profile updated');
+      }
+      else if(pfp && bio){
+      setDoc(userDoc, {
+        pfp: pfp,
+        bio: bio
+      }, { merge: true });
+      console.log('User profile updated');
+      }
+      else {
+        console.log('No changes to update');
+      }
+    }
+  } // END OF updateUserProfile
+
+
+
 } // END OF UserService

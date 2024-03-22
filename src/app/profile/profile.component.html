@@ -3,7 +3,7 @@
 </div>
 <div *ngIf="isLoaded" class="container mt-4 align-items-center">
   <div class="card text-center match-bg">
-    <img src="/assets/img/pfp.webp" alt="profile picture" class="card-img-top pfp-img d-flex align-items-center mx-auto" loading="lazy">
+    <img src= {{userProfile.pfp}} alt="profile picture" class="card-img-top pfp-img d-flex align-items-center mx-auto" loading="lazy">
     <div class="card-body">
       <h1 class="card-title text-capitalize">{{userProfile.userName}}</h1>
       <!-- <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> -->
@@ -121,7 +121,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Update Profile</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Profile</button>
       </div>
     </form>
     </div>

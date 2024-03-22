@@ -2,7 +2,7 @@ import { Component, OnInit, inject} from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
 import { UserService } from '../services/user/user.service';
 import { Subscription } from 'rxjs';
-import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
+import { Storage, ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-profile',
@@ -121,6 +121,13 @@ export class ProfileComponent implements OnInit{
         console.log('File upload failed:', error);
         // Handle the error if the file upload fails
       });
+
+      getDownloadURL(storageRef).then((url) => { 
+        console.log('URL: ', url); 
+        this.userService.updateUserProfile(this.uid, url, this.updateProfile.bio);
+      });
+
+    
     }
 
   } // END OF updateProfilePic
