@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ShopLocationComponent } from './coffee-shop-comps/shop-location/shop-location.component';
@@ -10,48 +10,51 @@ import { LoginComponent } from './login-register/login/login.component';
 import { RegistrationComponent } from './login-register/registration/registration.component';
 import { ProfileComponent } from './profile/profile.component';
 import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-    title: 'Home Page'
-  },
+  // Home Page
   {
     path: 'home',
     component: HomeComponent,
     title: 'Home Page'
   },
+  // Redirect to home component
+  { 
+    path: '',   
+    redirectTo: '/home', 
+    pathMatch: 'full' 
+  }, 
+  // Search for coffee shops componet
   {
-    path: 'locations',
-    component: ShopLocationComponent,
-    title: 'Shop Locations'
-  },
-  {
-    path: 'details/:id',
-    component: ShopDetailsComponent,
-    title: 'Shop Details'
-  },
-  {
-    path: 'coffeeSearch',
+    path: 'coffeeSearchList',
     component: CoffeeSearchComponent,
-    title: 'Coffee Shop Search'
-  },
-  {
-    path: 'blogPost',
-    component: BlogPostComponent,
-    title: 'Blog Post'
+    title: 'Coffee Shop Search',
+    children: [
+      {
+      path: 'coffee-shops/:id',
+      component: ShopDetailsComponent,
+      title: 'Coffee Shop Details'
+      },
+    ]
   },
   {
     path: 'blogList',
     component: BlogListComponent,
-    title: 'Blog List'
-  },
-  {
-    path: 'writeABlog',
-    component: WriteABlogComponent,
-    title: 'Write a Blog'
-
+    title: 'Blog List',
+    children: [
+      {
+        path: 'blogPost',
+        component: BlogPostComponent,
+        title: 'Blog Post'
+      },
+      {
+        path: 'writeABlog',
+        component: WriteABlogComponent,
+        title: 'Write a Blog'
+    
+      },
+    ]
   },
   {
     path: 'login',
@@ -67,6 +70,11 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     title: 'Profile'
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    title: '404 Page'
   }
 ];
 

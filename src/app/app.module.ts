@@ -24,6 +24,7 @@ import { RegistrationComponent } from './login-register/registration/registratio
 import { BlogListComponent } from './blog-comps/blog-list/blog-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.comp
     BlogListComponent,
     ProfileComponent,
     WriteABlogComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

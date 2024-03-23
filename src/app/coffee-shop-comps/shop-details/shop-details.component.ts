@@ -21,6 +21,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent implements OnInit{
+
+  coffeeShopId = '';
   
   //this is firestore test
   firestore = inject(Firestore);
@@ -58,15 +60,17 @@ export class ShopDetailsComponent implements OnInit{
 
   ngOnInit() {
     // This gets the id from the url and then gets the shop from the shop service
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
-    if (id) {
-      this.shopLocation = this.placesService.getShopById(id);
-      console.log(this.shopLocation);
-      console.log(this.shopLocation?.imageUrl);
-      console.log(this.shopLocation?.location);
-      this.location = this.shopLocation?.location as unknown as google.maps.LatLng;
-    }
+    this.route.params.subscribe(params =>{
+      this.coffeeShopId = params['id'];
+      console.log('coffee shop deatails of: ' + this.coffeeShopId)
+    })
+    // if (this.coffeeShopId) {
+    //   this.shopLocation = this.placesService.getShopById(this.coffeeShopId);
+    //   console.log(this.shopLocation);
+    //   console.log(this.shopLocation?.imageUrl);
+    //   console.log(this.shopLocation?.location);
+    //   this.location = this.shopLocation?.location as unknown as google.maps.LatLng;
+    // }
   } // End of ngOnInit
 
   // Since the modal is not created until the click of review 

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" routerLink="">
       <div class="container">
         <img src="assets\img\logos\logoRe2-cropped.svg" alt="Logo" height="50" width="200" class="d-inline-block align-text-top img-fluid test1"> 
       </div>
@@ -14,19 +14,21 @@
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li> -->
         <li class="nav-item">   
-          <a class="nav-link active fw-bold" href="coffeeSearch">Discover</a>
+          <a class="nav-link active fw-bold" routerLink="coffeeSearchList">Discover</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active fw-bold" href="blogList">Blogs</a>
+          <a class="nav-link active fw-bold" routerLink="blogList">Blogs</a>
         </li>
       </ul>
+
 
       <button *ngIf="!(authService.authState$ | async)" class="btn btn-secondary me-3" type="button" routerLink="/login"> Sign In</button>
       <button *ngIf="!(authService.authState$ | async)" class="btn btn-primary me-5" type="button" routerLink="/register" > Sign Up</button>
       <button *ngIf="authService.authState$ | async" class="btn btn-primary me-3" (click)="authService.logout()">Logout</button>
-      <a *ngIf="authService.authState$ | async" href="profile" class="rnd-container me-4">
-        <img src="\assets\img\pfp.webp" alt="profile picture" class="pfp-img">
+      <a *ngIf="(authService.authState$ | async) && this.pfpUrl" routerLink="profile" class="rnd-container me-4">
+        <img src = {{pfpUrl}}  alt="profile picture" class="pfp-img">
       </a>
+      
     
     </div>
   </div>

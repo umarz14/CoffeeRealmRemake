@@ -1,6 +1,7 @@
 ;import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, collectionData, addDoc,getDoc, setDoc, docData, docSnapshots } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,18 @@ export class UserService {
     }
     return null; // Add this line to return a value outside of the if statement
   } // END OF getUserProfile
+
+  getUserPfp(uid: string) {
+    console.log('Getting user pfp');
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      return docData(userDoc).pipe(map(curUserDoc => curUserDoc ? curUserDoc['pfp']:undefined));
+      
+    }
+    return null; // Add this line to return a value outside of the if statement
+  } // END OF getUsersPfp
+  
 
   updateUserProfile(uid: string | null, pfp: string, bio: string) {
     console.log('Updating user profile');

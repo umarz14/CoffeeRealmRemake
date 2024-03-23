@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subscription, retry } from 'rxjs';
+import { BehaviorSubject, Subscription,} from 'rxjs';
 import { User, Auth, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword,
   GoogleAuthProvider, signInWithPopup, signOut} from '@angular/fire/auth';
 
@@ -49,8 +49,7 @@ export class AuthService {
   // LOGIN FUNCTIONS
   async loginWithGoogle() {
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(this.auth, provider);
+      const result = await signInWithPopup(this.auth, this.provider);
       if(result){
         console.log("User has been logged in successfully");
         this.router.navigate(['home'])
