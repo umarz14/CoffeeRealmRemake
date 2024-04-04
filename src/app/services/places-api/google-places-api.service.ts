@@ -26,8 +26,6 @@ export class GooglePlacesApiService {
   // I believe the textSearch is the best option for now as it returns a list of 
   // coffee shops near the user by default it returns 20 coffee shops
   async findShopsNearby() : Promise<ShopLocation[]> {
-    console.log("location is: ");
-    console.log(this.gmap.getCenter());
 
     // This is the request to get coffee shops
     const request = {
@@ -41,7 +39,6 @@ export class GooglePlacesApiService {
         google.maps.places.PlaceResult[] | null, 
         status: google.maps.places.PlacesServiceStatus) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-              console.log(results);
               this.coffeeShopList = results.map(place => ({
               name: place.name || '',
               placeId: place.place_id || '',
@@ -52,7 +49,7 @@ export class GooglePlacesApiService {
               phone_number: place.formatted_phone_number || '',
               website: place.website || '',
             }));
-            console.log('coffeeShopList');
+            console.log('coffeeShopList: ');
             console.log(this.coffeeShopList);
             resolve(this.coffeeShopList);
           } else {

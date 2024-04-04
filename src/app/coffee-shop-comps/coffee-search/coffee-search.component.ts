@@ -107,12 +107,10 @@ export class CoffeeSearchComponent implements OnInit {
 
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            console.log('getUserCurLocation');
-            console.log(pos.coords.latitude);
-            console.log(pos.coords.latitude + ' ' + pos.coords.longitude);
+
             this.myCenter = { lat: pos.coords.latitude, lng: pos.coords.longitude };
 
-            console.log(this.myCenter);
+            console.log("this is users current location: " + this.myCenter.lat + " " + this.myCenter.lng);
             resolve(); // delete this later in production
           },
           (err) => {
@@ -130,34 +128,3 @@ export class CoffeeSearchComponent implements OnInit {
  
 } // End of CoffeeSearchComponent
 
-/* This Is an old vesion for getting the shops
-    this.apiLoadedSubscription = this.googleMapsJsApiService.loadGoogleMapsJsApi().subscribe(
-      async (apiLoaded) => {
-        if(apiLoaded) {
-          console.log('apiLoaded');
-          // If the api is loaded init the map
-          try{
-            await this.initMap();
-          }
-          catch(err) {
-            console.log(err);
-          }
-          // Init the places service
-          this.googlePlacesApiService.initPlacesService(this.gmap);
-          // Get the shops nearby
-          try{
-            this.shopLocationList = await this.googlePlacesApiService.findShopsNearby(this.myCenter);
-          }
-          catch(err) {
-            console.log('Failed to get shops nearby');
-            console.log(err);
-          }
-          if(this.shopLocationList.length > 0) {
-            this.display = true;
-          }
-        } else {
-          console.error('Failed to load google maps js api');
-        }
-      }
-    );
-*/

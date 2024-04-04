@@ -9,7 +9,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Modal } from 'bootstrap';
 
 import { Firestore,collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 
 @Component({
@@ -27,6 +27,8 @@ export class ShopDetailsComponent implements OnInit{
   //this is firestore test
   firestore = inject(Firestore);
   items$: Observable<any[]>;
+
+  private paramsSubscription!: Subscription;
 
   // This adds a refrence to the shop service
   placesService = inject(GooglePlacesApiService);
@@ -60,7 +62,7 @@ export class ShopDetailsComponent implements OnInit{
 
   ngOnInit() {
     // This gets the id from the url and then gets the shop from the shop service
-    this.route.params.subscribe(params =>{
+    this.paramsSubscription = this.route.params.subscribe(params =>{
       this.coffeeShopId = params['id'];
       console.log('coffee shop deatails of: ' + this.coffeeShopId)
     })
@@ -76,8 +78,14 @@ export class ShopDetailsComponent implements OnInit{
   // Since the modal is not created until the click of review 
   // i believe we have to use this lifecycle in order to access it
   // otherwise it will be null
-  ngAfterViewInit() {
-    this.modal = new Modal(this.reviewModal.nativeElement, {});
+  // ngAfterViewInit() {
+  //   this.modal = new Modal(this.reviewModal.nativeElement, {});
+  // }
+
+  ngOnDestroy() {
+    if (this.paramsSubscription) {
+      this.paramsSubscription.unsubscribe();
+    }
   }
 
 

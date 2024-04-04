@@ -30,13 +30,11 @@ const routes: Routes = [
     path: 'coffeeSearchList',
     component: CoffeeSearchComponent,
     title: 'Coffee Shop Search',
-    children: [
-      {
-      path: 'coffee-shops/:id',
-      component: ShopDetailsComponent,
-      title: 'Coffee Shop Details'
-      },
-    ]
+  },
+  {
+    path: 'shopLocationDetails/:id',
+    component: ShopDetailsComponent,
+    title: 'Coffee Shop Location'
   },
   {
     path: 'blogList',

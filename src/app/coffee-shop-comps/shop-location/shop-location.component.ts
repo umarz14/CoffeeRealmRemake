@@ -1,6 +1,5 @@
 import { Component, Input} from '@angular/core';
 import { ShopLocation } from '../../models/shop-location.model';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-shop-location',
@@ -12,6 +11,6 @@ export class ShopLocationComponent{
   // This is pretty much a struct 
   @Input() shopLocation!: ShopLocation; //! tells compiler wont be null or undefined
 
-  constructor(private route: ActivatedRoute){}
+  constructor(){}
   
 }
