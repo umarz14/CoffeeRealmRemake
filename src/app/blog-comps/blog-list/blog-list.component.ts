@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Firestore, collectionData } from '@angular/fire/firestore';
 import { collection } from 'firebase/firestore';
 import { Observable } from 'rxjs';
+import { RouterModule, Routes } from '@angular/router';
 
 import { Blog } from 'src/app/models/blog.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -18,4 +19,9 @@ export class BlogListComponent {
     const blogCollection = collection(this.firestore, 'blogs');
     this.blogs$ = collectionData(blogCollection) as Observable<Blog[]>;
   }
+
+  // goToDetails(itemId: number): void {
+  //   this.router.navigate(['details', itemId], { relativeTo: this.route });
+  // }
+  
 }

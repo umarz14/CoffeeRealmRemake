@@ -4,7 +4,7 @@
             <h3 class="fw-bold">Welcome to our blog channel!</h3>
         </div>
         <div class="col text-end">
-            <a *ngIf="authService.authState$ | async" href="writeABlog"  class="btn btn-primary">Write a Blog</a>
+            <a *ngIf="authService.authState$ | async" routerLink="/writeABlog"  class="btn btn-primary">Write A Blog</a>
             <!-- <button *ngIf="authService.authState$ | async" class="btn btn-primary">Create A Blog</button> -->
         </div>
     </div>

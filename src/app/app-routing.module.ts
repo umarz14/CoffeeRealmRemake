@@ -46,13 +46,13 @@ const routes: Routes = [
         component: BlogPostComponent,
         title: 'Blog Post'
       },
-      {
-        path: 'writeABlog',
-        component: WriteABlogComponent,
-        title: 'Write a Blog'
-    
-      },
     ]
+  },
+  {
+    path: 'writeABlog',
+    component: WriteABlogComponent,
+    title: 'Write a Blog'
+
   },
   {
     path: 'login',

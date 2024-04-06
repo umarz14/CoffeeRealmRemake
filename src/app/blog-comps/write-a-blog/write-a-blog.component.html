@@ -1,23 +1,23 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col">
-            <h2 class="fw-bold">Write a Blog</h2>
+            <h2 class="fw-bold">Publish a Blog</h2>
         </div>
     </div>
-    <form>
+    <form [formGroup]="publishBlog" (submit)="submitBlog()" >
+        <div class="mb-3">
+            <label for="image" class="form-label">Header Image</label>
+            <input type="file" class="form-control" id="image" formControlName="headerImage" accept="image/png, image/jpeg">
+        </div>
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" formControlName="title">
-        </div>
-        <div class="mb-3">
-            <label for="image" class="form-label">Image</label>
-            <input type="file" class="form-control" id="image" formControlName="image">
-        </div>
-        <div class="mb-3">
-            <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" id="content" formControlName="content"></textarea>
+            <input type="text" class="form-control" id="title" formControlName="title" maxlength="60" minlength="10">
         </div>
         
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" id="content" formControlName="reviewContent" minlength="10" maxlength="800" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!publishBlog.valid">Submit</button>
     </form>
 </div>
