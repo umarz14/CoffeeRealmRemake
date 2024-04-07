@@ -7,7 +7,8 @@
     <form [formGroup]="publishBlog" (submit)="submitBlog()" >
         <div class="mb-3">
             <label for="image" class="form-label">Header Image</label>
-            <input type="file" class="form-control" id="image" formControlName="headerImage" accept="image/png, image/jpeg">
+            <input type="file" (change)="onImageSelected($event)" class="form-control" id="image" formControlName="headerImage" accept="image/png, image/jpeg">
+            <div *ngIf="imgErrorMessage" class="text-danger">{{imgErrorMessage}}</div>
         </div>
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -18,6 +19,6 @@
             <label for="content" class="form-label">Content</label>
             <textarea class="form-control" id="content" formControlName="reviewContent" minlength="10" maxlength="800" rows="5"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="!publishBlog.valid">Submit</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!publishBlog.valid || !imgErrorMessage">Submit</button>
     </form>
 </div>

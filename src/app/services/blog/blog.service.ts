@@ -8,15 +8,16 @@ export class BlogService {
 
   constructor(private firestore: Firestore) { }
 
-  async createBlogPost(title: string, content: string, headerImage: string, author: string) {
+  async createBlogPost(title: string, content: string, headerImage: string, authorUid: string, authorName: string) {
     console.log('Creating blog post');
-    if(title && content && headerImage && author) {
+    if(title && content && headerImage && authorUid) {
       const blogCollection = collection(this.firestore, `blogs`);
-      const blogDoc = doc(blogCollection, title);
       try {
         await addDoc(blogCollection,{
           title: title,
           content: content,
+          authorUid: authorUid,
+          authorUsername: authorName,
         }).then((documentRef) => {
           console.log('Document written with ID: ', documentRef.id);
         });

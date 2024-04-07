@@ -50,6 +50,15 @@ export class UserService {
     }
     return null; // Add this line to return a value outside of the if statement
   } // END OF getUsersPfp
+
+  getUserDisplayName(uid: string) {
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      return docData(userDoc).pipe(map(curUserDoc => curUserDoc ? curUserDoc['userName']:undefined));
+    }
+    return null;
+  }
   
 
   updateUserProfile(uid: string | null, pfp: string, bio: string) {

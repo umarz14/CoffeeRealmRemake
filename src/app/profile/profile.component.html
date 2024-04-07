@@ -106,7 +106,7 @@
               <!-- Profile Picture Input -->
               <div class="mb-3">
                 <label for="profilePicture" class="form-label">Profile Picture</label>
-                <input type="file" (change)="onFileSelect($event)" class="form-control" id="profilePicture" accept="image/*">
+                <input type="file" (change)="onFileSelect($event)" class="form-control" id="profilePicture" accept="image/png, image/jpeg image/gif " >
                 <div *ngIf="pfpErrorMessage" class="text-danger">{{ pfpErrorMessage }}</div>
               </div>
               <!-- Bio Input -->

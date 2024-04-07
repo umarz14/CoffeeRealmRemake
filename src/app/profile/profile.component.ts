@@ -87,9 +87,9 @@ export class ProfileComponent implements OnInit{
   onFileSelect(event: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      const maxSize = 5 * 1024 * 1024; // 5MB
+      const maxSize = 1 * 1024 * 1024; // 1MB
       if (file.size > maxSize) {
-        this.pfpErrorMessage = 'File size exceeds 5MB';
+        this.pfpErrorMessage = 'File size exceeds 1MB';
         return;
       }
       this.pfpErrorMessage = null;
@@ -106,6 +106,8 @@ export class ProfileComponent implements OnInit{
     }
   } // END OF validateBio
 
+
+  // this should be in a service
   updateProfilePic() {
     if(this.updateProfile.pfp) {
       // This a reference to the storage location where the file will be uploaded
