@@ -1,5 +1,5 @@
 ;import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, collectionData, addDoc,getDoc, setDoc, docData, docSnapshots } from '@angular/fire/firestore';
+import { Firestore, collection, doc, setDoc, docData, updateDoc } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
 import { map } from 'rxjs';
 
@@ -61,28 +61,26 @@ export class UserService {
   }
   
 
-  updateUserProfile(uid: string | null, pfp: string, bio: string) {
+  async updateUserProfile(uid: string | null, pfp: string, bio: string) {
     console.log('Updating user profile');
     if(uid) {
       const userCollection = collection(this.firestore, `users`);
       const userDoc = doc(userCollection, uid);
       // if there is no bio, only update the pfp
       if(pfp && !bio){
-        setDoc(userDoc, {
+        await setDoc(userDoc, {
           pfp: pfp
         }, { merge: true });
-        console.log('User profile updated');
-      
+        console.log('User profile (pfp) updated');
       }
       // if there is no pfp, only update the bio
-      else if(!pfp && bio){
-        setDoc(userDoc, {
-          bio: bio
-        }, { merge: true });
-        console.log('User profile updated');
+      else if(bio && !pfp){
+        console.log('Updating bio to: ', bio);
+        await updateDoc(userDoc,{bio: bio});
+        console.log('User profile (bio) updated');
       }
       else if(pfp && bio){
-      setDoc(userDoc, {
+      await setDoc(userDoc, {
         pfp: pfp,
         bio: bio
       }, { merge: true });

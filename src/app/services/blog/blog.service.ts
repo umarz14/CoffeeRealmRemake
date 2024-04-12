@@ -8,7 +8,7 @@ export class BlogService {
 
   constructor(private firestore: Firestore) { }
 
-  async createBlogPost(title: string, content: string, headerImage: string, authorUid: string, authorName: string) {
+  async createBlogPost(headerImage: string, title: string, content: string, authorUid: string, authorName: string) {
     console.log('Creating blog post');
     if(title && content && headerImage && authorUid) {
       const blogCollection = collection(this.firestore, `blogs`);

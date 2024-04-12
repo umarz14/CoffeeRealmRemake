@@ -14,33 +14,41 @@ import { CloudStorageService } from 'src/app/services/cloud-storage/cloud-storag
 })
 export class WriteABlogComponent implements OnInit{
 
+  // These area variables we need to store the current user's id and name
   curAuthSub!: Subscription; 
   curUserSub: Subscription | undefined;
   authorId: string  = 'author';
   authorName: string = 'author'; 
+  
 
+  // This is where we will store the header image file for a blog post
+  // we are using a seperate form for images because angular reactive is not practical for images
+  blogHeaderImage: File | null = null;
   imgErrorMessage: string | null = null;
-   
+  // headerimageUrl!: string | ArrayBuffer | null;
 
+
+  // This is are main part of the form for writing a blog post
+  // reactive form for writing a blog post
   publishBlog = new FormGroup({
     reviewContent: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(800)]),
     title: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(60)]),
-    headerImage: new FormControl('', [Validators.required]),
   });
+   
 
-  constructor(
-    private blogService: BlogService, private authService: AuthService, 
-    private userService: UserService, private fireStorage: CloudStorageService,
-  ) {}
+  // we are injecting the blog service, auth service, user service, and cloud storage service
+  constructor( private blogService: BlogService, private authService: AuthService, 
+                 private userService: UserService, private fireStorage: CloudStorageService ) {}
   
   ngOnInit() {
 
     // This is subscribing to the current auth user and getting the user's uid
     this.curAuthSub = this.authService.currentUser.subscribe((user) => {
+      // if the user is found then we are getting the user's uid
       if(user) {
         this.authorId = user.uid;
         
-        // this is getting the user's display name
+        // here we are getting the user's display name aka username
         this.userService.getUserDisplayName(this.authorId)?.subscribe((name) => {
           this.authorName = name;
           console.log('Author name: ' + this.authorName);
@@ -52,46 +60,58 @@ export class WriteABlogComponent implements OnInit{
     });
   } // END OF ngOnInit
 
+  // remeber to unsubscribe from all your observables
   ngOnDestroy() {
     this.curAuthSub.unsubscribe();
-    this.curUserSub?.unsubscribe();
-  }
-
-  async submitBlog() {
-    if(this.authorId && this.authorName && this.publishBlog.valid && this.publishBlog.value.headerImage){
-      try{
-        //await this.fireStorage.uploadImage(this.publishBlog.value.heade, 'blog-header-images');
-        await this.blogService.createBlogPost(
-          this.publishBlog.value.title ?? '',
-          this.publishBlog.value.reviewContent ?? '',
-          this.publishBlog.value.headerImage ?? '',
-          this.authorId, 
-          this.authorName,
-        );
-        console
-      }
-      catch(e) {
-        console.error('Error submitting blog', e);
-      }
-    } else {
-      console.error('something went wrong with the form');
+    if(this.curUserSub){
+      this.curUserSub.unsubscribe();
     }
   }
-  // this function is called when the user selects an image
-  // to check the image type and size
+
+  // This function is triggered when the user seleces an image for the header of the blog post
+  // we are checking if the file is less than 1MB and then storing the file in the headerImage variable
+  // we are also converting the file to a base64 string to display the image in the form
   onImageSelected(event: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      const maxSize = 1 * 1024 * 1024; // 1mb
+      const maxSize = 1 * 1024 * 1024;
       if (file.size > maxSize) {
         this.imgErrorMessage = 'File size exceeds 1MB';
         return;
+      } else {
+        this.imgErrorMessage = null;
+        this.blogHeaderImage = file;
+        
+        // Convert image to base64
+        // to display the image in the form
+        // const reader = new FileReader();
+        // reader.onload = (e: any) => {
+        //   this.headerimageUrl = e.target.result;
+        // };
+        // reader.readAsDataURL(file);
       }
-      this.imgErrorMessage = null;
     }
-  }// END OF onImageSelected
+  }
 
-  // upload header image
+  // This function is triggered when the user submits the blog post
+  // 1. store the image in firebase storage
+  // 2. get the image url from firebase storage
+  // 3. create the blog post in firestore
+  // 4. clear the form
+  async submitBlog() {
+    if(this.publishBlog.valid && this.blogHeaderImage) {
+      // 1. store the image in firebase storage using the cloud storage service
+      try {
+        await this.fireStorage.uploadImage(this.blogHeaderImage, `blogImages/${this.blogHeaderImage.name+this.authorName}`).then(async (url) => {
+          // 2. get the image url from firebase storage
+          console.log('Image uploaded');
+          console.log('Image url: ' + url);
+        });
+      } catch (e) {
+        console.error('Error uploading image: ', e);
+      }
+    }
+  }
   
 
-}
+} // End of WriteABlogComponent
