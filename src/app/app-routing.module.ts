@@ -40,13 +40,11 @@ const routes: Routes = [
     path: 'blogList',
     component: BlogListComponent,
     title: 'Blog List',
-    children: [
-      {
-        path: 'blogPost',
-        component: BlogPostComponent,
-        title: 'Blog Post'
-      },
-    ]
+  },
+  {
+    path: 'blogPost',
+    component: BlogPostComponent,
+    title: 'Blog Post'
   },
   {
     path: 'writeABlog',

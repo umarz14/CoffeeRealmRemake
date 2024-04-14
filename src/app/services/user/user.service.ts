@@ -92,6 +92,22 @@ export class UserService {
     }
   } // END OF updateUserProfile
 
+  //We have a function that adds blogs created/Authored and liked (liked might be delayed) by the user to the user's profile
+  // Im thinkng we can have create docs storing an array and just adding that id to the array
+
+  async addPublsihedBlogToProfile(uid: string, blogId: string) {
+    console.log('Adding blog to profile');
+    if(uid && blogId) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      await updateDoc(userDoc, {
+        publishedBlogs: blogId
+      });
+      console.log('Blog added to profile');
+    }
+  } // END OF addPublsihedBlogToProfile
+
+
 
 
 } // END OF UserService

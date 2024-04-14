@@ -31,8 +31,8 @@ export class WriteABlogComponent implements OnInit{
   // This is are main part of the form for writing a blog post
   // reactive form for writing a blog post
   publishBlog = new FormGroup({
-    reviewContent: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(800)]),
     title: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(60)]),
+    reviewContent: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(800)]),
   });
    
 
@@ -99,13 +99,19 @@ export class WriteABlogComponent implements OnInit{
   // 3. create the blog post in firestore
   // 4. clear the form
   async submitBlog() {
-    if(this.publishBlog.valid && this.blogHeaderImage) {
+    if(this.blogHeaderImage && this.publishBlog.valid) {
       // 1. store the image in firebase storage using the cloud storage service
       try {
-        await this.fireStorage.uploadImage(this.blogHeaderImage, `blogImages/${this.blogHeaderImage.name+this.authorName}`).then(async (url) => {
+        await this.fireStorage.uploadImage(this.blogHeaderImage, `blogImages/${this.publishBlog.value.title+this.authorName}`).then(async (url) => {
           // 2. get the image url from firebase storage
           console.log('Image uploaded');
           console.log('Image url: ' + url);
+          // 3. create the blog post in firestore
+          if(this.publishBlog.value.title && this.publishBlog.value.reviewContent) {
+            const blogId = await this.blogService.createBlogPost(url, this.publishBlog.value.title, this.publishBlog.value.reviewContent, this.authorId, this.authorName);
+            console.log('createBgPost() returned: ' + blogId);
+            // 
+          }
         });
       } catch (e) {
         console.error('Error uploading image: ', e);

@@ -42,6 +42,6 @@ export class CloudStorageService {
         }
       );
     });
-  }
+  } // END OF uploadImage
 
 }
