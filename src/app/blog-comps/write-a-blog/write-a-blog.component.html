@@ -1,4 +1,4 @@
-<div class="container mt-3">
+<div class="container mt-3 mb-3">
     <div class="row">
         <div class="col">
             <h2 class="fw-bold">Publish a Blog</h2>
@@ -21,15 +21,20 @@
     <form [formGroup]="publishBlog" (submit)="submitBlog(); headerImageInput.value='' " >
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" formControlName="title" maxlength="60" minlength="10">
+            <input type="text" class="form-control" id="title" formControlName="title" maxlength="80" minlength="10">
         </div>
         
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" id="content" formControlName="reviewContent" minlength="10" maxlength="800" rows="5"></textarea>
+            <textarea class="form-control" id="content" formControlName="reviewContent" minlength="10" maxlength="3000" rows="5"></textarea>
         </div>
         <!-- if the publishBlog form is not valid or we have an imgErrorMessage the sumbit button will the disabled -->
         <button type="submit" class="btn btn-primary" [disabled]="(!publishBlog.valid) || (imgErrorMessage)">Submit</button>
     </form>
 </div>
+
+<div *ngIf="formSubmitted" class="alert alert-success ms-3 me-3" role="alert">
+    Your form has been submitted successfully! Redirecting...
+</div>
+
 <!-- <img *ngIf="headerimageUrl" [src]="headerimageUrl"> -->

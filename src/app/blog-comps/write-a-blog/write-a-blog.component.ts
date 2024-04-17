@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { BlogService } from 'src/app/services/blog/blog.service';
 import { CloudStorageService } from 'src/app/services/cloud-storage/cloud-storage.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class WriteABlogComponent implements OnInit{
   authorUid: string  = 'author';
   authorName: string = 'author'; 
   
+  formSubmitted: boolean = false;
 
   // This is where we will store the header image file for a blog post
   // we are using a seperate form for images because angular reactive is not practical for images
@@ -31,14 +33,14 @@ export class WriteABlogComponent implements OnInit{
   // This is are main part of the form for writing a blog post
   // reactive form for writing a blog post
   publishBlog = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(60)]),
-    reviewContent: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(800)]),
+    title: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(80)]),
+    reviewContent: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(3000)]),
   });
    
 
   // we are injecting the blog service, auth service, user service, and cloud storage service
   constructor( private blogService: BlogService, private authService: AuthService, 
-                 private userService: UserService, private fireStorage: CloudStorageService ) {}
+                 private userService: UserService, private fireStorage: CloudStorageService, private router:Router ) {}
   
   ngOnInit() {
 
@@ -111,6 +113,11 @@ export class WriteABlogComponent implements OnInit{
             const blogId = await this.blogService.createBlogPost(url, this.publishBlog.value.title, this.publishBlog.value.reviewContent, this.authorUid, this.authorName);
             console.log('createBgPost() returned: ' + blogId);
             await this.userService.addPublsihedBlogToProfile(this.authorUid, blogId);
+            this.formSubmitted = true;
+            // Set a delay for the message to be read, then navigate to the home page
+            setTimeout(() => {
+              this.router.navigate(['/blogList']); // Assuming '/' is your home route
+            }, 1500); // 1500ms delay
           }
         });
       } catch (e) {
