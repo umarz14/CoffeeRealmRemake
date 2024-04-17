@@ -2,6 +2,7 @@
 import { Firestore, collection, doc, setDoc, docData, updateDoc } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
 import { map } from 'rxjs';
+import { addDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -99,9 +100,10 @@ export class UserService {
     console.log('Adding blog to profile');
     if(uid && blogId) {
       const userCollection = collection(this.firestore, `users`);
-      const userDoc = doc(userCollection, uid);
-      await updateDoc(userDoc, {
-        publishedBlogs: blogId
+      const curUserDoc = doc(userCollection, uid);
+      const curUserBlogCollectionRef = collection(curUserDoc, `publishedBlogs`);
+      await addDoc(curUserBlogCollectionRef, {
+        blogId: blogId
       });
       console.log('Blog added to profile');
     }

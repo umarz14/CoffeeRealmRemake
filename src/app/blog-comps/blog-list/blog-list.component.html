@@ -15,11 +15,10 @@
         <div class="col" *ngFor="let blog of blogs$ | async">
             <div class="card h-100">
                 <div class="card-img-top-container">
-                    <img class="card-img-top" src="\assets\img\coffe-cups.jpg" alt="Card image cap">
+                    <img class="card-img-top" src="{{blog.headerImageUrl}}" alt="Card image cap">
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{blog.title}}</h5>
-                    <p class="card-text">{{blog.content}}</p>
                     <a href="blogPost" class="btn btn-primary">Read More</a>
                 </div>
             </div>

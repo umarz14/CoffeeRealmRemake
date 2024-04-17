@@ -17,7 +17,7 @@ export class WriteABlogComponent implements OnInit{
   // These area variables we need to store the current user's id and name
   curAuthSub!: Subscription; 
   curUserSub: Subscription | undefined;
-  authorId: string  = 'author';
+  authorUid: string  = 'author';
   authorName: string = 'author'; 
   
 
@@ -46,10 +46,10 @@ export class WriteABlogComponent implements OnInit{
     this.curAuthSub = this.authService.currentUser.subscribe((user) => {
       // if the user is found then we are getting the user's uid
       if(user) {
-        this.authorId = user.uid;
+        this.authorUid = user.uid;
         
         // here we are getting the user's display name aka username
-        this.userService.getUserDisplayName(this.authorId)?.subscribe((name) => {
+        this.userService.getUserDisplayName(this.authorUid)?.subscribe((name) => {
           this.authorName = name;
           console.log('Author name: ' + this.authorName);
         });
@@ -108,9 +108,9 @@ export class WriteABlogComponent implements OnInit{
           console.log('Image url: ' + url);
           // 3. create the blog post in firestore
           if(this.publishBlog.value.title && this.publishBlog.value.reviewContent) {
-            const blogId = await this.blogService.createBlogPost(url, this.publishBlog.value.title, this.publishBlog.value.reviewContent, this.authorId, this.authorName);
+            const blogId = await this.blogService.createBlogPost(url, this.publishBlog.value.title, this.publishBlog.value.reviewContent, this.authorUid, this.authorName);
             console.log('createBgPost() returned: ' + blogId);
-            // 
+            await this.userService.addPublsihedBlogToProfile(this.authorUid, blogId);
           }
         });
       } catch (e) {

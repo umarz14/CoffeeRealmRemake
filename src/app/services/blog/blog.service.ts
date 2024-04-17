@@ -8,6 +8,7 @@ export class BlogService {
 
   constructor(private firestore: Firestore) { }
 
+  // This function creates a blog post and returns the document id of the blog post created in the firestore database 
   async createBlogPost(headerImage: string, title: string, content: string, authorUid: string, authorName: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
       if(!headerImage || !title || !content || !authorUid) {
