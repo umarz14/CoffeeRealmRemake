@@ -5,4 +5,5 @@ export interface Blog {
     date: string;
     headerImageUrl: string;
     title: string;
+    blogId: string;
 }

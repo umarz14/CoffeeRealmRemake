@@ -3,13 +3,14 @@ import { Firestore, collection, doc, setDoc, docData, updateDoc } from '@angular
 import { AuthService } from '../auth/auth.service';
 import { map } from 'rxjs';
 import { addDoc } from 'firebase/firestore';
+import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private firestore: Firestore,) { }
+  constructor(private firestore: Firestore, private firebaseStorage: CloudStorageService) { }
 
   async createUserProfile(uid: string, userName: string, email: string) {
     console.log('Creating user profile');
@@ -17,14 +18,21 @@ export class UserService {
       const userCollection = collection(this.firestore, `users`);
       const userDoc = doc(userCollection, uid);
       try {
-        await setDoc(userDoc, {
-          uid: uid,
-          userName: userName,
-          email: email,
-          created: new Date(),
-          bio: "Hello Everyone! I'm new to the app!"
-        });
-        console.log('User profile created');
+        const pfpUrl = await this.firebaseStorage.getDefaultPfpUrl();
+        if(pfpUrl) {
+          await setDoc(userDoc, {
+            uid: uid,
+            userName: userName,
+            email: email,
+            created: new Date(),
+            bio: "Hello Everyone! I'm new to the app!",
+            pfp: pfpUrl,
+          });
+          console.log('User profile created');
+        }
+        else {
+          console.error('Error getting default pfp url');
+        }
       } catch (e) {
         console.error('Error creating user profile', e);
       }

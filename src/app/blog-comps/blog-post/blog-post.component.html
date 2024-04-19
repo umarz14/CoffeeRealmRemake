@@ -1,95 +1,25 @@
-<div class="container-fluid mt-3">
+<div *ngIf="!blogPost">
+    Blog is Loading...
+</div>
+
+<div *ngIf="blogPost"  class="container-fluid mt-3">
     <div class="card">
         <!-- <h1 class="text-center mb-3">Testing Out The Title</h1> -->
         <div class="card-img-top ps-5 pe-5">
-            <img class="img-fluid rounded-3" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=3883&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+            <img class="img-fluid rounded-3" src="{{blogPost.headerImageUrl}}">
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <h3 class="card-title ps-5">Hello World</h3>
+                    <h3 class="card-title ps-5">{{blogPost.title}}</h3>
                 </div>
                 <div class="col text-end pe-5">
-                    <span class="">Auhtor && 2/21/2024</span>
-                    
+                    <span class="">By: {{blogPost.authorUsername}}  Published: {{blogPost.date}}</span>
                 </div>
             </div>
             <p class="card-text ps-5 pe-5">
-                Lorem ipsum dolo sit amet, consectetur adipiscing elit. Nulla nec nisi vitae nunc tincidunt aliquam. Donec nulla
-                odio, aliquam euismod nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec
-                euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc
-                vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam
-                aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc.
-                Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod,
-                nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae,
-                aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet
-                nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec
-                euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc.
+                {{ blogPost.content }}
             </p>
         </div>
     </div>
 </div>
-
-<!-- <div class="container-fluid">
-    <h1 class="display-2 fw-bold">
-        10 Things I Learned From trying to brew the perfect cup of coffee
-    </h1>
-    <div class="card">
-        <div class="row no-gutters">
-            <div class="col-auto">
-                <img src="https://via.placeholder.com/150" alt="Blog Post Creater Avatar Image" class="img-fluid avatar__image">
-            </div>
-            <div class="col">
-            <div class="card-block px-2">
-                <h4 class="card-title">Title</h4>
-                <p class="card-text">Description</p>
-                <a href="#" class="btn btn-primary">Button</a>
-            </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid align-items-center">
-        <img src="https://via.placeholder.com/150" alt="blog post header" class=" img-fluid">
-        <p class="lead">
-            Lorem ipsum dolo sit amet, consectetur adipiscing elit. Nulla nec nisi vitae nunc tincidunt aliquam. Donec nulla
-            odio, aliquam euismod nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec
-            euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc
-            vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam
-            aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc.
-            Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod,
-            nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae,
-            aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet
-            nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec
-            euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc.
-        </p>    
-    </div>
-</div> -->
-<!-- <div class="card mb-4">
-    <img class="card-img-top" src="path-to-your-image" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">title</h5>
-      <p class="card-text">Lorem ipsum dolo sit amet, consectetur adipiscing elit. Nulla nec nisi vitae nunc tincidunt aliquam. Donec nulla
-        odio, aliquam euismod nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec
-        euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc
-        vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam
-        aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc. Donec euismod, nunc vitae, aliquam aliquet nunc.
-        Donec euismod, nunc vitae, a 
-        <p>
-      <p class="card-text"><small class="text-muted">Posted on 00824</small></p>
-    </div>
-  </div> -->
-
-  <!-- <div class="card mb-4 shadow-sm">
-    <img class="card-img-top img-fluid" src="https://picsum.photos/300/400" alt="Post Image">
-    <div class="card-body">
-      <h5 class="card-title">Test</h5>
-      <p class="card-text">yellow</p>
-      <a href="#" class="btn btn-primary">Read More</a>
-      <div class="d-flex justify-content-between align-items-center">
-        <small class="text-muted">green</small>
-        <small class="text-muted">By john</small>
-      </div>
-    </div>
-  </div>
-   -->
-  

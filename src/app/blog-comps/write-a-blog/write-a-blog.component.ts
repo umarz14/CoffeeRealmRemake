@@ -113,6 +113,7 @@ export class WriteABlogComponent implements OnInit{
             const blogId = await this.blogService.createBlogPost(url, this.publishBlog.value.title, this.publishBlog.value.reviewContent, this.authorUid, this.authorName);
             console.log('createBgPost() returned: ' + blogId);
             await this.userService.addPublsihedBlogToProfile(this.authorUid, blogId);
+            await this.blogService.addblogIdtoDoc(blogId);
             this.formSubmitted = true;
             // Set a delay for the message to be read, then navigate to the home page
             setTimeout(() => {

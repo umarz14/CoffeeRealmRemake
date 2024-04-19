@@ -42,7 +42,7 @@ const routes: Routes = [
     title: 'Blog List',
   },
   {
-    path: 'blogPost',
+    path: 'blogPost/:id',
     component: BlogPostComponent,
     title: 'Blog Post'
   },

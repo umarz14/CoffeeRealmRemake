@@ -8,6 +8,22 @@ export class CloudStorageService {
 
   constructor(private firebaseStorage: Storage) {}
 
+  async getDefaultPfpUrl(): Promise<string> {
+    try {
+      const storageRef = ref(this.firebaseStorage, 'users_pfp/default-pfp.jpg');
+      const url = await getDownloadURL(storageRef);
+      if (url) {
+        return url;
+      } else {
+        console.error('Error getting default pfp url');
+        return "Error getting default profile image url";
+      }
+    } catch (error) {
+      console.error('Error getting default pfp url', error);
+      return "Error getting default profile image url";
+    }
+  }
+
   async uploadImage(file: File, path: string): Promise<string> {
     const storageRef = ref(this.firebaseStorage, path);
     const uploadTask = uploadBytesResumable(storageRef, file);
