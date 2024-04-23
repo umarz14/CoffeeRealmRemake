@@ -24,16 +24,16 @@ export class GoogleMapsJsApiService {
   // This is the call to load the google maps api
   // If you look at the comment above you can see that you can add libraries to the call    
   // I added the places library to the call so that I can use the places api
-  loadGoogleMapsJsApi(): Observable<boolean> {
-    if(this.apiloaded === undefined) {
-    this.apiloaded = this.httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&libraries=places`, 'callback')
-      .pipe(
-        map(() => true),
-        catchError(() => of(false))
-      );
-    }
-    return this.apiloaded;
-  }
+  // loadGoogleMapsJsApi(): Observable<boolean> {
+  //   if(this.apiloaded === undefined) {
+  //   this.apiloaded = this.httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&libraries=places`, 'callback')
+  //     .pipe(
+  //       map(() => true),
+  //       catchError(() => of(false))
+  //     );
+  //   }
+  //   return this.apiloaded;
+  // }
 
 } // End of google maps js api service
 

@@ -37,7 +37,7 @@ export class ShopDetailsComponent implements OnInit{
 
   // this is for testing purposes only
   shop: ShopLocation | undefined;
-  location!: google.maps.LatLng;
+  //location!: google.maps.LatLng;
 
   private modal: any; 
 
