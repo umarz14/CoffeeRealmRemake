@@ -26,7 +26,7 @@ export class GoogleMapsJsApiService {
   // I added the places library to the call so that I can use the places api
   loadGoogleMapsJsApi(): Observable<boolean> {
     if(this.apiloaded === undefined) {
-    this.apiloaded = this.httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.apiKey}&libraries=places`, 'callback')
+    this.apiloaded = this.httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&libraries=places`, 'callback')
       .pipe(
         map(() => true),
         catchError(() => of(false))
