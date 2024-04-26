@@ -4,7 +4,7 @@ import { Observable, Subscription, async } from 'rxjs';
 
 
 
-import { environment } from 'environment';
+import { environment } from 'src/environments/environment';
 import { ShopLocation } from '../../models/shop-location.model';
 import { ShopsService } from '../../services/shops/shops.service';
 

@@ -5,7 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
-import { environment } from 'environment';
+import { environment } from 'src/environments/environment';
 
 import { AppComponent } from './app.component';
 import { CoffeeSearchComponent } from './coffee-shop-comps/coffee-search/coffee-search.component';
