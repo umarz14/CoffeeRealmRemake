@@ -25,7 +25,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { map } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module'; // Import the AppRoutingModule module
 
-import { GoogleMap } from '@angular/google-maps';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 @NgModule({
@@ -54,7 +54,7 @@ import { GoogleMap } from '@angular/google-maps';
       ReactiveFormsModule,
       FormsModule,
       // The GoogleMap module is imported here
-      GoogleMap,
+      GoogleMapsModule,
       // The firebase modules are imported here
       provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
       provideFirestore(() => getFirestore()),

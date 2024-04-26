@@ -3,40 +3,30 @@
   we declare it outside of the apiloader because we need to access
   the map object if we dont have access to it it will return an error
 -->
- <!-- <div id="map"></div>  -->
+<!-- In your component's template -->
+<div id="map"></div>
 
- <!-- 
-  This is part of the website to work it makes sure that 
-  the google maps api is loaded before it tries to load the map
-  or any other libraries that are needed. In our case we are
-  loading the google maps places library.
-  !GOOGLE WILL NOT BE DEFINED IF THE API IS NOT LOADED!
+<!-- 
+ This is part of the website to work it makes sure that 
+ the google maps api is loaded before it tries to load the map
+ or any other libraries that are needed. In our case we are
+ loading the google maps places library.
+ !GOOGLE WILL NOT BE DEFINED IF THE API IS NOT LOADED!
 -->
 <!-- <div *ngIf="apiLoaded | async">
-  <div *ngIf="display">
-    <div class="container grid-container">
-      <div class="row">
-        <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
-      </div>
-    </div>
-  </div>  
+ <div *ngIf="display">
+   <div class="container grid-container">
+     <div class="row">
+       <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
+     </div>
+   </div>
+ </div>  
 </div> -->
 
-<!-- <div *ngIf="display">
-  <div class="container-fluid mt-5 ps-5 pe-5">
-    <div class="row row-cols-1 row-cols-lg-3 gy-4">
-      hello world
-      <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation" class="col"></app-shop-location>
-    </div>
-  </div>
-</div> -->
-<!-- google-maps-demo.component.html -->
-<google-map 
-  height="400px"
-  width="750px"
-  [center]="center"
-  [zoom]="zoom"
-  (mapClick)="moveMap($event)"
-  (mapMousemove)="move($event)" />
-
-<p>coffee-search works!</p>
+<div *ngIf="display">
+ <div class="container-fluid mt-5 ps-5 pe-5">
+   <div class="row row-cols-1 row-cols-lg-3 gy-4">
+     <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation" class="col"></app-shop-location>
+   </div>
+ </div>
+</div>
