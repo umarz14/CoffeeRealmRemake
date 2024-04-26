@@ -37,6 +37,7 @@ export class CoffeeSearchComponent implements OnInit {
 
   async ngOnInit() {
     try{
+      console.log('hello world')
       await this.initMap();
       // This will init the places service
       this.googlePlaces.initPlacesService(this.gmap);
