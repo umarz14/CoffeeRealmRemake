@@ -28,76 +28,43 @@ export class CoffeeSearchComponent implements OnInit {
 
   // These are other variables that we will need
   gmap!: google.maps.Map;
-  myCenter!: google.maps.LatLngLiteral;
+  curUserLoc!: google.maps.LatLngLiteral;
 
+  // This is just a test location delete later
   testlocation = new google.maps.LatLng(33.1824761, -117.2558425);
 
 
-  constructor(private googleMapsService: GoogleMapsJsApiService, private googlePlaces: GooglePlacesApiService)  {}
+  constructor(private googleMapsService: GoogleMapsJsApiService,)  {}
 
   async ngOnInit() {
     try{
-      console.log('hello world')
       await this.initMap();
-      // This will init the places service
-      this.googlePlaces.initPlacesService(this.gmap);
-      this.shopLocationList = await this.googlePlaces.findShopsNearby();
-      
-    } catch (error) {
-      console.log(error);
-    }
-
-    if(this.shopLocationList.length > 0) {
-      this.display = true;
-    }
-    else {
-      console.log('No shops found');
+      if (this.curUserLoc) {
+        await this.googleMapsService.initService(this.gmap);
+        this.shopLocationList = await this.googleMapsService.FindCoffeeShopsNearby();
+        this.display = true;
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  // This is the function that will initilize the map
-  // we will then me able to pass gmap to the google maps places service
-  // to get coffee shops near the user
+  // This is the function that will initilize a google map
+  // we will pass this to out google maps js service
+  // im not passing the map to the places service because
+  // it takes an html Element and it doesnt seem like a good idea
   async initMap() {
     try {
-      this.myCenter = await this.getUserCurLocation();
+      this.curUserLoc = await this.googleMapsService.getUserCurLocation();
       this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-        center: this.testlocation,
+        center: this.curUserLoc,
         zoom: 14,
       });
-      console.log(this.gmap.getCenter()?.lat);
-      console.log(this.gmap.getCenter()?.lng);
     } catch (err) {
       console.log(err);
     }
   } // End of initMap()
 
-  // This function will get the users current location which will then be
-  // used to intilize the maps center which is needed in initmap
-  async getUserCurLocation(): Promise<google.maps.LatLngLiteral> {
-    return new Promise<google.maps.LatLngLiteral>((resolve, reject) => {
-      if (navigator.geolocation) {
-        const options: PositionOptions = {
-          enableHighAccuracy: true
-        };
-
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const location: google.maps.LatLngLiteral = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-
-            console.log("this is users current location: " + location.lat + " " + location.lng);
-            resolve(location);
-          },
-          (err) => {
-            reject(err);
-          },
-          options
-        );
-      } else {
-        alert('Please Enable Location');
-        reject();
-      }
-    });
-  } // End of getUserCurLocation()
+ 
 
 } // End of CoffeeSearchComponent

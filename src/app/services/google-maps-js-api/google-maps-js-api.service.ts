@@ -1,9 +1,106 @@
 import { Injectable } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader';
+import { ShopLocation } from 'src/app/models/shop-location.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleMapsJsApiService {
-} // End of google maps js api service
+  
+  // These are our intilized variables
+    // This is the maps important for the google maps api
+  private gmap!: google.maps.Map;
+    // This is a the interface that allows us to make api calls with the google places api
+      // I set it to any because it library from google and their is no general type for it atm 
+      // https://developers.google.com/maps/documentation/javascript/reference/top-level
+  private googlePlacesLibrary!: any;
+    // This var is to store all our shop locations so that we
+    // are not constatly making api calls
+  private CoffeeShopList: ShopLocation[] = [];
+
+  constructor() {}
+
+  // This function will get the users current location which will then be
+  // used to intilize the maps center which is needed in initmap
+  async getUserCurLocation(): Promise<google.maps.LatLngLiteral> {
+    return new Promise<google.maps.LatLngLiteral>((resolve, reject) => {
+      if (navigator.geolocation) {
+        const options: PositionOptions = {
+          enableHighAccuracy: true
+        };
+
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const location: google.maps.LatLngLiteral = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+            console.log("this is users current location: " + location.lat + " " + location.lng);
+            resolve(location);
+          },
+          (err) => {
+            reject(err);
+          },
+          options
+        );
+      } else {
+        alert('Please Enable Location');
+        reject();
+      }
+    });
+  } // End of getUserCurLocation()
+
+  // This is the function that will initilize all the variables
+  // that we need to start making api calls
+  async initService(map: google.maps.Map) {
+    this.gmap = map;
+  }
+
+  // This function will get the coffee shops in a 5 mile radius based on the center of the map
+    // which is the users current location by default
+    // the text search call of th places api returns 20 coffee shops 
+    // Results are returned as a list of Place objects, from which you can get place details.
+    // (https://developers.google.com/maps/documentation/javascript/reference/place)
+    // we then convert this list of place objects to a list of ShopLocation objects
+  async FindCoffeeShopsNearby() {
+    if(this.CoffeeShopList.length !== 0) {
+      return this.CoffeeShopList;
+    } if (this.gmap.getCenter() === undefined) {
+      return [];
+    } else {
+      // These are the parameters for the request
+      const request = {
+        textQuery: 'coffee shops',
+        fields: ['displayName', 'location', 'formattedAddress'],
+        locationBias: this.gmap.getCenter(),
+        language: 'en-US',
+        maxResultCount: 8,
+        region: 'us',
+      };
+      try {
+        const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+        const { places } = await Place.searchByText(request);
+        if (places) {
+          console.log(places);
+          // this.CoffeeShopList = places.map((place: google.maps.places.Place) => {
+          //   return {
+          //     placeId: place.id,
+          //     name: place.displayName,
+          //     address: place.formattedAddress,
+          //     // Add other fields as needed
+          //   } as ShopLocation;
+          // });
+          return this.CoffeeShopList;
+        }
+      } catch (err) {
+        console.log('Error: ' + err);
+      } // end of try/catch
+      return [];
+    } // end of if/else
+  } // End of FindCoffeeShopsNearby()
+
+  // This function return a shopLocation based on the placeId
+  getCoffeShop(placeId: string): ShopLocation {
+    return this.CoffeeShopList.find(shop => shop.placeId === placeId) || {} as ShopLocation;
+  }
+
+} 
 
