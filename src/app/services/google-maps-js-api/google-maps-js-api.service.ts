@@ -6,6 +6,8 @@ import { ShopLocation } from 'src/app/models/shop-location.model';
   providedIn: 'root'
 })
 export class GoogleMapsJsApiService {
+
+  //Places API(New) - https://developers.google.com/maps/documentation/places/web-service/reference/rest
   
   // These are our intilized variables
     // This is the maps important for the google maps api
@@ -69,8 +71,8 @@ export class GoogleMapsJsApiService {
       // These are the parameters for the request
       const request = {
         textQuery: 'coffee shops',
-        fields: ['displayName', 'location', 'formattedAddress'],
-        locationBias: this.gmap.getCenter(),
+        fields: ['displayName', 'location', 'formattedAddress', 'photos'],
+        locationBias: new google.maps.Circle({ center: this.gmap.getCenter(), radius: 8046.72 }), // 5 miles in meters
         language: 'en-US',
         maxResultCount: 8,
         region: 'us',
@@ -80,14 +82,17 @@ export class GoogleMapsJsApiService {
         const { places } = await Place.searchByText(request);
         if (places) {
           console.log(places);
-          // this.CoffeeShopList = places.map((place: google.maps.places.Place) => {
-          //   return {
-          //     placeId: place.id,
-          //     name: place.displayName,
-          //     address: place.formattedAddress,
-          //     // Add other fields as needed
-          //   } as ShopLocation;
-          // });
+          this.CoffeeShopList = places.map((place: google.maps.places.Place) => {
+            return {
+              placeId: place.id,
+              name: place.displayName,
+              address: place.formattedAddress,
+              lat: place.location?.toJSON().lat || 0,
+              lng: place.location?.toJSON().lng || 0,
+              imageUrl: place.photos && place.photos[0] ? place.photos[0].getURI() : '',
+              // Add other fields as needed
+            } as ShopLocation;
+          });
           return this.CoffeeShopList;
         }
       } catch (err) {
