@@ -1,15 +1,13 @@
 import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ShopsService } from '../../services/shops/shops.service';
 import { ShopLocation } from '../../models/shop-location.model';
-import { GooglePlacesApiService } from '../../services/places-api/google-places-api.service';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ViewChild, ElementRef } from '@angular/core';
-import { Modal } from 'bootstrap';
-
 import { Firestore,collection, collectionData } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
+
+import {GoogleMap, MapMarker} from '@angular/google-maps';
+import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
 
 
 @Component({
@@ -22,22 +20,18 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class ShopDetailsComponent implements OnInit{
 
-  coffeeShopId = '';
+  coffeeShopId!: string;
   
+  private paramsSubscription!: Subscription;
+
+  // This is to get the specific shop from the shop service
+  shopLocation: ShopLocation | undefined;
+  shopCoords!: google.maps.LatLng;
+  curShopMap!: google.maps.Map; 
+
   //this is firestore test
   firestore = inject(Firestore);
   items$: Observable<any[]>;
-
-  private paramsSubscription!: Subscription;
-
-  // This adds a refrence to the shop service
-  placesService = inject(GooglePlacesApiService);
-  // This is to get the specific shop from the shop service
-  shopLocation: ShopLocation | undefined; 
-
-  // this is for testing purposes only
-  shop: ShopLocation | undefined;
-  //location!: google.maps.LatLng;
 
   private modal: any; 
 
@@ -55,24 +49,33 @@ export class ShopDetailsComponent implements OnInit{
 
 
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private googleMapsService: GoogleMapsJsApiService) {
     const aCollection = collection(this.firestore, 'items')
     this.items$ = collectionData(aCollection);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // This gets the id from the url and then gets the shop from the shop service
     this.paramsSubscription = this.route.params.subscribe(params =>{
       this.coffeeShopId = params['id'];
       console.log('coffee shop deatails of: ' + this.coffeeShopId)
-    })
-    // if (this.coffeeShopId) {
-    //   this.shopLocation = this.placesService.getShopById(this.coffeeShopId);
-    //   console.log(this.shopLocation);
-    //   console.log(this.shopLocation?.imageUrl);
-    //   console.log(this.shopLocation?.location);
-    //   this.location = this.shopLocation?.location as unknown as google.maps.LatLng;
-    // }
+    });
+    if (this.coffeeShopId) {
+      this.shopLocation = this.googleMapsService.getCoffeeShopById(this.coffeeShopId);
+      if (this.shopLocation) {
+        if (this.shopLocation.lat && this.shopLocation.lng) {
+          this.shopCoords = new google.maps.LatLng(this.shopLocation.lat, this.shopLocation.lng);
+        }
+      }
+      // this.curShopMap = new google.maps.Map(document.getElementById('shopMap') as HTMLElement, { center: this.shopCoords, zoom: 15 });
+      // const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+      // const marker = new AdvancedMarkerElement({
+      //   position: this.shopCoords,
+      //   map: this.curShopMap,
+      //   title: this.shopLocation?.name,
+      // });
+    }
+    
   } // End of ngOnInit
 
   // Since the modal is not created until the click of review 

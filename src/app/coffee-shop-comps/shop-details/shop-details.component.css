@@ -1,3 +1,15 @@
+/* Set the size of the div element that contains the map */
+#map {
+    height: 400px; /* The height is 400 pixels */
+    width: 100%; /* The width is the width of the web page */
+}
+
+.fluid-card-img {
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
 .container__100h__navbar{
     height: calc(100vh - 63px);
     overflow: hidden;
@@ -35,9 +47,25 @@
     cursor: pointer;
     color: gold;
     font-size: 30px;
-  }
-  
-  .star.not-filled {
+}
+.star.not-filled {
     color: grey;
+}
+
+.heart-button {
+    font-size: 2em;
+    color: #000;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.5s;
   }
   
+  .heart-button::before {
+    content: "♡";
+  }
+  
+  .heart-button.clicked::before {
+    content: "♥";
+    color: red;
+  }

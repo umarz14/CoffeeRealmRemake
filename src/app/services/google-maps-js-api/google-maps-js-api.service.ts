@@ -11,19 +11,35 @@ export class GoogleMapsJsApiService {
   
   // These are our intilized variables
     // This is the maps important for the google maps api
+
   private gmap!: google.maps.Map;
     // This is a the interface that allows us to make api calls with the google places api
       // I set it to any because it library from google and their is no general type for it atm 
       // https://developers.google.com/maps/documentation/javascript/reference/top-level
-  private googlePlacesLibrary!: any;
+  private googlePlaces!: any;
     // This var is to store all our shop locations so that we
-    // are not constatly making api calls
+      // are not constatly making api calls
   private CoffeeShopList: ShopLocation[] = [];
 
-  constructor() {}
+  constructor() {} 
+
+  // This function will import the google maps and google places library
+    // if they are not already imported
+    // the plan is for this to be called at the start of the web app aka home page
+  async initService() {
+    if (!google.maps || !google.maps.Map) {
+      console.log('Importing Google Maps Library');
+      try {
+        await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+      } catch (err) {
+        console.log(err);
+      }
+      //await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+    }
+  }
 
   // This function will get the users current location which will then be
-  // used to intilize the maps center which is needed in initmap
+    // used to intilize the maps center which is needed in initmap
   async getUserCurLocation(): Promise<google.maps.LatLngLiteral> {
     return new Promise<google.maps.LatLngLiteral>((resolve, reject) => {
       if (navigator.geolocation) {
@@ -51,9 +67,9 @@ export class GoogleMapsJsApiService {
   } // End of getUserCurLocation()
 
   // This is the function that will initilize all the variables
-  // that we need to start making api calls
-  async initService(map: google.maps.Map) {
-    this.gmap = map;
+    // that we need to start making api calls
+  async setServiceMap(googleMap: google.maps.Map) {
+    this.gmap = googleMap;
   }
 
   // This function will get the coffee shops in a 5 mile radius based on the center of the map
@@ -71,10 +87,10 @@ export class GoogleMapsJsApiService {
       // These are the parameters for the request
       const request = {
         textQuery: 'coffee shops',
-        fields: ['displayName', 'location', 'formattedAddress', 'photos'],
+        fields: ['id','displayName', 'location', 'formattedAddress', 'photos'],
         locationBias: new google.maps.Circle({ center: this.gmap.getCenter(), radius: 8046.72 }), // 5 miles in meters
         language: 'en-US',
-        maxResultCount: 8,
+        maxResultCount: 20,
         region: 'us',
       };
       try {
@@ -89,7 +105,7 @@ export class GoogleMapsJsApiService {
               address: place.formattedAddress,
               lat: place.location?.toJSON().lat || 0,
               lng: place.location?.toJSON().lng || 0,
-              imageUrl: place.photos && place.photos[0] ? place.photos[0].getURI() : '',
+              imageUrl: place.photos && place.photos[0] ? place.photos[0].getURI({maxHeight:4800, maxWidth:4800}) : 'assets/img/coffe-cups.jpg',
               // Add other fields as needed
             } as ShopLocation;
           });
@@ -103,7 +119,7 @@ export class GoogleMapsJsApiService {
   } // End of FindCoffeeShopsNearby()
 
   // This function return a shopLocation based on the placeId
-  getCoffeShop(placeId: string): ShopLocation {
+  getCoffeeShopById(placeId: string): ShopLocation {
     return this.CoffeeShopList.find(shop => shop.placeId === placeId) || {} as ShopLocation;
   }
 

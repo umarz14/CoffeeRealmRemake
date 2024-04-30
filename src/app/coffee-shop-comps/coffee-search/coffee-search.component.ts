@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription, async } from 'rxjs';
 
@@ -19,6 +19,8 @@ import { GoogleMap } from '@angular/google-maps';
   styleUrls: ['./coffee-search.component.css'],
 })
 export class CoffeeSearchComponent implements OnInit {
+   // This is pretty much a struct 
+   @Input() shopLocation!: ShopLocation;
 
   // This will allows us to display the list once the api has been loaded
   display: boolean = false;
@@ -30,19 +32,20 @@ export class CoffeeSearchComponent implements OnInit {
   gmap!: google.maps.Map;
   curUserLoc!: google.maps.LatLngLiteral;
 
-  // This is just a test location delete later
-  testlocation = new google.maps.LatLng(33.1824761, -117.2558425);
-
 
   constructor(private googleMapsService: GoogleMapsJsApiService,)  {}
 
   async ngOnInit() {
     try{
+      // This will initilize the google maps service just in case it has not been initilized
+      await this.googleMapsService.initService();
       await this.initMap();
-      if (this.curUserLoc) {
-        await this.googleMapsService.initService(this.gmap);
+      if(this.gmap) {
+        this.googleMapsService.setServiceMap(this.gmap);
         this.shopLocationList = await this.googleMapsService.FindCoffeeShopsNearby();
-        this.display = true;
+        if(this.shopLocationList.length > 0) {
+          this.display = true;
+        }
       }
     } catch (err) {
       console.log(err);
@@ -54,12 +57,17 @@ export class CoffeeSearchComponent implements OnInit {
   // im not passing the map to the places service because
   // it takes an html Element and it doesnt seem like a good idea
   async initMap() {
-    try {
+    try{
       this.curUserLoc = await this.googleMapsService.getUserCurLocation();
-      this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-        center: this.curUserLoc,
-        zoom: 14,
-      });
+      if(this.curUserLoc) {
+        this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+          center: this.curUserLoc,
+          zoom: 14,
+        });
+      }
+      else {
+        console.log("Error: Could not get user location");
+      }
     } catch (err) {
       console.log(err);
     }

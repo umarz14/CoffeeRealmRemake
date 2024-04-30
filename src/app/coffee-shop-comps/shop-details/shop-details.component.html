@@ -1,39 +1,26 @@
-<!-- <div class="container__100h__navbar border-test"> -->
-
-<div class="container-fluid">
-    <div class="row d-flex mt-4">
-        <div class="col-12 col-lg-6 d-flex justify-content-center">
-            <div class="details-card-container">
-                <div class="card">
-                    <figure>
-                    <img [src]="shopLocation?.imageUrl" class="card-img-top shop-details-photo" alt='image of a coffee shop'>
-                    </figure>
-                    <div class="card-body">
-                        <h2 class="card-title">{{shopLocation?.name}}</h2>
-                        <p class="card-text">{{shopLocation?.address}}</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button>
-                    </div>
+<div class="container-fluid text-center">
+    <div class="row p-5 row-cols-1 row-cols-lg-2">
+        <div class="col">
+            <div class="card">
+                <div class="text-end pe-3">
+                    <button class="heart-button" onclick="this.classList.toggle('clicked')"></button>
                 </div>
+                <img [src]="shopLocation?.imageUrl" class="card-img-top px-3 fluid-card-img" alt="...">
+                <div class="card-body text-start">
+                    <h2 class="card-title">{{shopLocation?.name}}</h2>
+                    <p class="card-text fs-5">{{shopLocation?.address}}</p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button>
             </div>
+              </div>
         </div>
-        <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center mx-auto">
-            <!-- <google-map
-                [center]="location">
-                <map-marker
-                    [position]="location"/>
-            </google-map> -->
+        <div class="col d-flex align-items-center justify-content-center">
+            <google-map [center]="shopCoords">
+            <map-marker [position]="shopCoords"></map-marker>
+            </google-map>
         </div>
     </div>
 </div>
-<div class="details-card-container">
-    <div class="card">
-        <ul>
-            <li class="text" *ngFor="let item of items$ | async">
-              {{item.name}}
-            </li>
-          </ul>          
-    </div>
-</div>
+
 
 <!-- Modal # lets us refrence the modal for viewchild -->
 <div class="modal fade" id="static" tabindex="-1" aria-labelledby="staticLabel" aria-hidden="true" #reviewModal>
@@ -61,4 +48,3 @@
       </div>
     </div>
 </div>
-

@@ -1,10 +1,18 @@
-<div class="card">
+<!-- <div class="card">
   <div class="card-img-top-container">
     <img [src]="shopLocation.imageUrl" class="card-img-top shop-photo" alt='image of a coffee shop'>
   </div>
   <div class="card-body">
     <h5 class="card-title">{{shopLocation.name}}</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
     <a [routerLink]="['/shopLocationDetails', shopLocation.placeId]" class="btn btn-primary opacity-100">Learn More</a>
   </div>
+</div> -->
+
+<div class="card p-2">
+  <img [src]="shopLocation.imageUrl" class="card-img-top fluid-card-img" alt="image of coffee shop {{shopLocation.name}}">
+  <div class="card-body">
+    <h5 class="card-title">{{shopLocation.name}}</h5>
+    <a [routerLink]="['/shopLocationDetails', shopLocation.placeId]" class="btn btn-primary opacity-100">Learn More</a>
+  </div>
+
 </div>

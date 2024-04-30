@@ -6,6 +6,9 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from 'src/environments/environment';
+import { GoogleMapsModule } from '@angular/google-maps';
+// import {MatIconModule} from '@angular/material/icon';
+// import {MatButtonModule} from '@angular/material/button';
 
 import { AppComponent } from './app.component';
 import { CoffeeSearchComponent } from './coffee-shop-comps/coffee-search/coffee-search.component';
@@ -22,10 +25,9 @@ import { BlogListComponent } from './blog-comps/blog-list/blog-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { map } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module'; // Import the AppRoutingModule module
 
-import { GoogleMapsModule } from '@angular/google-maps';
+
 
 
 @NgModule({
@@ -53,6 +55,9 @@ import { GoogleMapsModule } from '@angular/google-maps';
       BrowserAnimationsModule,
       ReactiveFormsModule,
       FormsModule,
+      //MatIconModule,
+      //MatButtonModule,
+
       // The GoogleMap module is imported here
       GoogleMapsModule,
       // The firebase modules are imported here
