@@ -2,9 +2,19 @@
     <div class="row p-5 row-cols-1 row-cols-lg-2">
         <div class="col">
             <div class="card">
-                <div class="text-end pe-3">
-                    <button class="heart-button" onclick="this.classList.toggle('clicked')"></button>
+                <div class="container text-end">
+                    <!-- <button mat-fab>
+                        <mat-icon>favorite</mat-icon>
+                    </button> -->
+                    <div class="example-button-container">
+                        <button mat-fab color="accent" aria-label="Example icon button with a bookmark icon">
+                          <mat-icon>bookmark</mat-icon>
+                        </button>
+                    </div>
                 </div>
+                <!-- <div class="text-end pe-3">
+                    <button class="heart-button" onclick="this.classList.toggle('clicked')"></button>
+                </div> -->
                 <img [src]="shopLocation?.imageUrl" class="card-img-top px-3 fluid-card-img" alt="...">
                 <div class="card-body text-start">
                     <h2 class="card-title">{{shopLocation?.name}}</h2>
