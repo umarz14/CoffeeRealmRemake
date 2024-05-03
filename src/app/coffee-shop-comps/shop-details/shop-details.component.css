@@ -1,46 +1,17 @@
-/* Set the size of the div element that contains the map */
-#map {
-    height: 400px; /* The height is 400 pixels */
-    width: 100%; /* The width is the width of the web page */
-}
-
 .fluid-card-img {
     inline-size: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
 }
 
-.container__100h__navbar{
-    height: calc(100vh - 63px);
-    overflow: hidden;
-    width: 100%;
-    max-width: 100%;
+.favorite-active {
+    color: red;
+}
+.favorite-inactive{
+    color: grey;
+
 }
 
-.details-card-container{
-    border-radius: 10px;
-    border: 0cap;
-    height: 420px;
-    width: 85%;
-    min-width: 85%;
-}
-
-.shop-details-photo{
-    width: 98%;  /* Fixed width */
-    height: 300px; /* Fixed height */
-    object-fit: cover; /* This will make sure the image covers the area without stretching */
-    margin: 5px; /* Optional: Adds some space between the images */
-}
-
-.cont-outline{
-    border: 2px solid red;
-}
-.cont-outline-2{
-    border: 2px solid blue;
-}
-.border-test{
-    border: 3px solid green;
-}
 
 /* star-rating.component.css */
 .star {
@@ -51,27 +22,3 @@
 .star.not-filled {
     color: grey;
 }
-
-.heart-button {
-    font-size: 2em;
-    color: #000;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.5s;
-  }
-  
-  .heart-button::before {
-    content: "♡";
-  }
-  
-  .heart-button.clicked::before {
-    content: "♥";
-    color: red;
-  }
-
-  .example-button-container {
-    display: flex;
-    justify-content: center;
-    width: 120px;
-  }

@@ -1,8 +1,7 @@
 ;import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, setDoc, docData, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
 import { map } from 'rxjs';
-import { addDoc } from 'firebase/firestore';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 
 @Injectable({
@@ -116,6 +115,49 @@ export class UserService {
       console.log('Blog added to profile');
     }
   } // END OF addPublsihedBlogToProfile
+
+
+  // THIS SECTION WILL BE DEDICATED TO COFEE SHOP FAVORITES
+
+  async addFavoriteCoffeeShopToProfile(uid: string, coffeeShopId: string) {
+    console.log('Adding coffee shop to profile');
+    if(uid && coffeeShopId) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+      await addDoc(curUserCoffeeShopCollectionRef, {
+        coffeeShopId: coffeeShopId
+      });
+      console.log('Coffee shop added to profile');
+    }
+  } // END OF addFavoriteCoffeeShopToProfile
+
+  async removeFavoriteCoffeeShopFromProfile(uid: string, coffeeShopId: string) {
+    console.log('Removing coffee shop from profile');
+    if(uid && coffeeShopId) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+      const curUserCoffeeShopDoc = doc(curUserCoffeeShopCollectionRef, coffeeShopId);
+      await deleteDoc(curUserCoffeeShopDoc);
+      console.log('Coffee shop removed from profile');
+    }
+  } // END OF removeFavoriteCoffeeShopFromProfile
+
+    async getFavoriteCoffeeShopsFromProfile(uid: string) {
+      console.log('Getting favorite coffee shops from profile');
+      if(uid) {
+        const userCollection = collection(this.firestore, `users`);
+        const curUserDoc = doc(userCollection, uid);
+        const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+        //return docData(curUserCoffeeShopCollectionRef);
+      }
+      return null; // Add this line to return a value outside of the if statement
+    } // END OF getFavoriteCoffeeShopsFromProfile
+
+  } // END OF removeFavoriteCoffeeShopFromProfile
+
+
 
 
 

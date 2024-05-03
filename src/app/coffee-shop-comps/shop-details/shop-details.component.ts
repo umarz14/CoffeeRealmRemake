@@ -21,6 +21,7 @@ import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google
 export class ShopDetailsComponent implements OnInit{
 
   coffeeShopId!: string;
+  isFavorite: boolean = false;
   
   private paramsSubscription!: Subscription;
 
@@ -46,8 +47,6 @@ export class ShopDetailsComponent implements OnInit{
     Review: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(300)])
   });
     
-
-
 
   constructor(private route: ActivatedRoute, private googleMapsService: GoogleMapsJsApiService) {
     const aCollection = collection(this.firestore, 'items')
@@ -89,6 +88,10 @@ export class ShopDetailsComponent implements OnInit{
     if (this.paramsSubscription) {
       this.paramsSubscription.unsubscribe();
     }
+  }
+
+  coffeeShopIsAFavorite() {
+    this.isFavorite = !this.isFavorite;
   }
 
 
