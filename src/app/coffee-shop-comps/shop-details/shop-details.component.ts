@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
+import { Component, inject, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ShopLocation } from '../../models/shop-location.model';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
@@ -6,16 +6,14 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Firestore,collection, collectionData } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
 
-import {GoogleMap, MapMarker} from '@angular/google-maps';
 import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
   selector: 'app-shop-details',
    templateUrl: './shop-details.component.html',
-  // template: `
-  // <p>shop-details works!</p>
-  // ``
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent implements OnInit{
@@ -24,15 +22,15 @@ export class ShopDetailsComponent implements OnInit{
   isFavorite: boolean = false;
   
   private paramsSubscription!: Subscription;
+  private curUserSubscription!: Subscription;
+
+  private curUserId!: string;
 
   // This is to get the specific shop from the shop service
   shopLocation: ShopLocation | undefined;
   shopCoords!: google.maps.LatLng;
   curShopMap!: google.maps.Map; 
 
-  //this is firestore test
-  firestore = inject(Firestore);
-  items$: Observable<any[]>;
 
   private modal: any; 
 
@@ -48,9 +46,8 @@ export class ShopDetailsComponent implements OnInit{
   });
     
 
-  constructor(private route: ActivatedRoute, private googleMapsService: GoogleMapsJsApiService) {
-    const aCollection = collection(this.firestore, 'items')
-    this.items$ = collectionData(aCollection);
+  constructor(private route: ActivatedRoute, private googleMapsService: GoogleMapsJsApiService, 
+    private userService: UserService, private authService: AuthService) {
   }
 
   async ngOnInit() {
@@ -59,6 +56,18 @@ export class ShopDetailsComponent implements OnInit{
       this.coffeeShopId = params['id'];
       console.log('coffee shop deatails of: ' + this.coffeeShopId)
     });
+    // This gets the current user id
+    this.curUserSubscription = this.authService.currentUser.subscribe(user => {
+      this.curUserId = user?.uid || 'no user found';
+    });
+
+    // This gets the Favorite Coffee Shops List of the current user 
+      // we use this to have the favorite button change color
+    if(this.curUserId && this.coffeeShopId) {
+      this.isFavorite = await this.userService.coffeeShopIsAFavorite(this.curUserId, this.coffeeShopId);
+    }
+
+    // This gets the gets the details of Coffee Shop from the shop service
     if (this.coffeeShopId) {
       this.shopLocation = this.googleMapsService.getCoffeeShopById(this.coffeeShopId);
       if (this.shopLocation) {
@@ -66,32 +75,27 @@ export class ShopDetailsComponent implements OnInit{
           this.shopCoords = new google.maps.LatLng(this.shopLocation.lat, this.shopLocation.lng);
         }
       }
-      // this.curShopMap = new google.maps.Map(document.getElementById('shopMap') as HTMLElement, { center: this.shopCoords, zoom: 15 });
-      // const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
-      // const marker = new AdvancedMarkerElement({
-      //   position: this.shopCoords,
-      //   map: this.curShopMap,
-      //   title: this.shopLocation?.name,
-      // });
     }
     
   } // End of ngOnInit
 
-  // Since the modal is not created until the click of review 
-  // i believe we have to use this lifecycle in order to access it
-  // otherwise it will be null
-  // ngAfterViewInit() {
-  //   this.modal = new Modal(this.reviewModal.nativeElement, {});
-  // }
-
   ngOnDestroy() {
     if (this.paramsSubscription) {
       this.paramsSubscription.unsubscribe();
+    } else if (this.curUserSubscription) {
+      this.curUserSubscription.unsubscribe();
     }
   }
 
-  coffeeShopIsAFavorite() {
+  async coffeeShopIsAFavorite() {
     this.isFavorite = !this.isFavorite;
+    try {
+      if(this.curUserId && this.coffeeShopId) {
+        await this.userService.addFavoriteCoffeeShopToProfile(this.curUserId, this.coffeeShopId);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 

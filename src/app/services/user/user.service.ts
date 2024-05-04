@@ -1,5 +1,5 @@
 ;import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc, collectionData } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
 import { map } from 'rxjs';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
@@ -144,18 +144,38 @@ export class UserService {
     }
   } // END OF removeFavoriteCoffeeShopFromProfile
 
-    async getFavoriteCoffeeShopsFromProfile(uid: string) {
-      console.log('Getting favorite coffee shops from profile');
-      if(uid) {
-        const userCollection = collection(this.firestore, `users`);
-        const curUserDoc = doc(userCollection, uid);
-        const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
-        //return docData(curUserCoffeeShopCollectionRef);
-      }
-      return null; // Add this line to return a value outside of the if statement
-    } // END OF getFavoriteCoffeeShopsFromProfile
+  // This function will get the favorite coffee shops from the user's profile
+  async getFavoriteCoffeeShopsList(uid: string) {
+    console.log('Getting favorite coffee shops from profile');
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+      return collectionData(curUserCoffeeShopCollectionRef);
+    }
+    return null; // Add this line to return a value outside of the if statement
+  } // END OF getFavoriteCoffeeShopsFromProfile 
 
-  } // END OF removeFavoriteCoffeeShopFromProfile
+  // This function will return a boolean value if the coffee shop is a favorite of the user
+  async coffeeShopIsAFavorite(uid: string, coffeeShopId: string): Promise<boolean> {
+    console.log('Checking if coffee shop is a favorite');
+    if(uid && coffeeShopId) {
+      const favShops = await this.getFavoriteCoffeeShopsList(uid);
+      if(favShops) {
+        favShops.forEach((shop: any) => {
+          if(shop.coffeeShopId === coffeeShopId) {
+            console.log('Coffee shop is a favorite');
+            return true;
+          } else {
+            console.log('Coffee shop is not a favorite');
+            return false;
+          
+          }
+        });
+      }
+    }
+    return false; // Add this line to return a value outside of the if statement
+  } // END OF coffeeShopIsAFavorite
 
 
 
