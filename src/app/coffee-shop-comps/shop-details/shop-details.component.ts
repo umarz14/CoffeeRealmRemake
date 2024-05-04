@@ -19,7 +19,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class ShopDetailsComponent implements OnInit{
 
   coffeeShopId!: string;
-  isFavorite: boolean = false;
+  isFavorite!: boolean;
   
   private paramsSubscription!: Subscription;
   private curUserSubscription!: Subscription;
@@ -64,7 +64,7 @@ export class ShopDetailsComponent implements OnInit{
     // This gets the Favorite Coffee Shops List of the current user 
       // we use this to have the favorite button change color
     if(this.curUserId && this.coffeeShopId) {
-      this.isFavorite = await this.userService.coffeeShopIsAFavorite(this.curUserId, this.coffeeShopId);
+      this.isFavorite = await this.userService.isCoffeeShopAFavorite(this.curUserId, this.coffeeShopId);
     }
 
     // This gets the gets the details of Coffee Shop from the shop service
@@ -88,14 +88,9 @@ export class ShopDetailsComponent implements OnInit{
   }
 
   async coffeeShopIsAFavorite() {
-    this.isFavorite = !this.isFavorite;
-    try {
-      if(this.curUserId && this.coffeeShopId) {
-        await this.userService.addFavoriteCoffeeShopToProfile(this.curUserId, this.coffeeShopId);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    console.log('Checking if coffee shop is a favorite');
+    console.log(this.isFavorite);
+
   }
 
 

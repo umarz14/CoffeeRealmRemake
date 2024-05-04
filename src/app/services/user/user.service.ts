@@ -157,20 +157,25 @@ export class UserService {
   } // END OF getFavoriteCoffeeShopsFromProfile 
 
   // This function will return a boolean value if the coffee shop is a favorite of the user
-  async coffeeShopIsAFavorite(uid: string, coffeeShopId: string): Promise<boolean> {
+  async isCoffeeShopAFavorite(uid: string, coffeeShopId: string): Promise<boolean> {
     console.log('Checking if coffee shop is a favorite');
     if(uid && coffeeShopId) {
       const favShops = await this.getFavoriteCoffeeShopsList(uid);
+      console.log('Checking if coffee shop is a favorite');
+      console.log('checking for coffee shop id: ', coffeeShopId);
       if(favShops) {
-        favShops.forEach((shop: any) => {
-          if(shop.coffeeShopId === coffeeShopId) {
-            console.log('Coffee shop is a favorite');
-            return true;
-          } else {
-            console.log('Coffee shop is not a favorite');
-            return false;
+        favShops.forEach((doc) => {
+          console.log('doc: ', doc);
+          console.log('coffee shop id: ', doc['coffeeShopId']);
+          // console.log('vs shop id: ', doc.['coffeeShopId']);
+          // if(shop.coffeeShopId === coffeeShopId) {
+          //   console.log('Coffee shop is a favorite');
+          //   return true;
+          // } else {
+          //   console.log('Coffee shop is not a favorite');
+          //   return false;
           
-          }
+          // }
         });
       }
     }
