@@ -6,24 +6,27 @@ import { GoogleMap } from '@angular/google-maps';
   providedIn: 'root'
 })
 export class GooglePlacesApiService {
+
+  // THIS SERVIVE HAS BEEN DEPRECATED
+    // I have moved the functionality to the google-maps-js-api.service.ts
   
  
-  private placesService!: google.maps.places.PlacesService;
-  gmap!: google.maps.Map;
-  protected coffeeShopList: ShopLocation[]  = []; 
+  // private placesService!: google.maps.places.PlacesService;
+  // gmap!: google.maps.Map;
+  // protected coffeeShopList: ShopLocation[]  = []; 
 
-  constructor() {}
+  // constructor() {}
 
-  // This allows us to start making requests to the places api
-  // I had to inilize in this function because services can not
-  // manipulate html objects 
-  initPlacesService(ps: google.maps.Map) {
-    this.gmap = ps;
-    //this.placesService = new google.maps.places.PlacesService(ps);
-    console.log("lat: " + ps.getCenter()?.lat);
-     this.gmap = ps;
-     this.placesService = new google.maps.places.PlacesService(ps);
-  }
+  // // This allows us to start making requests to the places api
+  // // I had to inilize in this function because services can not
+  // // manipulate html objects 
+  // initPlacesService(ps: google.maps.Map) {
+  //   this.gmap = ps;
+  //   //this.placesService = new google.maps.places.PlacesService(ps);
+  //   console.log("lat: " + ps.getCenter()?.lat);
+  //    this.gmap = ps;
+  //    this.placesService = new google.maps.places.PlacesService(ps);
+  // }
 
   // This is the service that gets the coffee shops and returns them in a list json
   // I need to figure out what type of call I wanted to make to the service.
@@ -74,11 +77,11 @@ export class GooglePlacesApiService {
   //   }
   // }
 
-  getShopById(id: string): ShopLocation | undefined {
-    console.log(this.coffeeShopList);
-    console.log('getShopById');
-    console.log(id);
-    return this.coffeeShopList.find(shop => shop.placeId === id);
-  }
+  // getShopById(id: string): ShopLocation | undefined {
+  //   console.log(this.coffeeShopList);
+  //   console.log('getShopById');
+  //   console.log(id);
+  //   return this.coffeeShopList.find(shop => shop.placeId === id);
+  // }
   
 }

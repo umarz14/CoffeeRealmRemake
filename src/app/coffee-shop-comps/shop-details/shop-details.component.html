@@ -6,7 +6,7 @@
                     <div class="card text-end">
                         <img [src]="shopLocation?.imageUrl" class="fluid-card-img" alt="...">
                         <div class="card-img-overlay">
-                            <button mat-fab class="bg-light" (click)="coffeeShopIsAFavorite()">
+                            <button mat-fab class="bg-light" (click)="favButtonClick.next()">
                                 <mat-icon [ngClass]="{'favorite-active': isFavorite, 'favorite-inactive': !isFavorite}">favorite</mat-icon>
                             </button>
                         </div>
@@ -45,8 +45,8 @@
                     <label for="Review" class="form-label">Tell Us What You Think</label>
                     <textarea class="form-control" id="Review" rows="5" formControlName="Review"></textarea>                    
                     <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal ">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)='applyForm.reset(); resetRating();'>Close</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
                     </div>
                 </form>
             </div>

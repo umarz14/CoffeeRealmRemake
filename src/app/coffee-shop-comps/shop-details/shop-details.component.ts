@@ -1,10 +1,9 @@
-import { Component, inject, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ShopLocation } from '../../models/shop-location.model';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { ViewChild, ElementRef } from '@angular/core';
-import { Firestore,collection, collectionData } from '@angular/fire/firestore';
-import { Observable, Subscription } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { throttleTime, switchMap } from 'rxjs/operators';
 
 import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -17,6 +16,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent implements OnInit{
+
+  //ntest: number = 0;
+
+  // This is for the favorite button
+  // this is an observable that is used to throttle the button
+  favButtonClick = new Subject<void>();
+  
 
   coffeeShopId!: string;
   isFavorite!: boolean;
@@ -31,10 +37,13 @@ export class ShopDetailsComponent implements OnInit{
   shopCoords!: google.maps.LatLng;
   curShopMap!: google.maps.Map; 
 
-
+  // this is for the data-bs-target of the modal
   private modal: any; 
-
+  // View child is weird i dont know how to use it yet
+    // it has worked fo my modal 
+    // but i havent gotten it to work for the throttle button
   @ViewChild('reviewModal') reviewModal!: ElementRef;
+
 
   // This is for the rating system
     rating: number = 0;
@@ -61,10 +70,22 @@ export class ShopDetailsComponent implements OnInit{
       this.curUserId = user?.uid || 'no user found';
     });
 
+    // I'm not a fan of this but it works
+      // this is for the throttle button
+      // trottle time is 1 second
+      // this means that no matter how many times the button is clicked
+      // the function will only be called once every 1 second
+      // this is to prevent spamming the server
+    this.favButtonClick.pipe(
+      throttleTime(1000), // 1 second
+      switchMap(() => this.coffeeShopIsAFavorite())
+    ).subscribe();
+
     // This gets the Favorite Coffee Shops List of the current user 
       // we use this to have the favorite button change color
     if(this.curUserId && this.coffeeShopId) {
       this.isFavorite = await this.userService.isCoffeeShopAFavorite(this.curUserId, this.coffeeShopId);
+      console.log('isFavorite: ', this.isFavorite);
     }
 
     // This gets the gets the details of Coffee Shop from the shop service
@@ -88,9 +109,16 @@ export class ShopDetailsComponent implements OnInit{
   }
 
   async coffeeShopIsAFavorite() {
-    console.log('Checking if coffee shop is a favorite');
-    console.log(this.isFavorite);
-
+    // first we check if the user has this coffee shop as a favorite
+    if(this.isFavorite){
+      // if it is a favorite we remove it
+      await this.userService.removeFavoriteCoffeeShopFromProfile(this.curUserId, this.coffeeShopId);
+      this.isFavorite = false;
+    } else {
+      // if it is not a favorite we add it
+      await this.userService.addFavoriteCoffeeShopToProfile(this.curUserId, this.coffeeShopId);
+      this.isFavorite = true;
+    }
   }
 
 
@@ -100,6 +128,10 @@ export class ShopDetailsComponent implements OnInit{
     // Additional logic here if needed, like emitting an event or updating a form control
   } // End of setRating
 
+  // This is to reset the star rating value on the form
+  resetRating() {
+    this.rating = 0;
+  }
 
   submitReview() {
     if (this.applyForm.valid && this.rating!=0) {
