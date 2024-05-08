@@ -1,40 +1,127 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators'
-import { environment } from 'environment';
+import { Loader } from '@googlemaps/js-api-loader';
+import { ShopLocation } from 'src/app/models/shop-location.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleMapsJsApiService {
 
-  // We created this variable because we want to make sure that we only load the google maps api once
-  private apiloaded!: Observable<boolean>;
+  //Places API(New) - https://developers.google.com/maps/documentation/places/web-service/reference/rest
+  
+  // These are our intilized variables
+    // This is the maps important for the google maps api
 
-  // Remeber for sigletonn instances we dont need to unscribe
-  // because angular handles that for us
+  private gmap!: google.maps.Map;
+    // This is a the interface that allows us to make api calls with the google places api
+      // I set it to any because it library from google and their is no general type for it atm 
+      // https://developers.google.com/maps/documentation/javascript/reference/top-level
+  private googlePlaces!: any;
+    // This var is to store all our shop locations so that we
+      // are not constatly making api calls
+  private CoffeeShopList: ShopLocation[] = [];
 
-  //apiLoaded: Observable<boolean>;
-  constructor(private httpClient: HttpClient) {}
+  constructor() {} 
 
-  // If you're using the `<map-heatmap-layer>` directive, you also have to include the `visualization` library 
-  // when loading the Google Maps API. To do so, you can add `&libraries=visualization` to the script URL:    // https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization
-
-  // This is the call to load the google maps api
-  // If you look at the comment above you can see that you can add libraries to the call    
-  // I added the places library to the call so that I can use the places api
-  loadGoogleMapsJsApi(): Observable<boolean> {
-    if(this.apiloaded === undefined) {
-    this.apiloaded = this.httpClient.jsonp(`https://maps.googleapis.com/maps/api/js?key=${environment.apiKey}&libraries=places`, 'callback')
-      .pipe(
-        map(() => true),
-        catchError(() => of(false))
-      );
+  // This function will import the google maps and google places library
+    // if they are not already imported
+    // the plan is for this to be called at the start of the web app aka home page
+  async initService() {
+    if (!google.maps || !google.maps.Map) {
+      console.log('Importing Google Maps Library');
+      try {
+        await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+      } catch (err) {
+        console.log(err);
+      }
+      //await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
     }
-    return this.apiloaded;
   }
 
-} // End of google maps js api service
+  // This function will get the users current location which will then be
+    // used to intilize the maps center which is needed in initmap
+  async getUserCurLocation(): Promise<google.maps.LatLngLiteral> {
+    return new Promise<google.maps.LatLngLiteral>((resolve, reject) => {
+      if (navigator.geolocation) {
+        const options: PositionOptions = {
+          enableHighAccuracy: true
+        };
 
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const location: google.maps.LatLngLiteral = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+            console.log("this is users current location: " + location.lat + " " + location.lng);
+            resolve(location);
+          },
+          (err) => {
+            reject(err);
+          },
+          options
+        );
+      } else {
+        alert('Please Enable Location');
+        reject();
+      }
+    });
+  } // End of getUserCurLocation()
+
+  // This is the function that will initilize all the variables
+    // that we need to start making api calls
+  async setServiceMap(googleMap: google.maps.Map) {
+    this.gmap = googleMap;
+  }
+
+  // This function will get the coffee shops in a 5 mile radius based on the center of the map
+    // which is the users current location by default
+    // the text search call of th places api returns 20 coffee shops 
+    // Results are returned as a list of Place objects, from which you can get place details.
+    // (https://developers.google.com/maps/documentation/javascript/reference/place)
+    // we then convert this list of place objects to a list of ShopLocation objects
+  async FindCoffeeShopsNearby() {
+    if(this.CoffeeShopList.length !== 0) {
+      return this.CoffeeShopList;
+    } if (this.gmap.getCenter() === undefined) {
+      return [];
+    } else {
+      // These are the parameters for the request
+      const request = {
+        textQuery: 'coffee shops',
+        fields: ['id','displayName', 'location', 'formattedAddress', 'photos'],
+        locationBias: new google.maps.Circle({ center: this.gmap.getCenter(), radius: 8046.72 }), // 5 miles in meters
+        language: 'en-US',
+        maxResultCount: 20,
+        region: 'us',
+      };
+      try {
+        const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+        const { places } = await Place.searchByText(request);
+        if (places) {
+          console.log(places);
+          this.CoffeeShopList = places.map((place: google.maps.places.Place) => {
+            return {
+              placeId: place.id,
+              name: place.displayName,
+              address: place.formattedAddress,
+              lat: place.location?.toJSON().lat || 0,
+              lng: place.location?.toJSON().lng || 0,
+              imageUrl: place.photos && place.photos[0] ? place.photos[0].getURI({maxHeight:4800, maxWidth:4800}) : 'assets/img/coffe-cups.jpg',
+              // Add other fields as needed
+            } as ShopLocation;
+          });
+          return this.CoffeeShopList;
+        }
+      } catch (err) {
+        console.log('Error: ' + err);
+      } // end of try/catch
+      return [];
+    } // end of if/else
+  } // End of FindCoffeeShopsNearby()
+
+  // This function return a shopLocation based on the placeId
+  getCoffeeShopById(placeId: string): ShopLocation {
+    return this.CoffeeShopList.find(shop => shop.placeId === placeId) || {} as ShopLocation;
+  }
+
+} 
 

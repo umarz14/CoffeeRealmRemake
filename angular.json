@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "coffee-realm-remake:build:production"
+              "buildTarget": "coffee-realm-remake:build:production"
             },
             "development": {
-              "browserTarget": "coffee-realm-remake:build:development"
+              "buildTarget": "coffee-realm-remake:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +75,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "coffee-realm-remake:build"
+            "buildTarget": "coffee-realm-remake:build"
           }
         },
         "test": {

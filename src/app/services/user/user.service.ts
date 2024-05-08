@@ -1,8 +1,7 @@
 ;import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, setDoc, docData, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc, getDocs, query, where } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
-import { map } from 'rxjs';
-import { addDoc } from 'firebase/firestore';
+import { Observable, map } from 'rxjs';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 
 @Injectable({
@@ -101,6 +100,8 @@ export class UserService {
     }
   } // END OF updateUserProfile
 
+// THIS SECTION WILL BE DEDICATED TO BLOGS
+
   //We have a function that adds blogs created/Authored and liked (liked might be delayed) by the user to the user's profile
   // Im thinkng we can have create docs storing an array and just adding that id to the array
 
@@ -118,6 +119,70 @@ export class UserService {
   } // END OF addPublsihedBlogToProfile
 
 
+// THIS SECTION WILL BE DEDICATED TO COFFEE SHOP FAVORITES
 
+  async addFavoriteCoffeeShopToProfile(uid: string, coffeeShopId: string) {
+    console.log('Adding coffee shop to profile');
+    if(uid && coffeeShopId) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+      await addDoc(curUserCoffeeShopCollectionRef, {
+        coffeeShopId: coffeeShopId
+      });
+      console.log('Coffee shop added to profile');
+    }
+  } // END OF addFavoriteCoffeeShopToProfile
+
+  // This function will remove a coffee shop from the user's favorite coffee shops
+    // this is accomplished using a firebase query 
+    // we first get the collection of favorite coffee shops
+    // then we query the collection for the coffee shop id that we want to remove
+  async removeFavoriteCoffeeShopFromProfile(uid: string, coffeeShopId: string) {
+    console.log('Removing coffee shop from profile');
+    if(uid && coffeeShopId) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+      const q = query(curUserCoffeeShopCollectionRef, where('coffeeShopId', '==', coffeeShopId));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+        console.log('Coffee shop removed from profile');
+      });
+    }
+  } // END OF removeFavoriteCoffeeShopFromProfile
+
+  // This function will get the favorite coffee shops from the user's profile
+  async getFavoriteCoffeeShopsList(uid: string) {
+    console.log('Getting favorite coffee shops from profile');
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+      return getDocs(curUserCoffeeShopCollectionRef);
+    }
+    return null; // Add this line to return a value outside of the if statement
+  } // END OF getFavoriteCoffeeShopsFromProfile 
+
+  // This function will return a boolean value if the coffee shop is a favorite of the user
+  async isCoffeeShopAFavorite(uid: string, coffeeShopId: string): Promise<boolean> {
+    let isFav = false;
+    // console.log('Checking if coffee shop is a favorite');
+    if(uid && coffeeShopId) {
+      const favShops = await this.getFavoriteCoffeeShopsList(uid);
+      if (favShops) {
+        favShops.forEach(doc => {
+          const docData = doc.data()['coffeeShopId'];
+          if( docData === coffeeShopId ) {
+            // console.log('Coffee shop is a favorite');
+            isFav = true;
+          } 
+        });
+      }
+      return isFav;
+    }
+    return isFav; // Add this line to return a value outside of the if statement
+  } // END OF coffeeShopIsAFavorite
 
 } // END OF UserService

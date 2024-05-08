@@ -1,47 +1,49 @@
-import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ShopsService } from '../../services/shops/shops.service';
 import { ShopLocation } from '../../models/shop-location.model';
-import { GooglePlacesApiService } from '../../services/places-api/google-places-api.service';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ViewChild, ElementRef } from '@angular/core';
-import { Modal } from 'bootstrap';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { throttleTime, switchMap } from 'rxjs/operators';
 
-import { Firestore,collection, collectionData } from '@angular/fire/firestore';
-import { Observable, Subscription } from 'rxjs';
+import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
   selector: 'app-shop-details',
    templateUrl: './shop-details.component.html',
-  // template: `
-  // <p>shop-details works!</p>
-  // ``
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent implements OnInit{
 
-  coffeeShopId = '';
+  //ntest: number = 0;
+
+  // This is for the favorite button
+  // this is an observable that is used to throttle the button
+  favButtonClick = new Subject<void>();
   
-  //this is firestore test
-  firestore = inject(Firestore);
-  items$: Observable<any[]>;
 
+  coffeeShopId!: string;
+  isFavorite!: boolean;
+  
   private paramsSubscription!: Subscription;
+  private curUserSubscription!: Subscription;
 
-  // This adds a refrence to the shop service
-  placesService = inject(GooglePlacesApiService);
+  private curUserId!: string;
+
   // This is to get the specific shop from the shop service
-  shopLocation: ShopLocation | undefined; 
+  shopLocation: ShopLocation | undefined;
+  shopCoords!: google.maps.LatLng;
+  curShopMap!: google.maps.Map; 
 
-  // this is for testing purposes only
-  shop: ShopLocation | undefined;
-  location!: google.maps.LatLng;
-
+  // this is for the data-bs-target of the modal
   private modal: any; 
-
+  // View child is weird i dont know how to use it yet
+    // it has worked fo my modal 
+    // but i havent gotten it to work for the throttle button
   @ViewChild('reviewModal') reviewModal!: ElementRef;
+
 
   // This is for the rating system
     rating: number = 0;
@@ -53,38 +55,69 @@ export class ShopDetailsComponent implements OnInit{
   });
     
 
-
-
-  constructor(private route: ActivatedRoute) {
-    const aCollection = collection(this.firestore, 'items')
-    this.items$ = collectionData(aCollection);
+  constructor(private route: ActivatedRoute, private googleMapsService: GoogleMapsJsApiService, 
+    private userService: UserService, private authService: AuthService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // This gets the id from the url and then gets the shop from the shop service
     this.paramsSubscription = this.route.params.subscribe(params =>{
       this.coffeeShopId = params['id'];
       console.log('coffee shop deatails of: ' + this.coffeeShopId)
-    })
-    // if (this.coffeeShopId) {
-    //   this.shopLocation = this.placesService.getShopById(this.coffeeShopId);
-    //   console.log(this.shopLocation);
-    //   console.log(this.shopLocation?.imageUrl);
-    //   console.log(this.shopLocation?.location);
-    //   this.location = this.shopLocation?.location as unknown as google.maps.LatLng;
-    // }
-  } // End of ngOnInit
+    });
+    // This gets the current user id
+    this.curUserSubscription = this.authService.currentUser.subscribe(user => {
+      this.curUserId = user?.uid || 'no user found';
+    });
 
-  // Since the modal is not created until the click of review 
-  // i believe we have to use this lifecycle in order to access it
-  // otherwise it will be null
-  // ngAfterViewInit() {
-  //   this.modal = new Modal(this.reviewModal.nativeElement, {});
-  // }
+    // I'm not a fan of this but it works
+      // this is for the throttle button
+      // trottle time is 1 second
+      // this means that no matter how many times the button is clicked
+      // the function will only be called once every 1 second
+      // this is to prevent spamming the server
+    this.favButtonClick.pipe(
+      throttleTime(1000), // 1 second
+      switchMap(() => this.coffeeShopIsAFavorite())
+    ).subscribe();
+
+    // This gets the Favorite Coffee Shops List of the current user 
+      // we use this to have the favorite button change color
+    if(this.curUserId && this.coffeeShopId) {
+      this.isFavorite = await this.userService.isCoffeeShopAFavorite(this.curUserId, this.coffeeShopId);
+      console.log('isFavorite: ', this.isFavorite);
+    }
+
+    // This gets the gets the details of Coffee Shop from the shop service
+    if (this.coffeeShopId) {
+      this.shopLocation = this.googleMapsService.getCoffeeShopById(this.coffeeShopId);
+      if (this.shopLocation) {
+        if (this.shopLocation.lat && this.shopLocation.lng) {
+          this.shopCoords = new google.maps.LatLng(this.shopLocation.lat, this.shopLocation.lng);
+        }
+      }
+    }
+    
+  } // End of ngOnInit
 
   ngOnDestroy() {
     if (this.paramsSubscription) {
       this.paramsSubscription.unsubscribe();
+    } else if (this.curUserSubscription) {
+      this.curUserSubscription.unsubscribe();
+    }
+  }
+
+  async coffeeShopIsAFavorite() {
+    // first we check if the user has this coffee shop as a favorite
+    if(this.isFavorite){
+      // if it is a favorite we remove it
+      await this.userService.removeFavoriteCoffeeShopFromProfile(this.curUserId, this.coffeeShopId);
+      this.isFavorite = false;
+    } else {
+      // if it is not a favorite we add it
+      await this.userService.addFavoriteCoffeeShopToProfile(this.curUserId, this.coffeeShopId);
+      this.isFavorite = true;
     }
   }
 
@@ -95,6 +128,10 @@ export class ShopDetailsComponent implements OnInit{
     // Additional logic here if needed, like emitting an event or updating a form control
   } // End of setRating
 
+  // This is to reset the star rating value on the form
+  resetRating() {
+    this.rating = 0;
+  }
 
   submitReview() {
     if (this.applyForm.valid && this.rating!=0) {

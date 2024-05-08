@@ -1,43 +1,24 @@
-.container__100h__navbar{
-    height: calc(100vh - 63px);
-    overflow: hidden;
-    width: 100%;
-    max-width: 100%;
+.fluid-card-img {
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
 }
 
-.details-card-container{
-    border-radius: 10px;
-    border: 0cap;
-    height: 420px;
-    width: 85%;
-    min-width: 85%;
+.favorite-active {
+    color: red;
+}
+.favorite-inactive{
+    color: grey;
+
 }
 
-.shop-details-photo{
-    width: 98%;  /* Fixed width */
-    height: 300px; /* Fixed height */
-    object-fit: cover; /* This will make sure the image covers the area without stretching */
-    margin: 5px; /* Optional: Adds some space between the images */
-}
-
-.cont-outline{
-    border: 2px solid red;
-}
-.cont-outline-2{
-    border: 2px solid blue;
-}
-.border-test{
-    border: 3px solid green;
-}
 
 /* star-rating.component.css */
 .star {
     cursor: pointer;
     color: gold;
     font-size: 30px;
-  }
-  
-  .star.not-filled {
+}
+.star.not-filled {
     color: grey;
-  }
-  
+}

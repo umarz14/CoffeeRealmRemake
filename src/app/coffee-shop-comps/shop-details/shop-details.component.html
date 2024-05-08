@@ -1,39 +1,32 @@
-<!-- <div class="container__100h__navbar border-test"> -->
-
-<div class="container-fluid">
-    <div class="row d-flex mt-4">
-        <div class="col-12 col-lg-6 d-flex justify-content-center">
-            <div class="details-card-container">
-                <div class="card">
-                    <figure>
-                    <img [src]="shopLocation?.imageUrl" class="card-img-top shop-details-photo" alt='image of a coffee shop'>
-                    </figure>
-                    <div class="card-body">
-                        <h2 class="card-title">{{shopLocation?.name}}</h2>
-                        <p class="card-text">{{shopLocation?.address}}</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button>
+<div class="container-fluid text-center">
+    <div class="row p-5 row-cols-1 row-cols-lg-2">
+        <div class="col">
+            <div class="card text-start">
+                <div class="card-img-top p-3">
+                    <div class="card text-end">
+                        <img [src]="shopLocation?.imageUrl" class="fluid-card-img" alt="...">
+                        <div class="card-img-overlay">
+                            <button mat-fab class="bg-light" (click)="favButtonClick.next()">
+                                <mat-icon [ngClass]="{'favorite-active': isFavorite, 'favorite-inactive': !isFavorite}">favorite</mat-icon>
+                            </button>
+                        </div>
                     </div>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">{{shopLocation?.name}}</h2>
+                    <p class="card-text fs-5">{{shopLocation?.address}}</p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center mx-auto">
-            <google-map
-                [center]="location">
-                <map-marker
-                    [position]="location"/>
+        <div class="col d-flex align-items-center justify-content-center">
+            <google-map [center]="shopCoords">
+            <map-marker [position]="shopCoords"></map-marker>
             </google-map>
         </div>
     </div>
 </div>
-<div class="details-card-container">
-    <div class="card">
-        <ul>
-            <li class="text" *ngFor="let item of items$ | async">
-              {{item.name}}
-            </li>
-          </ul>          
-    </div>
-</div>
+
 
 <!-- Modal # lets us refrence the modal for viewchild -->
 <div class="modal fade" id="static" tabindex="-1" aria-labelledby="staticLabel" aria-hidden="true" #reviewModal>
@@ -52,8 +45,8 @@
                     <label for="Review" class="form-label">Tell Us What You Think</label>
                     <textarea class="form-control" id="Review" rows="5" formControlName="Review"></textarea>                    
                     <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal ">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)='applyForm.reset(); resetRating();'>Close</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
                     </div>
                 </form>
             </div>
@@ -61,4 +54,3 @@
       </div>
     </div>
 </div>
-

@@ -1,22 +1,26 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription, async } from 'rxjs';
 
 
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { environment } from 'environment';
+
+import { environment } from 'src/environments/environment';
 import { ShopLocation } from '../../models/shop-location.model';
 import { ShopsService } from '../../services/shops/shops.service';
 
 import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
 import { GooglePlacesApiService } from '../../services/places-api/google-places-api.service';
+import { RouterTestingHarness } from '@angular/router/testing';
+import { GoogleMap } from '@angular/google-maps';
 
 @Component({
   selector: 'app-coffee-search',
   templateUrl: './coffee-search.component.html',
-  styleUrls: ['./coffee-search.component.css']
+  styleUrls: ['./coffee-search.component.css'],
 })
 export class CoffeeSearchComponent implements OnInit {
+   // This is pretty much a struct 
+   @Input() shopLocation!: ShopLocation;
 
   // This will allows us to display the list once the api has been loaded
   display: boolean = false;
@@ -26,105 +30,49 @@ export class CoffeeSearchComponent implements OnInit {
 
   // These are other variables that we will need
   gmap!: google.maps.Map;
-  myCenter!: google.maps.LatLngLiteral;
-  // We only need so that we can unscribe from the subscription
-  private apiLoadedSubscription!: Subscription;
+  curUserLoc!: google.maps.LatLngLiteral;
 
-  // This allows us to use the services we created
-  googleMapsJsApiService: GoogleMapsJsApiService = inject(GoogleMapsJsApiService);
-  googlePlacesApiService: GooglePlacesApiService = inject(GooglePlacesApiService);
 
-  constructor() {}
+  constructor(private googleMapsService: GoogleMapsJsApiService,)  {}
 
   async ngOnInit() {
-    
-    // This loads the google maps js api
-    // We have to subscribe to the loadGoogleMapsJsApi() function
-    // because we are doing an htttp request
-    this.apiLoadedSubscription = this.googleMapsJsApiService.loadGoogleMapsJsApi().subscribe(
-      async (apiLoaded) => {
-        try {
-          // This will grab the users current location
-          // and set it to myCenter
-          await this.initMap(); 
-        }
-        catch(err) {
-          console.log(err);
-        }
-
-        // This will init the places service
-        this.googlePlacesApiService.initPlacesService(this.gmap);
-
-        // This will get the shops nearby
-        try {
-          this.shopLocationList = await this.googlePlacesApiService.findShopsNearby();
-        }
-        catch(err) {
-          console.log('Failed to get shops nearby');
-          console.log(err);
-        }
-
+    try{
+      // This will initilize the google maps service just in case it has not been initilized
+      await this.googleMapsService.initService();
+      await this.initMap();
+      if(this.gmap) {
+        this.googleMapsService.setServiceMap(this.gmap);
+        this.shopLocationList = await this.googleMapsService.FindCoffeeShopsNearby();
         if(this.shopLocationList.length > 0) {
           this.display = true;
         }
-        else {
-          console.log('No shops found');
-        }
-
       }
-
-    );
-      
-  } // End of ngOnInit()
-
-  ngOnDestroy() {
-    this.apiLoadedSubscription.unsubscribe();
-  }
-
-  // This is the function that will initilize the map
-  // we will then me able to pass gmap to the google maps places service
-  // to get coffee shops near the user
-  async initMap() {
-    try {
-      await this.getUserCurLocation();
     } catch (err) {
       console.log(err);
     }
-    this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-      center: this.myCenter,
-      zoom: 14,
-    });
+  }
+
+  // This is the function that will initilize a google map
+  // we will pass this to out google maps js service
+  // im not passing the map to the places service because
+  // it takes an html Element and it doesnt seem like a good idea
+  async initMap() {
+    try{
+      this.curUserLoc = await this.googleMapsService.getUserCurLocation();
+      if(this.curUserLoc) {
+        this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+          center: this.curUserLoc,
+          zoom: 14,
+        });
+      }
+      else {
+        console.log("Error: Could not get user location");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   } // End of initMap()
 
-  // This function will get the users current location which will then be
-  // used to intilize the maps center which is needed in initmap
-  getUserCurLocation() {
-    return new Promise<void>((resolve, reject) => {
-      if (navigator.geolocation) {
-        const options: PositionOptions = {
-          enableHighAccuracy: true
-        };
-
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-
-            this.myCenter = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-
-            console.log("this is users current location: " + this.myCenter.lat + " " + this.myCenter.lng);
-            resolve(); // delete this later in production
-          },
-          (err) => {
-            reject(err);
-          },
-          options
-        );
-      } else {
-        alert('Please Enable Location');
-        reject();
-      }
-    });
-  } // End of getUserCurLocation()
-
  
-} // End of CoffeeSearchComponent
 
+} // End of CoffeeSearchComponent
