@@ -1,16 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';  
-import { catchError, map } from 'rxjs/operators';
-import { ShopLocation } from '../../models/shop-location.model';
-import { environment } from 'src/environments/environment';
+import { Firestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopsService {
-  // I might write this service later on to seperate my shop backend functions from the rest of the app
-    // for example add favorite shop, note sure if my code needs to be that modular yet. 
-    // my project is already growing and keeping track of what functions are doing what where
-    // is already becoming a bit of a challenge. But for now this will stay here and be deleted later if not needed.
+/***** THIS SERVICE WILL BE DEDICATED TO THE SHOPS COLLECTIONS AND SUBCOLLECTIONS IN FIRESTORE *****/
+  constructor(private firestore: Firestore) {}
+
+  // This function will get all the add a new shop to the shops collection
+    // *NOTE* a coffee shop will not have a document if there are no reviews
+  addShop() {
+    console.log('Adding a new shop');
+  }
+
+  // This function will get a specific shop from the shops collection
+  getShop() {
+    console.log('Getting a specific shop');
+  }
+
+  // This function will get all the publish a review to a specific shop
+  publishReview() {
+    console.log('Publishing a review');
+    // 1. Get the shop document if it does not exist create it
+    // 2. If it does exist check that a review has not been published by the user
+    // 3. If a review has not been published add the review to the shops reviews subcollection
+  }
+
+
 }

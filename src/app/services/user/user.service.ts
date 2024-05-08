@@ -1,7 +1,6 @@
 ;import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc, getDocs, query, where } from '@angular/fire/firestore';
-import { AuthService } from '../auth/auth.service';
-import { Observable, map } from 'rxjs';
+import { map } from 'rxjs';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 
 @Injectable({
@@ -10,6 +9,8 @@ import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 export class UserService {
 
   constructor(private firestore: Firestore, private firebaseStorage: CloudStorageService) { }
+
+/*************** THIS SECTION WILL BE DEDICATED TO USER PROFILES ***************/
 
   async createUserProfile(uid: string, userName: string, email: string) {
     console.log('Creating user profile');
@@ -100,8 +101,6 @@ export class UserService {
     }
   } // END OF updateUserProfile
 
-// THIS SECTION WILL BE DEDICATED TO BLOGS
-
   //We have a function that adds blogs created/Authored and liked (liked might be delayed) by the user to the user's profile
   // Im thinkng we can have create docs storing an array and just adding that id to the array
 
@@ -119,7 +118,7 @@ export class UserService {
   } // END OF addPublsihedBlogToProfile
 
 
-// THIS SECTION WILL BE DEDICATED TO COFFEE SHOP FAVORITES
+/*************** THIS SECTION WILL BE DEDICATED TO FAVORITE COFFEE SHOPS ***************/
 
   async addFavoriteCoffeeShopToProfile(uid: string, coffeeShopId: string) {
     console.log('Adding coffee shop to profile');
@@ -184,5 +183,8 @@ export class UserService {
     }
     return isFav; // Add this line to return a value outside of the if statement
   } // END OF coffeeShopIsAFavorite
+
+  /*************** THIS SECTION WILL BE DEDICATED TO USER COFFEE SHOP REVIEWS ***************/
+  // should i create a service for the reviews or should i just do it component side
 
 } // END OF UserService
