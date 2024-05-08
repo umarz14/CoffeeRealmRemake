@@ -44,4 +44,5 @@ Thumbs.db
 # Env files
 environment.ts
 src/index.html
+index.html
 src/environments
