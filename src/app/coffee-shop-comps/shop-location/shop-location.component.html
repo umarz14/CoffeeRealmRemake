@@ -12,7 +12,7 @@
   <img [src]="shopLocation.imageUrl" class="card-img-top fluid-card-img" alt="image of coffee shop {{shopLocation.name}}">
   <div class="card-body">
     <h5 class="card-title">{{shopLocation.name}}</h5>
-    <a [routerLink]="['/shopLocationDetails', shopLocation.placeId]" class="btn btn-primary opacity-100">Learn More</a>
+    <a [routerLink]="['/shopLocationDetails', shopLocation.uid]" class="btn btn-primary opacity-100">Learn More</a>
   </div>
 
 </div>

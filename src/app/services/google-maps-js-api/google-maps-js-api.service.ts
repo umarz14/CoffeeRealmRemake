@@ -100,12 +100,14 @@ export class GoogleMapsJsApiService {
           console.log(places);
           this.CoffeeShopList = places.map((place: google.maps.places.Place) => {
             return {
-              placeId: place.id,
+              uid: place.id,
               name: place.displayName,
               address: place.formattedAddress,
               lat: place.location?.toJSON().lat || 0,
               lng: place.location?.toJSON().lng || 0,
               imageUrl: place.photos && place.photos[0] ? place.photos[0].getURI({maxHeight:4800, maxWidth:4800}) : 'assets/img/coffe-cups.jpg',
+              phone_number: place.nationalPhoneNumber || '',
+              website: place.websiteURI || '',
               // Add other fields as needed
             } as ShopLocation;
           });
@@ -120,7 +122,7 @@ export class GoogleMapsJsApiService {
 
   // This function return a shopLocation based on the placeId
   getCoffeeShopById(placeId: string): ShopLocation {
-    return this.CoffeeShopList.find(shop => shop.placeId === placeId) || {} as ShopLocation;
+    return this.CoffeeShopList.find(shop => shop.uid === placeId) || {} as ShopLocation;
   }
 
 } 

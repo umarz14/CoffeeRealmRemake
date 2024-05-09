@@ -8,6 +8,7 @@ import { throttleTime, switchMap } from 'rxjs/operators';
 import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ShopsService } from 'src/app/services/shops/shops.service';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class ShopDetailsComponent implements OnInit{
   private curUserId!: string;
 
   // This is to get the specific shop from the shop service
-  shopLocation: ShopLocation | undefined;
+  shopLocation!: ShopLocation;
   shopCoords!: google.maps.LatLng;
   curShopMap!: google.maps.Map; 
 
@@ -42,7 +43,7 @@ export class ShopDetailsComponent implements OnInit{
   // View child is weird i dont know how to use it yet
     // it has worked fo my modal 
     // but i havent gotten it to work for the throttle button
-  @ViewChild('reviewModal') reviewModal!: ElementRef;
+  // @ViewChild('reviewModal') reviewModal!: ElementRef;
 
 
   // This is for the rating system
@@ -56,7 +57,7 @@ export class ShopDetailsComponent implements OnInit{
     
 
   constructor(private route: ActivatedRoute, private googleMapsService: GoogleMapsJsApiService, 
-    private userService: UserService, private authService: AuthService) {
+    private userService: UserService, private authService: AuthService, private shopService: ShopsService) {
   }
 
   async ngOnInit() {
@@ -133,19 +134,17 @@ export class ShopDetailsComponent implements OnInit{
     this.rating = 0;
   }
 
-  submitReview() {
+  async submitReview() {
     if (this.applyForm.valid && this.rating!=0) {
-      const review = this.applyForm.value.Review;
-      console.log(review);
-      // handle form submission
-      this.modal.hide();
-      // This manually removes the backdrop of the modal for us
-      // it stays when we close it. 
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove();
-      }
+      const review = this.applyForm.value.Review || '';
+      const starRating = this.rating;
+      await this.shopService.publishReview(this.shopLocation, this.curUserId, review, starRating);
+      this.applyForm.reset();
+      this.rating = 0;
+      //console.log(review);
+      //console.log(this.rating);
+      this.applyForm.reset();
+      this.rating = 0;
     } else {
       window.alert('Please fill out the Rating and Review');
     }

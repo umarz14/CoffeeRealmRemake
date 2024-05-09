@@ -4,7 +4,7 @@
             <div class="card text-start">
                 <div class="card-img-top p-3">
                     <div class="card text-end">
-                        <img [src]="shopLocation?.imageUrl" class="fluid-card-img" alt="...">
+                        <img [src]="shopLocation.imageUrl" class="fluid-card-img" alt="...">
                         <div class="card-img-overlay">
                             <button mat-fab class="bg-light" (click)="favButtonClick.next()">
                                 <mat-icon [ngClass]="{'favorite-active': isFavorite, 'favorite-inactive': !isFavorite}">favorite</mat-icon>
@@ -13,9 +13,14 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h2 class="card-title">{{shopLocation?.name}}</h2>
-                    <p class="card-text fs-5">{{shopLocation?.address}}</p>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button>
+                    <h2 class="card-title">{{shopLocation.name}}</h2>
+                    <p class="card-text fs-5">{{shopLocation.address}}</p>
+                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button> -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Launch demo modal
+                    </button>
+  
                 </div>
             </div>
         </div>
@@ -28,29 +33,29 @@
 </div>
 
 
-<!-- Modal # lets us refrence the modal for viewchild -->
-<div class="modal fade" id="static" tabindex="-1" aria-labelledby="staticLabel" aria-hidden="true" #reviewModal>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticLabel">Review</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <!-- star-rating.component.html -->
-            <div class="star-rating">
-                <!-- Each star checks if its value is greater than rating. If it is, the not-filled class is applied, making it grey; otherwise, it remains gold. -->
-                <span class="star" *ngFor="let star of stars" [class.not-filled]="star > rating" (click)="setRating(star)">&#9733;</span>
-                <form [formGroup]="applyForm" (submit)="submitReview()">        
-                    <label for="Review" class="form-label">Tell Us What You Think</label>
-                    <textarea class="form-control" id="Review" rows="5" formControlName="Review"></textarea>                    
-                    <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)='applyForm.reset(); resetRating();'>Close</button>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
-                    </div>
-                </form>
-            </div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticLabel">Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <!-- star-rating.component.html -->
+              <div class="star-rating">
+                  <!-- Each star checks if its value is greater than rating. If it is, the not-filled class is applied, making it grey; otherwise, it remains gold. -->
+                  <span class="star" *ngFor="let star of stars" [class.not-filled]="star > rating" (click)="setRating(star)">&#9733;</span>
+                  <form [formGroup]="applyForm" (submit)="submitReview()">        
+                      <label for="Review" class="form-label">Tell Us What You Think</label>
+                      <textarea class="form-control" id="Review" rows="5" formControlName="Review"></textarea>                    
+                      <div class="modal-footer mt-3">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)='applyForm.reset(); resetRating();'>Close</button>
+                          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
         </div>
       </div>
-    </div>
-</div>
+  </div>
