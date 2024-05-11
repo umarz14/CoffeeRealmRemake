@@ -52,7 +52,7 @@ export class ShopDetailsComponent implements OnInit{
   
   // This is for the review form
   applyForm = new FormGroup({
-    Review: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(300)])
+    Review: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)])
   });
     
 
@@ -145,8 +145,12 @@ export class ShopDetailsComponent implements OnInit{
       //console.log(this.rating);
       this.applyForm.reset();
       this.rating = 0;
+    } else if (this.rating === 0 && this.applyForm.valid) {
+      window.alert('Please fill out the Rating');
+    } else if (this.rating !== 0 && !this.applyForm.valid) {
+      window.alert('Please fill out the Review');
     } else {
-      window.alert('Please fill out the Rating and Review');
+      window.alert('Please fill out the Review and Rating');
     }
   }
 }

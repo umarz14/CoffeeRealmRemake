@@ -38,17 +38,20 @@ export class ShopsService {
     let shopDocExists = await this.checkShop(shopLoc.uid);
 
     if(!shopDocExists) {
+      console.log('Shop Doc does not exist');
       await this.addShop(shopLoc);
+      console.log('Shop Doc added');
     }
 
     // This will return the review id if the user has already reviewed the shop
       // else return 'does not exist'
     let reviewId = await this.checkReview(shopLoc.uid, userUid);
+    console.log('Review Id: ' + reviewId);
     // This is the doc refrence for the shop we are reviewing
     const shopDocRef = doc(this.ShopCollection, shopLoc.uid);
     const curShopReviewCollection = collection(shopDocRef, 'reviews');
 
-    if(!reviewId) {
+    if(reviewId === 'Does Not Exist') {
       await addDoc(curShopReviewCollection, {
         userUid: userUid,
         review: review,
@@ -106,14 +109,14 @@ export class ShopsService {
       const q = query(curShopReviewCollection, where('userUid', '==', userUid), limit(1));
       const querySnapshot = await getDocs(q);
       if(querySnapshot.empty){
-        reject('does not exist');
+        resolve('Does Not Exist');
       
       } else {
         querySnapshot.forEach((doc) => {
           resolve(doc.id);
         });
       }
-      reject('does not exist');
+      reject('Error: Could not check review');
     });
   } // End of checkReview()
 

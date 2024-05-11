@@ -1,6 +1,6 @@
 <div class="container-fluid text-center">
-    <div class="row p-5 row-cols-1 row-cols-lg-2">
-        <div class="col">
+    <div class="row p-5 gy-4 row-cols-1 row-cols-lg-2">
+        <div class="col border border-dark">
             <div class="card text-start">
                 <div class="card-img-top p-3">
                     <div class="card text-end">
@@ -15,19 +15,43 @@
                 <div class="card-body">
                     <h2 class="card-title">{{shopLocation.name}}</h2>
                     <p class="card-text fs-5">{{shopLocation.address}}</p>
-                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static">Review</button> -->
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
+                        Review
                     </button>
-  
                 </div>
             </div>
         </div>
-        <div class="col d-flex align-items-center justify-content-center">
+        <div class="col border border-dark d-flex align-items-center justify-content-center">
             <google-map [center]="shopCoords">
-            <map-marker [position]="shopCoords"></map-marker>
+                <map-marker [position]="shopCoords"></map-marker>
             </google-map>
+        </div>
+        <div class="col">
+            <div class="card text-start">
+                <div class="row g-1">
+                  <div class="col-md-4 text-center border border-dark">
+                    <img src="assets\img\pfp.webp" class="img-fluid rounded-circle p-1 border border-primary" alt="...">
+                    <span>
+                        <mat-icon *ngFor="let star of [1,2,3,4,5]" class="text-warning">star</mat-icon>
+                    </span>
+
+                    <p class="card-text"><small class="text-body-secondary">Last updated 1 month ago</small></p>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body container">
+                      <h5 class="card-title">Username</h5>
+                    <p class="card-text">
+                        I've explored various coffee shops in my area, but this one is my personal favorite, 
+                        especially for its exceptional coffee. The camp mocha, served hot, offers a comforting blend of chocolate and coffee, 
+                        while the iced caramel latte provides a refreshing sweetness that's perfect for any day. What makes this place truly special is its 
+                        morning ambiance—quiet, calm, and just right for productivity. With reliable Wi-Fi and plenty of outlets, it's my go-to spot for early
+                        morning work sessions. Highly recommended for both coffee lovers and anyone needing a productive start to their day!
+                    </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
     </div>
 </div>
