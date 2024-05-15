@@ -1,7 +1,9 @@
 ;import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc, getDoc, getDocs, query, where,  } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, addDoc, setDoc, docData, updateDoc, deleteDoc, getDoc, getDocs, query, where, QuerySnapshot,  } from '@angular/fire/firestore';
 import { map } from 'rxjs';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
+
+import { Blog } from 'src/app/models/blog.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +40,21 @@ export class UserService {
       }
     }
   } // END OF createUserProfile
+
+  async getFavCoffeeShops(uid: string) {
+    let favCoffeeShopsIds: string[] = [];
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      const userFavCoffeeShopCollection = collection(userDoc, `favoriteCoffeeShops`);
+      const querySnapshot = await getDocs(userFavCoffeeShopCollection);
+      querySnapshot.forEach((doc) => {
+        favCoffeeShopsIds.push(doc.get('coffeeShopId'));
+      });
+    }
+    return favCoffeeShopsIds;
+  }
+
 
   getUserProfile(uid: string) {
     console.log('Getting user profile');
@@ -125,8 +142,38 @@ export class UserService {
     }
   } // END OF updateUserProfile
 
+  /*************** THIS SECTION WILL BE HAVE TO FUCNTION RELATED TO BLOGS ***************/
+
   //We have a function that adds blogs created/Authored and liked (liked might be delayed) by the user to the user's profile
   // Im thinkng we can have create docs storing an array and just adding that id to the array
+
+  // This function will get the authored blogs from the user's profile
+  async getAuthoredBlogsList(uid: string) {
+    console.log('Getting authored blogs from profile');
+    let blogList: Blog[] = [];
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserBlogCollectionRef = collection(curUserDoc, `blogs`);
+      const QuerySnapshots = await getDocs(curUserBlogCollectionRef);
+  
+      QuerySnapshots.forEach(doc => {
+        let blog: Blog = {
+          authorUid: doc.get('authorUid'),
+          authorUsername: doc.get('authorUsername'),
+          content: doc.get('content'),
+          date: doc.get('date'),
+          headerImageUrl: doc.get('headerImageUrl'),
+          title: doc.get('title'),
+          blogId: doc.id
+        };
+        blogList.push(blog);
+      });
+      return blogList;
+    }
+    return blogList; // Add this line to return a value outside of the if statement
+  } // END OF getAuthoredBlogsFromProfile
+
 
   async addPublsihedBlogToProfile(uid: string, blogId: string) {
     console.log('Adding blog to profile');

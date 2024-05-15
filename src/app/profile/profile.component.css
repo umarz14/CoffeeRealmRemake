@@ -5,6 +5,12 @@
     height: 150px;
     object-fit: cover;
 }
+
+.fluid-img {
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
 .postion-right-corner{
     position: relative;
     top: 50%;

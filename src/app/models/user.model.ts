@@ -1,5 +1,3 @@
-import { ShopLocation } from "./shop-location.model";
-
 export interface User {
     uid: string,
     displayName: string,
@@ -7,6 +5,4 @@ export interface User {
     email: string,
     created: Date,
     bio: string,
-    favoriteShopsId: string[],
-    blogPostsId: string[],
 }

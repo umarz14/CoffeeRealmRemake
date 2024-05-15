@@ -5,6 +5,9 @@ import { Subscription } from 'rxjs';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
 
 import { User } from '../models/user.model';
+import { ShopLocation } from '../models/shop-location.model';
+import { GoogleMapsJsApiService } from '../services/google-maps-js-api/google-maps-js-api.service';
+import { Blog } from '../models/blog.model';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +19,9 @@ export class ProfileComponent implements OnInit{
   isLoaded: boolean = false;
   uid: string | null = null;
   userProfile: any;
+  favCoffeeShopsIdList: string[] = [];
+  favCoffeeShopsList: ShopLocation[] = [];
+  authoredBlogs: Blog[] = [];
 
   curUserData!: User; 
   private userSubscription?: Subscription;
@@ -29,7 +35,7 @@ export class ProfileComponent implements OnInit{
   pfpErrorMessage: string | null = null;
   bioErrorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private userService: UserService) {
+  constructor(private authService: AuthService, private userService: UserService, private googleMapsJsApiService: GoogleMapsJsApiService) {
   } // END OF constructor
 
 
@@ -37,8 +43,8 @@ export class ProfileComponent implements OnInit{
   // it subscribes to the currentUser observable to get the current user
   // it then subscribes to the user profile observable to get the user's profile
   // it sets the isLoaded flag to true when the user profile is loaded
-  ngOnInit() {
-    this.userSubscription = this.authService.currentUser.subscribe((user) => {
+  async ngOnInit() {
+    this.userSubscription = this.authService.currentUser.subscribe(async (user) => {
       if(user) {
         this.uid = user.uid;
         console.log('User is logged in on profile component, uid: ', this.uid);
@@ -49,7 +55,13 @@ export class ProfileComponent implements OnInit{
             this.isLoaded = true;
           }
         )
-        
+        this.favCoffeeShopsIdList = await this.userService.getFavCoffeeShops(this.uid);
+        for(let id of this.favCoffeeShopsIdList) {
+          console.log('id: ', id)
+          let shop: ShopLocation = await this.googleMapsJsApiService.getCoffeeShopGoogleDetailsById(id);
+          this.favCoffeeShopsList.push(shop);
+        }
+        this.authoredBlogs = await this.userService.getAuthoredBlogsList(this.uid);
       }
       else {
         this.isLoaded = false;

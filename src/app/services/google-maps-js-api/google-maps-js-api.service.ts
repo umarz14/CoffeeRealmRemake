@@ -125,5 +125,26 @@ export class GoogleMapsJsApiService {
     return this.CoffeeShopList.find(shop => shop.uid === placeId) || {} as ShopLocation;
   }
 
+  async getCoffeeShopGoogleDetailsById(placeId: string): Promise<ShopLocation> {
+    const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+    const place = new Place({ id: placeId, requestedLanguage: 'en-US' });
+    await place.fetchFields({
+      fields: ['displayName', 'location', 'formattedAddress', 'photos', 'nationalPhoneNumber', 'websiteURI']
+    });
+    if (place) {
+      return {
+        uid: place.id,
+        name: place.displayName,
+        address: place.formattedAddress,
+        lat: place.location?.toJSON().lat || 0,
+        lng: place.location?.toJSON().lng || 0,
+        imageUrl: place.photos && place.photos[0] ? place.photos[0].getURI({maxHeight:4800, maxWidth:4800}) : 'assets/img/coffe-cups.jpg',
+        phone_number: place.nationalPhoneNumber || '',
+        website: place.websiteURI || '',
+      } as ShopLocation;
+    }
+    return {} as ShopLocation;
+  }
+
 } 
 
