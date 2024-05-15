@@ -18,6 +18,8 @@ import { ShopsService } from 'src/app/services/shops/shops.service';
 })
 export class ShopDetailsComponent implements OnInit{
 
+  isCollasped = true;
+
   //ntest: number = 0;
 
   // This is for the favorite button
@@ -55,6 +57,7 @@ export class ShopDetailsComponent implements OnInit{
     Review: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)])
   });
     
+  reviews: any[] = [];
 
   constructor(private route: ActivatedRoute, private googleMapsService: GoogleMapsJsApiService, 
     private userService: UserService, private authService: AuthService, private shopService: ShopsService) {
@@ -96,6 +99,10 @@ export class ShopDetailsComponent implements OnInit{
         if (this.shopLocation.lat && this.shopLocation.lng) {
           this.shopCoords = new google.maps.LatLng(this.shopLocation.lat, this.shopLocation.lng);
         }
+        this.reviews = await this.shopService.getAllReviewsForShop(this.coffeeShopId);
+        // if (this.reviews) {
+        //   console.log(this.reviews);
+        // }
       }
     }
     
@@ -134,11 +141,12 @@ export class ShopDetailsComponent implements OnInit{
     this.rating = 0;
   }
 
+  
   async submitReview() {
     if (this.applyForm.valid && this.rating!=0) {
       const review = this.applyForm.value.Review || '';
       const starRating = this.rating;
-      await this.shopService.publishReview(this.shopLocation, this.curUserId, review, starRating);
+      await this.shopService.publishReview(this.shopLocation, this.curUserId, "yellow" ,review, starRating);
       this.applyForm.reset();
       this.rating = 0;
       //console.log(review);
@@ -153,4 +161,24 @@ export class ShopDetailsComponent implements OnInit{
       window.alert('Please fill out the Review and Rating');
     }
   }
+
+  // THESE ARE HELPER FUNCTIONS FOR THE REVIEW INTERFACE TO WORK WITH THE HTML
+  
+  getRewiewRatingArray(rating: number) {
+    let stars = [];
+    for (let i = 0; i < rating; i++) {
+      stars.push(i);
+    }
+    return stars;
+  }
+
+  formatDate(date: any) {
+    return new Date(date).toLocaleDateString();
+  }
+
+  toggleCollapse() {
+    this.isCollasped = !this.isCollasped;
+  }
+
+
 }

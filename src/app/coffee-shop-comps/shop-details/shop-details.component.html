@@ -1,6 +1,6 @@
-<div class="container-fluid text-center">
+<div class="container-fluid text-center border">
     <div class="row p-5 gy-4 row-cols-1 row-cols-lg-2">
-        <div class="col border border-dark">
+        <div class="col">
             <div class="card text-start">
                 <div class="card-img-top p-3">
                     <div class="card text-end">
@@ -22,36 +22,54 @@
                 </div>
             </div>
         </div>
-        <div class="col border border-dark d-flex align-items-center justify-content-center">
-            <google-map [center]="shopCoords">
+        <div class="col d-flex align-items-center justify-content-center">
+            <google-map 
+                [center]="shopCoords">
                 <map-marker [position]="shopCoords"></map-marker>
             </google-map>
         </div>
-        <div class="col">
-            <div class="card text-start">
-                <div class="row g-1">
-                  <div class="col-md-4 text-center border border-dark">
-                    <img src="assets\img\pfp.webp" class="img-fluid rounded-circle p-1 border border-primary" alt="...">
-                    <span>
-                        <mat-icon *ngFor="let star of [1,2,3,4,5]" class="text-warning">star</mat-icon>
-                    </span>
-
-                    <p class="card-text"><small class="text-body-secondary">Last updated 1 month ago</small></p>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body container">
-                      <h5 class="card-title">Username</h5>
-                    <p class="card-text">
-                        I've explored various coffee shops in my area, but this one is my personal favorite, 
-                        especially for its exceptional coffee. The camp mocha, served hot, offers a comforting blend of chocolate and coffee, 
-                        while the iced caramel latte provides a refreshing sweetness that's perfect for any day. What makes this place truly special is its 
-                        morning ambiance—quiet, calm, and just right for productivity. With reliable Wi-Fi and plenty of outlets, it's my go-to spot for early
-                        morning work sessions. Highly recommended for both coffee lovers and anyone needing a productive start to their day!
-                    </p>
+    </div>
+    <div class="contianer-fluid mb-5 text-start card mx-5 p-3 border border-primary">
+        <h2 class="card-title">Reviews</h2>
+        <div *ngIf="reviews.length==0" class="card col-4">
+            <div class="card-body">
+                <span>
+                    <p class="card-text">No reviews yet. Be the first to review this coffee shop!</p> 
+                    <!-- <mat-icon >rate_review</mat-icon>  -->
+                </span>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-lg-2 gy-2">
+            <div *ngFor="let review of reviews" class="col">
+                <div class="card h-100 text-start">
+                    <div class="row g-0">
+                        <div class="col-md-4 text-center p-1">
+                            <div class="container h-100 d-flex flex-column justify-content-center">
+                                <div class="container mb-2">
+                                    <img src={{review.pfp}} class=" fluid-pfp-img rounded-circle " alt="...">
+                                </div>
+                                <div class="container">
+                                    <span>
+                                        <span class="star" *ngFor="let star of getRewiewRatingArray(review.rating)">
+                                            <mat-icon class="text-warning">star</mat-icon>
+                                        </span>
+                                    </span>
+                                    <p class="card-text"><small class="text-body-secondary">{{formatDate(review.date)}}</small></p>    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body container">
+                                <h5 class="card-title text-capitalize">{{review.displayName}}</h5>
+                                <p class="card-text" [ngClass]="{'text-truncate-container': isCollasped}">{{review.review}}</p>
+                                <button class="btn btn-sm btn-primary" (click)="toggleCollapse()">
+                                    {{ isCollasped ? 'Read More' : 'Collaspse' }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
 </div>

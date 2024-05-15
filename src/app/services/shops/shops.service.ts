@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, query, where, getDocs, getDoc, setDoc, addDoc, updateDoc } from '@angular/fire/firestore';
-import { limit } from 'firebase/firestore';
+import { Firestore, collection, doc, query, where, getDocs, getDoc, setDoc, addDoc, updateDoc, limit } from '@angular/fire/firestore';
+
+// These are models
 import { ShopLocation } from 'src/app/models/shop-location.model';
+import { Review } from 'src/app/models/review.model';
+import { UserService } from '../user/user.service';
+
+
 
 
 @Injectable({
@@ -12,16 +17,27 @@ export class ShopsService {
 /***** THIS SERVICE WILL BE DEDICATED TO THE SHOPS COLLECTIONS AND SUBCOLLECTIONS IN FIRESTORE *****/
   ShopCollection = collection(this.firestore, `shops`);  
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private userService: UserService) {}
 
   // This function will get all the reviews for a specific shop
   async getAllReviewsForShop(shopUid: string) {
     const shopDocRef = doc(this.ShopCollection, shopUid);
     const curShopReviewCollection = collection(shopDocRef, 'reviews');
     const querySnapshot = await getDocs(curShopReviewCollection);
-    let reviews: any[] = []; // Explicitly declare the type of 'reviews' as an array of any
-    querySnapshot.forEach((doc) => {
-      reviews.push(doc.data());
+    let reviews: Review[] = []; // Explicitly declare the type of 'reviews' as an array of any
+    querySnapshot.forEach( async (doc)  => {
+      const uid = doc.get('userUid');
+      const displayName = await this.userService.getUsername(uid);
+      const pfp = await this.userService.getUserImg(uid);
+      let review: Review = {
+        userUid: doc.get('userUid'),
+        review: doc.get('review'),
+        rating: doc.get('rating'),
+        date: doc.get('date').toDate(),
+        displayName: displayName,
+        pfp: pfp,
+      };
+      reviews.push(review);
     });
     return reviews;
   } // End of getReviews()
@@ -33,7 +49,7 @@ export class ShopsService {
     // 2. If the document exists, check if the user has already reviewed the shop
       // Has reviewed -> update the review
       // Has not reviewed -> add a new review
-  async publishReview(shopLoc: ShopLocation, userUid: string, review: string, rating: number, ) {
+  async publishReview(shopLoc: ShopLocation, userUid: string, username: string, review: string, rating: number, ) {
     
     let shopDocExists = await this.checkShop(shopLoc.uid);
 

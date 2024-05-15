@@ -1,5 +1,5 @@
 ;import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc, getDocs, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, doc, addDoc, setDoc, docData, updateDoc, deleteDoc, getDoc, getDocs, query, where,  } from '@angular/fire/firestore';
 import { map } from 'rxjs';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 
@@ -55,7 +55,17 @@ export class UserService {
       const userCollection = collection(this.firestore, `users`);
       const userDoc = doc(userCollection, uid);
       return docData(userDoc).pipe(map(curUserDoc => curUserDoc ? curUserDoc['pfp']:undefined));
-      
+    }
+    return null; // Add this line to return a value outside of the if statement
+  } // END OF getUsersPfp
+
+  async getUserImg(uid: string) {
+    console.log('Getting user pfp');
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      const docSnap = await getDoc(userDoc);
+      return docSnap.get('pfp');
     }
     return null; // Add this line to return a value outside of the if statement
   } // END OF getUsersPfp
@@ -65,6 +75,20 @@ export class UserService {
       const userCollection = collection(this.firestore, `users`);
       const userDoc = doc(userCollection, uid);
       return docData(userDoc).pipe(map(curUserDoc => curUserDoc ? curUserDoc['userName']:undefined));
+    }
+    return null;
+  }
+
+  // This function will get the username of the user using the user id
+    // tho this is a one time document snapshot so we wont be listening for changes
+    // document snapshots have the .data() method that returns the document data
+    // they also have the .get() method that returns the field value
+  async getUsername(uid: string) {
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      const docSnap = await getDoc(userDoc);
+      return docSnap.get('userName');
     }
     return null;
   }
@@ -120,6 +144,38 @@ export class UserService {
 
 /*************** THIS SECTION WILL BE DEDICATED TO FAVORITE COFFEE SHOPS ***************/
 
+  // This function will get the favorite coffee shops from the user's profile
+  async getFavoriteCoffeeShopsList(uid: string) {
+    console.log('Getting favorite coffee shops from profile');
+    if(uid) {
+      const userCollection = collection(this.firestore, `users`);
+      const curUserDoc = doc(userCollection, uid);
+      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
+      return getDocs(curUserCoffeeShopCollectionRef);
+    }
+    return null; // Add this line to return a value outside of the if statement
+  } // END OF getFavoriteCoffeeShopsFromProfile 
+
+  // This function will return a boolean value if the coffee shop is a favorite of the user
+  async isCoffeeShopAFavorite(uid: string, coffeeShopId: string): Promise<boolean> {
+    let isFav = false;
+    // console.log('Checking if coffee shop is a favorite');
+    if(uid && coffeeShopId) {
+      const favShops = await this.getFavoriteCoffeeShopsList(uid);
+      if (favShops) {
+        favShops.forEach(doc => {
+          const docData = doc.data()['coffeeShopId'];
+          if( docData === coffeeShopId ) {
+            // console.log('Coffee shop is a favorite');
+            isFav = true;
+          } 
+        });
+      }
+      return isFav;
+    }
+    return isFav; // Add this line to return a value outside of the if statement
+  } // END OF coffeeShopIsAFavorite
+
   async addFavoriteCoffeeShopToProfile(uid: string, coffeeShopId: string) {
     console.log('Adding coffee shop to profile');
     if(uid && coffeeShopId) {
@@ -152,37 +208,9 @@ export class UserService {
     }
   } // END OF removeFavoriteCoffeeShopFromProfile
 
-  // This function will get the favorite coffee shops from the user's profile
-  async getFavoriteCoffeeShopsList(uid: string) {
-    console.log('Getting favorite coffee shops from profile');
-    if(uid) {
-      const userCollection = collection(this.firestore, `users`);
-      const curUserDoc = doc(userCollection, uid);
-      const curUserCoffeeShopCollectionRef = collection(curUserDoc, `favoriteCoffeeShops`);
-      return getDocs(curUserCoffeeShopCollectionRef);
-    }
-    return null; // Add this line to return a value outside of the if statement
-  } // END OF getFavoriteCoffeeShopsFromProfile 
+  
 
-  // This function will return a boolean value if the coffee shop is a favorite of the user
-  async isCoffeeShopAFavorite(uid: string, coffeeShopId: string): Promise<boolean> {
-    let isFav = false;
-    // console.log('Checking if coffee shop is a favorite');
-    if(uid && coffeeShopId) {
-      const favShops = await this.getFavoriteCoffeeShopsList(uid);
-      if (favShops) {
-        favShops.forEach(doc => {
-          const docData = doc.data()['coffeeShopId'];
-          if( docData === coffeeShopId ) {
-            // console.log('Coffee shop is a favorite');
-            isFav = true;
-          } 
-        });
-      }
-      return isFav;
-    }
-    return isFav; // Add this line to return a value outside of the if statement
-  } // END OF coffeeShopIsAFavorite
+  
 
   /*************** THIS SECTION WILL BE DEDICATED TO USER COFFEE SHOP REVIEWS ***************/
   // should i create a service for the reviews or should i just do it component side

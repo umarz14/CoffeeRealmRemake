@@ -4,6 +4,8 @@ import { UserService } from '../services/user/user.service';
 import { Subscription } from 'rxjs';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
 
+import { User } from '../models/user.model';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -14,6 +16,8 @@ export class ProfileComponent implements OnInit{
   isLoaded: boolean = false;
   uid: string | null = null;
   userProfile: any;
+
+  curUserData!: User; 
   private userSubscription?: Subscription;
   private userProfileSubscription?: Subscription;
 
@@ -45,6 +49,7 @@ export class ProfileComponent implements OnInit{
             this.isLoaded = true;
           }
         )
+        
       }
       else {
         this.isLoaded = false;

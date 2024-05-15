@@ -3,6 +3,13 @@
     aspect-ratio: 16 / 9;
     object-fit: cover;
 }
+.fluid-pfp-img {
+    inline-size: 100%;
+    /* aspect-ratio: 1 / 1; */
+    object-fit: cover;
+    height: 5rem;
+    width: auto;
+}
 
 .favorite-active {
     color: red;
@@ -23,9 +30,10 @@
     color: grey;
 }
 
-.text-truncate-container p {
-    -webkit-line-clamp: 3;
+.text-truncate-container {
+    width: 100%;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    overflow: hidden;
+    -webkit-line-clamp: 4;
+    overflow: hidden;  
 }
