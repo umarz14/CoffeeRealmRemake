@@ -1,17 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription, async } from 'rxjs';
+import { Component, OnInit, Input } from '@angular/core';
 
-
-
-import { environment } from 'src/environments/environment';
 import { ShopLocation } from '../../models/shop-location.model';
-import { ShopsService } from '../../services/shops/shops.service';
 
 import { GoogleMapsJsApiService } from '../../services/google-maps-js-api/google-maps-js-api.service';
-import { GooglePlacesApiService } from '../../services/places-api/google-places-api.service';
-import { RouterTestingHarness } from '@angular/router/testing';
-import { GoogleMap } from '@angular/google-maps';
+
 
 @Component({
   selector: 'app-coffee-search',

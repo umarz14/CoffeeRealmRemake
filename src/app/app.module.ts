@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HttpClientJsonpModule} from '@angular/common/http'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { ScriptLoaderService } from './services/api-loader/script-loader.service';
 
 import { AppComponent } from './app.component';
 import { CoffeeSearchComponent } from './coffee-shop-comps/coffee-search/coffee-search.component';
@@ -28,7 +29,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AppRoutingModule } from './app-routing.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'; // Import the AppRoutingModule module
 
-
+export function initializeApi(scriptLoaderService: ScriptLoaderService) {
+  return () => scriptLoaderService.addGoogleMapsApi();
+}
 
 
 @NgModule({
@@ -68,6 +71,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
       provideStorage(() => getStorage()),
     ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApi,
+      deps: [ScriptLoaderService],
+      multi: true
+    },
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]

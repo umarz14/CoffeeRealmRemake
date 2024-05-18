@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Loader } from '@googlemaps/js-api-loader';
 import { ShopLocation } from 'src/app/models/shop-location.model';
 
 @Injectable({
