@@ -15,7 +15,7 @@ jobs:
       # brings source code into dir
       - uses: actions/checkout@v2
       # install node.js
-      - uses: actions/setupnode@v1
+      - uses: actions/setup-node@v1
         with: 
           node-version: 20
       # this is basically a clean install of npm 
