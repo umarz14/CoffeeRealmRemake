@@ -27,4 +27,4 @@ jobs:
       # this test our code
       #- run: npm test
       # make sure code build
-      - run: npm run build -- --prod
+      - run: npm run build -- --c "production"
