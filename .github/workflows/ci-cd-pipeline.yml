@@ -13,14 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # brings source code into dir
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # install node.js
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with: 
-          node-version: 20
+          node-version: '20'
       # this is basically a clean install of npm 
       - run: npm ci
+      - name: Set up environment variables
+        run: |
+          echo "NG_APP_GOOGLE_MAPS_JS_API_KEY=${{ secrets.MY_GOOGLE_MAPS_JS_API_KEY }}" >> $GITHUB_ENV
+            echo "NG_APP_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
       # this test our code
       #- run: npm test
       # make sure code build
-      - run: npm run build 
+      - run: npm run build -- --prod
