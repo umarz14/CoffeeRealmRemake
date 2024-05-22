@@ -5,3 +5,9 @@
     background-color: #E3E0DE;
     border: none;
 }
+
+.fluid-img {
+    inline-size: 50%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}

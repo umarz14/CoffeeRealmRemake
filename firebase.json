@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "dist/coffee-realm-remake",
     "ignore": [
       "firebase.json",
       "**/.*",

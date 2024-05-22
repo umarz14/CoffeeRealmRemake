@@ -14,8 +14,8 @@
     <div class="row row-cols-1 row-cols-lg-3 gy-4">
         <div class="col" *ngFor="let blog of blogs$ | async">
             <div class="card h-100">
-                <div class="card-img-top-container">
-                    <img class="card-img-top" src="{{blog.headerImageUrl}}" alt="Card image cap">
+                <div class="card-img-top-container p-2">
+                    <img class="fluid-img" src="{{blog.headerImageUrl}}" alt="Card image cap">
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{blog.title}}</h5>

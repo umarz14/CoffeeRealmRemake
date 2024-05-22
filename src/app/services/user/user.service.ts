@@ -4,13 +4,14 @@ import { map } from 'rxjs';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 
 import { Blog } from 'src/app/models/blog.model';
+import { BlogService } from '../blog/blog.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private firestore: Firestore, private firebaseStorage: CloudStorageService) { }
+  constructor(private firestore: Firestore, private firebaseStorage: CloudStorageService, private blogService: BlogService) { }
 
 /*************** THIS SECTION WILL BE DEDICATED TO USER PROFILES ***************/
 
@@ -109,6 +110,24 @@ export class UserService {
     }
     return null;
   }
+
+  async updateUserProfilePic(uid: string | null, pfp: string) {
+    console.log('Updating user profile');
+    if(uid && pfp) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      await updateDoc(userDoc, {pfp: pfp});
+    }
+  } // END OF updateUserProfile
+
+  async updateUserProfileBio(uid: string | null, bio: string) {
+    console.log('Updating user profile');
+    if(uid && bio) {
+      const userCollection = collection(this.firestore, `users`);
+      const userDoc = doc(userCollection, uid);
+      await updateDoc(userDoc, {bio: bio});
+    }
+  } // END OF updateUserProfile
   
 
   async updateUserProfile(uid: string | null, pfp: string, bio: string) {
@@ -154,21 +173,14 @@ export class UserService {
     if(uid) {
       const userCollection = collection(this.firestore, `users`);
       const curUserDoc = doc(userCollection, uid);
-      const curUserBlogCollectionRef = collection(curUserDoc, `blogs`);
+      const curUserBlogCollectionRef = collection(curUserDoc, `publishedBlogs`);
       const QuerySnapshots = await getDocs(curUserBlogCollectionRef);
   
-      QuerySnapshots.forEach(doc => {
-        let blog: Blog = {
-          authorUid: doc.get('authorUid'),
-          authorUsername: doc.get('authorUsername'),
-          content: doc.get('content'),
-          date: doc.get('date'),
-          headerImageUrl: doc.get('headerImageUrl'),
-          title: doc.get('title'),
-          blogId: doc.id
-        };
+      QuerySnapshots.forEach(async (doc) => {
+        let blog: Blog = await this.blogService.getBlogPost(doc.get('blogId'));
         blogList.push(blog);
       });
+      console.log('Authored blogs: ', blogList.length);
       return blogList;
     }
     return blogList; // Add this line to return a value outside of the if statement

@@ -10,3 +10,8 @@
     object-position: center; /* Centers the image */
 }
   
+.fluid-img {
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}

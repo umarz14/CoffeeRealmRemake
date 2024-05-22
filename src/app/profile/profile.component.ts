@@ -4,9 +4,11 @@ import { UserService } from '../services/user/user.service';
 import { Subscription } from 'rxjs';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
 
+import { GoogleMapsJsApiService } from '../services/google-maps-js-api/google-maps-js-api.service';
+import { CloudStorageService } from '../services/cloud-storage/cloud-storage.service';
+
 import { User } from '../models/user.model';
 import { ShopLocation } from '../models/shop-location.model';
-import { GoogleMapsJsApiService } from '../services/google-maps-js-api/google-maps-js-api.service';
 import { Blog } from '../models/blog.model';
 
 @Component({
@@ -35,7 +37,8 @@ export class ProfileComponent implements OnInit{
   pfpErrorMessage: string | null = null;
   bioErrorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private userService: UserService, private googleMapsJsApiService: GoogleMapsJsApiService) {
+  constructor(private authService: AuthService, private userService: UserService, 
+    private googleMapsJsApiService: GoogleMapsJsApiService, private cs: CloudStorageService) {
   } // END OF constructor
 
 
@@ -77,17 +80,19 @@ export class ProfileComponent implements OnInit{
 
 
   // This function is called when the user submits the form
-  onSubmit(form: any) {
+  async onSubmit(form: any) {
     if (form.valid) {
       if (this.updateProfile.pfp) {
         console.log('updating pfp');
-        this.updateProfilePic();
+        const newpfp = await this.cs.uploadImage(this.updateProfile.pfp, 'users_pfp/' + this.uid + '.jpg');
+        console.log('newpfp: ', newpfp);
+        this.userService.updateUserProfilePic(this.uid, newpfp);
       }
       if (this.updateProfile.bio) {
         if (this.validateBio()) {
           this.bioErrorMessage = null;
-          console.log('updating bio');
-
+          console.log('updating bio' + this.updateProfile.bio);
+          this.userService.updateUserProfileBio(this.uid,this.updateProfile.bio);
         }
         else {
           console.log('bio is empty');
@@ -96,6 +101,7 @@ export class ProfileComponent implements OnInit{
           return;
         }
       }
+      form.reset();
     }
   }
 
@@ -125,30 +131,30 @@ export class ProfileComponent implements OnInit{
 
 
   // this should be in a service
-  updateProfilePic() {
-    if(this.updateProfile.pfp) {
-      // This a reference to the storage location where the file will be uploaded
-      // The file will be uploaded to the users_pfp folder with the name lol
-      const storageRef = ref(this.storage, 'users_pfp/' + this.uid + '.jpg');
-      // This is the function that uploads the file to the storage location
-      const uploadTask = uploadBytesResumable(storageRef, this.updateProfile.pfp);
+  // updateProfilePic() {
+  //   if(this.updateProfile.pfp) {
+  //     // This a reference to the storage location where the file will be uploaded
+  //     // The file will be uploaded to the users_pfp folder with the name lol
+  //     const storageRef = ref(this.storage, 'users_pfp/' + this.uid + '.jpg');
+  //     // This is the function that uploads the file to the storage location
+  //     const uploadTask = uploadBytesResumable(storageRef, this.updateProfile.pfp);
       
-      uploadTask.then((snapshot) => {
-        console.log('File uploaded successfully');
-        // You can perform additional actions here after the file is uploaded successfully
-      }).catch((error) => {
-        console.log('File upload failed:', error);
-        // Handle the error if the file upload fails
-      });
+  //     uploadTask.then((snapshot) => {
+  //       console.log('File uploaded successfully');
+  //       // You can perform additional actions here after the file is uploaded successfully
+  //     }).catch((error) => {
+  //       console.log('File upload failed:', error);
+  //       // Handle the error if the file upload fails
+  //     });
 
-      getDownloadURL(storageRef).then((url) => { 
-        console.log('URL: ', url); 
-        this.userService.updateUserProfile(this.uid, url, this.updateProfile.bio);
-      });
+  //     getDownloadURL(storageRef).then((url) => { 
+  //       console.log('URL: ', url); 
+  //       this.userService.updateUserProfile(this.uid, url, this.updateProfile.bio);
+  //     });
 
     
-    }
+  //   }
 
-  } // END OF updateProfilePic
+  // } // END OF updateProfilePic
   
 } // END OF ProfileComponent

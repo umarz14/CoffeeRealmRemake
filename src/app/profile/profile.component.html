@@ -17,7 +17,10 @@
   <div class="container-fluid ps-5 pe-5 pt-3">
   <!-- This is the scrolling bar Favorite Coffee Shops -->
     <h1 class="mb-2">Favorite Coffee Shops</h1>
-    <div class="card text-center ps-3 pe-3 pt-3 pb-1">
+    <div class="card text-center p-3">
+      <div *ngIf="favCoffeeShopsList.length == 0">
+        <p class="card-text mb-1">You havent added any coffee shops to your favorites yet.</p>
+      </div>
       <div class="row row-cols-3 gx-3 d-flex flex-nowrap overflow-auto horizontal-scroll">
         <div class="col" *ngFor="let shop of favCoffeeShopsList">
           <div class="card mb-1">
@@ -51,7 +54,7 @@
                   <div class="card mb-2 mt-2">
                     <div class="row g-0">
                       <div class="col-md-4">
-                        <img src="{{blog.headerImageUrl}}"  loading="lazy" class="img-fluid h-100 rounded-start img-resize" alt="...">
+                        <img src="{{blog.headerImageUrl}}"  loading="lazy" class="img-fluid rounded-start h-100" alt="...">
                       </div>
                       <div class="col-md-8">
                         <div class="card-body">
@@ -78,7 +81,7 @@
                   <div class="card mb-2 mt-2">
                     <div class="row g-0">
                       <div class="col-md-4">
-                        <img src="\assets\img\home\home3.jpg" class="img-fluid h-100 rounded-start" alt="...">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/coffee-realm.appspot.com/o/assets%2Fhome%2Fnathan-dumlao-unsplash.jpg?alt=media&token=6934cd77-2b71-43bc-a8e4-22613186e3e8" class="fluid-img h-100" alt="...">
                       </div>
                       <div class="col-md-8">
                         <div class="card-body">
@@ -116,7 +119,7 @@
               <!-- Profile Picture Input -->
               <div class="mb-3">
                 <label for="profilePicture" class="form-label">Profile Picture</label>
-                <input type="file" (change)="onFileSelect($event)" class="form-control" id="profilePicture" accept="image/png, image/jpeg image/gif " >
+                <input type="file" (change)="onFileSelect($event)" class="form-control" id="profilePicture" accept="image/png, image/jpeg, image/gif " >
                 <div *ngIf="pfpErrorMessage" class="text-danger">{{ pfpErrorMessage }}</div>
               </div>
               <!-- Bio Input -->
