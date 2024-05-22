@@ -20,10 +20,6 @@ jobs:
           node-version: '20'
       # this is basically a clean install of npm 
       - run: npm ci
-      - name: Set up environment variables
-        run: |
-          echo "NG_APP_GOOGLE_MAPS_JS_API_KEY=${{ secrets.MY_GOOGLE_MAPS_JS_API_KEY }}" >> $GITHUB_ENV
-            echo "NG_APP_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> $GITHUB_ENV
       # this test our code
       #- run: npm test
       # make sure code build
@@ -40,4 +36,7 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_COFFEE_REALM }}
           channelId: live
           projectId: coffee-realm
-  
+        env:
+          MY_GOOGLE_API_KEY: ${{ secrets.MY_GOOGLE_API_KEY }}
+          MY_FIREBASE_API_KEY: ${{ secrets.MY_FIREBASE_API_KEY }}
+
