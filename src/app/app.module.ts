@@ -39,8 +39,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 
 
-export function initializeApi(scriptLoaderService: ScriptLoaderService) {
-  return () => scriptLoaderService.addGoogleMapsApi();
+export async function initializeApi(scriptLoaderService: ScriptLoaderService) {
+  await scriptLoaderService.addGoogleMapsApi();
 }
 
 
