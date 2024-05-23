@@ -1,27 +1,27 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'; // Import the AppRoutingModule module
-import { HttpClientModule, HttpClientJsonpModule} from '@angular/common/http'
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-// This is our environment file that contains the firebase configuration and the Google Maps API key
+// Import environment file
 import { environment } from 'src/environments/environment';
 import { ScriptLoaderService } from './services/api-loader/script-loader.service';
 
+// Google Maps
 import { GoogleMapsModule } from '@angular/google-maps';
 
-// These are all the firebase modules that are imported
+// Firebase imports
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getAuth,provideAuth } from '@angular/fire/auth';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
-// These are the material modules that are imported
+// Angular Material imports
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
-// Import the components
+// Component imports
 import { AppComponent } from './app.component';
 import { CoffeeSearchComponent } from './coffee-shop-comps/coffee-search/coffee-search.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -37,12 +37,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-
-
 export async function initializeApi(scriptLoaderService: ScriptLoaderService) {
   await scriptLoaderService.addGoogleMapsApi();
 }
-
 
 @NgModule({
   declarations: [
@@ -60,21 +57,18 @@ export async function initializeApi(scriptLoaderService: ScriptLoaderService) {
     WriteABlogComponent,
     PageNotFoundComponent,
   ],
-    // ...
-
-    imports: [
-      BrowserModule,
-      AppRoutingModule,
-      HttpClientModule,
-      HttpClientJsonpModule,
-      BrowserAnimationsModule,
-      ReactiveFormsModule,
-      FormsModule,
-      MatIconModule,
-      MatButtonModule,
-      // The GoogleMap module is imported here
-      GoogleMapsModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatIconModule,
+    MatButtonModule,
+    GoogleMapsModule,
+  ],
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -86,8 +80,7 @@ export async function initializeApi(scriptLoaderService: ScriptLoaderService) {
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
-    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
