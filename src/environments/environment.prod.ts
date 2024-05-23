@@ -1,8 +1,8 @@
 export const environment = {
     production: true,
-    MY_GOOGLE_MAPS_JS_API_KEY: process.env["APP_GOOGLE_MAPS_JS_API_KEY"] || '',
+    MY_GOOGLE_MAPS_JS_API_KEY: process.env.MY_GOOGLE_API || '',
     firebaseConfig: {
-        apiKey: process.env["APP_FIREBASE_API_KEY"] || '',
+        apiKey: process.env.FIREBASE_API_KEY || '',
         authDomain: "coffee-realm.firebaseapp.com",
         projectId: "coffee-realm",
         storageBucket: "coffee-realm.appspot.com",
