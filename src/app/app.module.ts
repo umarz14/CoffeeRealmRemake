@@ -37,8 +37,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { WriteABlogComponent } from './blog-comps/write-a-blog/write-a-blog.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-export async function initializeApi(scriptLoaderService: ScriptLoaderService) {
-  await scriptLoaderService.addGoogleMapsApi();
+export function initializeApi(scriptLoaderService: ScriptLoaderService) {
+  return () => scriptLoaderService.addGoogleMapsApi();
 }
 
 @NgModule({

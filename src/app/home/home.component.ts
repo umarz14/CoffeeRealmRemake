@@ -13,11 +13,11 @@ export class HomeComponent implements OnInit {
   constructor(private googleMapsApi: GoogleMapsJsApiService) {}
 
   async ngOnInit() {
-    try {
-      this.googleMapsApi.initService();
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   this.googleMapsApi.initService();
+    // } catch (err) {
+    //   console.log(err);
+    // }
     
   }
 }

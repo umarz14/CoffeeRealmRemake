@@ -28,17 +28,17 @@ export class GoogleMapsJsApiService {
   // This function will import the google maps and google places library
     // if they are not already imported
     // the plan is for this to be called at the start of the web app aka home page
-  async initService() {
-    if (!google.maps || !google.maps.Map) {
-      console.log('Importing Google Maps Library');
-      try {
-        await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
-      } catch (err) {
-        console.log(err);
-      }
-      //await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
-    }
-  }
+  // async initService() {
+  //   if (!google.maps || !google.maps.Map) {
+  //     console.log('Importing Google Maps Library');
+  //     try {
+  //       //await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //     //await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+  //   }
+  // }
 
   // This function will get the users current location which will then be
     // used to intilize the maps center which is needed in initmap

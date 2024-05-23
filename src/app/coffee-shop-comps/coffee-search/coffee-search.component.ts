@@ -30,7 +30,7 @@ export class CoffeeSearchComponent implements OnInit {
   async ngOnInit() {
     try{
       // This will initilize the google maps service just in case it has not been initilized
-      await this.googleMapsService.initService();
+      //await this.googleMapsService.initService();
       await this.initMap();
       if(this.gmap) {
         this.googleMapsService.setServiceMap(this.gmap);

@@ -10,7 +10,7 @@ export class ScriptLoaderService {
 
   constructor() { }
 
-  async addGoogleMapsApi() {
+  addGoogleMapsApi() {
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${this.GOOGLE_API_KEY}&loading=async&libraries=places`;
     script.async = true;
