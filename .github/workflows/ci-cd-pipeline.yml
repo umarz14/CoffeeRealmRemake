@@ -27,7 +27,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci
-      - run: npm run build -- --c "production"
+
+      - name: Build Angular App
+        run: |
+          echo "Setting up environment variables"
+          echo "API_KEY=${{ secrets.MY_GOOGLE_API_KEY }}" > src/environments/environment.prod.ts
+          npm run build -- --c "production"
         env:
           MY_GOOGLE_MAPS_JS_API_KEY: ${{ secrets.MY_GOOGLE_API_KEY }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
