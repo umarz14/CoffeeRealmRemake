@@ -32,8 +32,8 @@ jobs:
       - run: npm ci
       - run: npm run build -- --c "production"
         env:
-          MY_GOOGLE_API_KEY: ${{ secrets.MY_GOOGLE_API_KEY }}
-          MY_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          MY_GOOGLE_MAPS_JS_API_KEY: ${{ secrets.MY_GOOGLE_API_KEY }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
