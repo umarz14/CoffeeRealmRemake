@@ -4,9 +4,9 @@
             <div class="card text-start">
                 <div class="card-img-top p-3">
                     <div class="card text-end">
-                        <img [src]="shopLocation.imageUrl" class="fluid-card-img" alt="...">
+                        <img src ="{{shopLocation.imageUrl}}" class="fluid-card-img" alt="...">
                         <div class="card-img-overlay">
-                            <button mat-fab class="bg-light" (click)="favButtonClick.next()">
+                            <button *ngIf="curUserId !== ''" mat-fab class="bg-light" (click)="favButtonClick.next()">
                                 <mat-icon [ngClass]="{'favorite-active': isFavorite, 'favorite-inactive': !isFavorite}">favorite</mat-icon>
                             </button>
                         </div>
@@ -15,8 +15,9 @@
                 <div class="card-body">
                     <h2 class="card-title">{{shopLocation.name}}</h2>
                     <p class="card-text fs-5">{{shopLocation.address}}</p>
+                    <p *ngIf="curUserId == ''">Login to favorite or leave a review &#x2B50;</p>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button *ngIf="curUserId !== ''" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Review
                     </button>
                 </div>

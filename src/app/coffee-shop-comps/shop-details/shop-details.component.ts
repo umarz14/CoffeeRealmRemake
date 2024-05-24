@@ -33,7 +33,7 @@ export class ShopDetailsComponent implements OnInit{
   private paramsSubscription!: Subscription;
   private curUserSubscription!: Subscription;
 
-  private curUserId!: string;
+  curUserId: string = '';
 
   // This is to get the specific shop from the shop service
   shopLocation!: ShopLocation;
@@ -65,46 +65,46 @@ export class ShopDetailsComponent implements OnInit{
 
   async ngOnInit() {
     // This gets the id from the url and then gets the shop from the shop service
-    this.paramsSubscription = this.route.params.subscribe(params =>{
+    this.paramsSubscription = this.route.params.subscribe(async (params) => {
       this.coffeeShopId = params['id'];
       console.log('coffee shop deatails of: ' + this.coffeeShopId)
-    });
-    // This gets the current user id
-    this.curUserSubscription = this.authService.currentUser.subscribe(user => {
-      this.curUserId = user?.uid || 'no user found';
-    });
 
-    // I'm not a fan of this but it works
-      // this is for the throttle button
-      // trottle time is 1 second
-      // this means that no matter how many times the button is clicked
-      // the function will only be called once every 1 second
-      // this is to prevent spamming the server
-    this.favButtonClick.pipe(
-      throttleTime(1000), // 1 second
-      switchMap(() => this.coffeeShopIsAFavorite())
-    ).subscribe();
+        if(this.coffeeShopId){
+          this.shopLocation = this.googleMapsService.getCoffeeShopById(this.coffeeShopId);
+          if (this.shopLocation) {
+            if (this.shopLocation.lat && this.shopLocation.lng) {
+              this.shopCoords = new google.maps.LatLng(this.shopLocation.lat, this.shopLocation.lng);
+            }
+            try{
+              this.reviews = await this.shopService.getAllReviewsForShop(this.coffeeShopId);
+            } catch (error) {
+              console.log('Error getting reviews: ');
+              console.log(error);
+            }
+            if (this.reviews) {
+              console.log(this.reviews);
+            }
+          }
 
-    // This gets the Favorite Coffee Shops List of the current user 
-      // we use this to have the favorite button change color
-    if(this.curUserId && this.coffeeShopId) {
-      this.isFavorite = await this.userService.isCoffeeShopAFavorite(this.curUserId, this.coffeeShopId);
-      console.log('isFavorite: ', this.isFavorite);
-    }
+          // This gets the current user id
+          this.curUserSubscription = this.authService.currentUser.subscribe(async (user) =>  {
+            if (user) {
+              this.curUserId = user.uid;
 
-    // This gets the gets the details of Coffee Shop from the shop service
-    if (this.coffeeShopId) {
-      this.shopLocation = this.googleMapsService.getCoffeeShopById(this.coffeeShopId);
-      if (this.shopLocation) {
-        if (this.shopLocation.lat && this.shopLocation.lng) {
-          this.shopCoords = new google.maps.LatLng(this.shopLocation.lat, this.shopLocation.lng);
+              // This is the throttle button for the favorite button
+              this.favButtonClick.pipe(
+                throttleTime(1000), // 1 second
+                switchMap(() => this.coffeeShopIsAFavorite())
+              ).subscribe();
+              
+              // This gets the Favorite Coffee Shops List of the current user 
+                // we use this to have the favorite button change color
+              this.isFavorite = await this.userService.isCoffeeShopAFavorite(this.curUserId, this.coffeeShopId);
+              console.log('isFavorite: ', this.isFavorite);
+              }
+          });
         }
-        this.reviews = await this.shopService.getAllReviewsForShop(this.coffeeShopId);
-        // if (this.reviews) {
-        //   console.log(this.reviews);
-        // }
-      }
-    }
+    });
     
   } // End of ngOnInit
 
