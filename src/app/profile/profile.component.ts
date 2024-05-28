@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit{
         this.userProfileSubscription = this.userService.getUserProfile(this.uid)?.subscribe(
           profile => {
             this.userProfile = profile;
-            console.log('User profile: ', this.userProfile);
+            //console.log('User profile: ', this.userProfile);
             this.isLoaded = true;
           }
         )
@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit{
       if (this.updateProfile.pfp) {
         console.log('updating pfp');
         const newpfp = await this.cs.uploadImage(this.updateProfile.pfp, 'users_pfp/' + this.uid + '.jpg');
-        console.log('newpfp: ', newpfp);
+        //console.log('newpfp: ', newpfp);
         this.userService.updateUserProfilePic(this.uid, newpfp);
       }
       if (this.updateProfile.bio) {

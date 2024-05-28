@@ -1,5 +1,8 @@
-.avatar__image{
-    border-radius: 50%; 
+.pfp-image{
+    inline-size: 10%;
+    aspect-ratio: 16/ 9;
+    object-fit: fill;
+    overflow: hidden;
 }
 .card-color {
     background-color: #E3E0DE;
@@ -7,7 +10,10 @@
 }
 
 .fluid-img {
-    inline-size: 50%;
-    aspect-ratio: 4 / 3;
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+    @media screen and (min-width: 1200px) {
+        inline-size: 55%;
+    }
 }

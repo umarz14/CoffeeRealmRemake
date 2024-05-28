@@ -21,7 +21,7 @@ export class AuthService {
     this.authStateSubscription = this.authState$.subscribe((user) => {
       this.curentUser.next(user);
       //handle auth state changes here. Note, that user will be null if there is no currently logged in user.
-      console.log("User has been logged in successfully by AuthService, user: ", this.curentUser?.value?.uid);
+      //console.log("User has been logged in successfully by AuthService, user: ", this.curentUser?.value?.uid);
     })
   }
 
@@ -62,25 +62,35 @@ export class AuthService {
   } // END OF loginWithGoogle
 
   async loginWithEmailAndPassword(email: string, password: string) {
-    console.log("Logging in with email and password");
-    console.log("Email: ", email);
-    console.log("password: ", password);
-    try {
-      await signInWithEmailAndPassword(this.auth, email, password);
-      if(this.authState$){
+    let message = "";
+    await signInWithEmailAndPassword(this.auth, email, password).then(
+      (userCedentials) => {
         console.log("User has been logged in successfully");
-        this.router.navigate(['home']);
-      }
-    } catch(error) {
-      console.error(error);
-    }
+        message = "Logged in successfully";
+      } 
+      ).catch(function (error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode === 'auth/wrong-password') {
+          message = 'Wrong password.';
+        } else if (errorCode === 'auth/user-not-found') {
+          message = 'User not found.';
+        } else if (errorCode === 'auth/invalid-credential') {
+          message = 'Invalid credentials.';
+        } else {
+          message = errorMessage;
+        }
+        console.log(error);
+      });
+      return message;
   } // END OF loginWithEmailAndPassword
   
   // CREATE USER FUNCTIONS
   async spawnNewUserWithEmail(un: string, email: string, password: string) {
     console.log("Creating user with email and password");
-    console.log("Email: ", email);
-    console.log("password: ", password);
+    //console.log("Email: ", email);
+    //console.log("password: ", password);
     try{
       await createUserWithEmailAndPassword(this.auth, email, password);
       await this.userService.createUserProfile(this.auth.currentUser?.uid ?? '', un, email);

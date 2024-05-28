@@ -2,7 +2,8 @@
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="">
       <div class="container">
-        <img src="https://firebasestorage.googleapis.com/v0/b/coffee-realm.appspot.com/o/assets%2Flogos%2FlogoRe2-cropped.svg?alt=media&token=bd84067c-2f42-417a-a498-314f39aa7915" alt="Logo" height="50" width="200" class="d-inline-block align-text-top img-fluid test1"> 
+        <img src="https://firebasestorage.googleapis.com/v0/b/coffee-realm.appspot.com/o/assets%2Flogos%2FMiniLogoT.svg?alt=media&token=a6af6f10-df6c-4ff2-a66c-f02d69a6a1ce" alt="coffee-realm logo" height="30" width="auto" class=" img-fluid d-lg-none" >
+        <img src="https://firebasestorage.googleapis.com/v0/b/coffee-realm.appspot.com/o/assets%2Flogos%2FlogoRe2-cropped.svg?alt=media&token=bd84067c-2f42-417a-a498-314f39aa7915" alt="logo for coffee-realm" height="50" width="200" class="d-inline-block align-text-top img-fluid test1 d-none d-lg-block"> 
       </div>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,23 +14,24 @@
         <!-- <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li> -->
-        <li class="nav-item">   
+        <li class="nav-item ">   
           <a class="nav-link active fw-bold" routerLink="coffeeSearchList">Discover</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item ">
           <a class="nav-link active fw-bold" routerLink="blogList">Blogs</a>
+        </li>
+        <li *ngIf="(authService.authState$ | async)" class="nav-item active fw-bold d-lg-none ">
+          <a class="nav-link active fw-bold" routerLink="profile">Profile</a>
         </li>
       </ul>
 
 
       <button *ngIf="!(authService.authState$ | async)" class="btn btn-secondary me-3" type="button" routerLink="/login"> Sign In</button>
       <button *ngIf="!(authService.authState$ | async)" class="btn btn-primary me-5" type="button" routerLink="/register" > Sign Up</button>
-      <button *ngIf="authService.authState$ | async" class="btn btn-primary me-3" (click)="authService.logout()">Logout</button>
-      <a *ngIf="(authService.authState$ | async) && this.pfpUrl" routerLink="profile" class="rnd-container me-4">
-        <img src = {{pfpUrl}}  alt="profile picture" class="pfp-img">
+      <button *ngIf="authService.authState$ | async" class="btn btn-primary me-3  mb-2 mb-lg-0" (click)="authService.logout()">Logout</button>
+      <a *ngIf="(authService.authState$ | async) && this.pfpUrl" routerLink="profile" class="d-none d-md-block rnd-container me-4">
+        <img src="{{pfpUrl}}" alt="profile picture" class="pfp-img">
       </a>
-      
-    
     </div>
   </div>
 </nav>

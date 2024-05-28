@@ -11,7 +11,7 @@ export class RegistrationComponent {
   signUpForm = new FormGroup({
     username: new FormControl('', [Validators.required,
       Validators.minLength(4), Validators.maxLength(20),
-      Validators.pattern('^[a-zA-Z0-9]*$'),
+      Validators.pattern('^[a-zA0-9_-]*$'),
       forbiddenNameValidator(/admin/i),
       forbiddenNameValidator(/support/i),
     ]

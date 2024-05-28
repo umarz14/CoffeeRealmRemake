@@ -107,11 +107,11 @@ export class WriteABlogComponent implements OnInit{
         await this.fireStorage.uploadImage(this.blogHeaderImage, `blogImages/${this.publishBlog.value.title+this.authorName}`).then(async (url) => {
           // 2. get the image url from firebase storage
           console.log('Image uploaded');
-          console.log('Image url: ' + url);
+          //console.log('Image url: ' + url);
           // 3. create the blog post in firestore
           if(this.publishBlog.value.title && this.publishBlog.value.reviewContent) {
             const blogId = await this.blogService.createBlogPost(url, this.publishBlog.value.title, this.publishBlog.value.reviewContent, this.authorUid, this.authorName);
-            console.log('createBgPost() returned: ' + blogId);
+            //console.log('createBgPost() returned: ' + blogId);
             await this.userService.addPublsihedBlogToProfile(this.authorUid, blogId);
             await this.blogService.addblogIdtoDoc(blogId);
             this.formSubmitted = true;

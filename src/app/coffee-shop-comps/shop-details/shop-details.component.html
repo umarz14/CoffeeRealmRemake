@@ -1,5 +1,5 @@
-<div class="container-fluid text-center border">
-    <div class="row p-5 gy-4 row-cols-1 row-cols-lg-2">
+<div class="container-fluid text-center border ">
+    <div class="row p-2 p-lg-5 gy-4 row-cols-1 row-cols-lg-2">
         <div class="col">
             <div class="card text-start">
                 <div class="card-img-top p-3">
@@ -25,18 +25,21 @@
         </div>
         <div class="col d-flex align-items-center justify-content-center">
             <google-map 
-                [center]="shopCoords">
+                height="400px"
+                width="375px"
+                [center]="shopCoords"
+        
+            >
                 <map-marker [position]="shopCoords"></map-marker>
             </google-map>
         </div>
     </div>
-    <div class="contianer-fluid mb-5 text-start card mx-5 p-3 border border-primary">
+    <div class="contianer-fluid mb-5 text-start card mx-2 mx-lg-5 p-3">
         <h2 class="card-title">Reviews</h2>
-        <div *ngIf="reviews.length==0" class="card col-4">
-            <div class="card-body">
+        <div *ngIf="reviews.length==0" class="card col-12 col-md-4">
+            <div class="card-body border border-primary ">
                 <span>
-                    <p class="card-text">No reviews yet. Be the first to review this coffee shop!</p> 
-                    <!-- <mat-icon >rate_review</mat-icon>  -->
+                    <p class="card-text">No reviews yet. Be the first to review this coffee shop! &#11088;</p>
                 </span>
             </div>
         </div>

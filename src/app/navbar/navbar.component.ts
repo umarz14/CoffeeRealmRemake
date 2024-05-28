@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit{
           this.curUserUid = user.uid;
           this.pfpSubscription = this.userService.getUserPfp(this.curUserUid)?.subscribe( (pfp) => {
             this.pfpUrl = pfp;
-            console.log('pfp url: ' + pfp);
+            //console.log('pfp url: ' + pfp);
           })
         }
     });

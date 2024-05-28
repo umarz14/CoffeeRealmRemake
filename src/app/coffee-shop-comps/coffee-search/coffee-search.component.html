@@ -6,29 +6,6 @@
 <!-- In your component's template -->
 <div id="map"></div>
 
-<!-- 
- This is part of the website to work it makes sure that 
- the google maps api is loaded before it tries to load the map
- or any other libraries that are needed. In our case we are
- loading the google maps places library.
- !GOOGLE WILL NOT BE DEFINED IF THE API IS NOT LOADED!
--->
-<!-- <div *ngIf="apiLoaded | async">
- <div *ngIf="display">
-   <div class="container grid-container">
-     <div class="row">
-       <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation"  class="col"></app-shop-location>
-     </div>
-   </div>
- </div>  
-</div> -->
-<!-- 
-<div *ngIf="!display" class="d-flex justify-content-center">
-  <div class="spinner-border m-5" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div> -->
-
 <div *ngIf="!display" class="text-center m-5">
   <span class="display-5 me-1">loading...</span>
   <div class="spinner-border" role="status">
@@ -37,9 +14,9 @@
 </div>
 
 <div *ngIf="display">
- <div class="container-fluid overflow-hidden my-4">
+ <div class="my-container py-4 overflow-hidden">
    <div class="row row-cols-1 px-3 row-cols-lg-3 gx-4 gy-4">
-     <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation" class="col"></app-shop-location>
+     <app-shop-location *ngFor="let shopLocation of shopLocationList" [shopLocation]="shopLocation" class="col h-100"></app-shop-location>
    </div>
  </div>
 </div>

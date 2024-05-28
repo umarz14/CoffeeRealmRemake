@@ -31,7 +31,7 @@ export class BlogService {
             authorUsername: authorName,
             date: date
           }).then(async (documentRef) => {
-            console.log('Document written with ID: ', documentRef.id);
+            //console.log('Document written with ID: ', documentRef.id);
             resolve(documentRef.id);
           });
           console.log('Blog post created');

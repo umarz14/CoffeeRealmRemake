@@ -1,15 +1,3 @@
-.card-img-top-container {
-    height: 300px; /* Fixed height for the image */
-    overflow: hidden; /* Ensures the image doesn't exceed the container */
-}
-/* I want to use media quieres to fix then on a smaller screen */
-.card-img-top {
-    width: 100%; /* Full width of the container */
-    height: auto;
-    object-fit: cover; /* Ensures the image covers the container without stretching */
-    object-position: center; /* Centers the image */
-}
-  
 .fluid-img {
     inline-size: 100%;
     aspect-ratio: 16 / 9;

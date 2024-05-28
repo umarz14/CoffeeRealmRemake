@@ -1,23 +1,33 @@
-<div *ngIf="!blogPost">
-    Blog is Loading...
+<div *ngIf="!blogPost" class="container-fluid text-center pt-5">
+    <p class="fs-5 fw-bold"> Blog is Loading... </p>
 </div>
 
-<div *ngIf="blogPost"  class="container-fluid mt-3">
+<div *ngIf="blogPost"  class="container-fluid mt-3 pb-3">
     <div class="card">
-        <!-- <h1 class="text-center mb-3">Testing Out The Title</h1> -->
-        <div class="card-img-top pt-5 ps-5 pe-5">
-            <img class="fluid-img rounded-3" src="{{blogPost.headerImageUrl}}">
+        <div class="card-img-top rounded-3 pt-3 px-3 pt-lg-5 px-lg-5">
+            <img class="fluid-img rounded-2 border border-secondary border-light" src="{{blogPost.headerImageUrl}}">
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col">
-                    <h3 class="card-title ps-5">{{blogPost.title}}</h3>
+            <div class="row row-cols-1 row-cols-lg-2 ">
+                <div class="col-12 col-lg-8 d-flex align-items-center">
+                    <p class="card-title text-center text-lg-start fs-1 fw-bold ps-lg-4">{{blogPost.title}}</p>
                 </div>
-                <div class="col text-end pe-5">
-                    <span class="">By: {{blogPost.authorUsername}}  Published: {{blogPost.date}}</span>
+                <div class="col-12 col-lg-4 ">
+                    <div class="card border border-dark border-2 ms-lg-5">
+                        <div class="row row-cols-2 g-0">
+                          <div class="col-4 p-2 p-lg-2">
+                              <img src="https://firebasestorage.googleapis.com/v0/b/coffee-realm.appspot.com/o/users_pfp%2Fdefault-pfp.jpg?alt=media&token=d0f59c7f-1272-48cd-a4ca-cb2f6849d5b3" class="img-fluid rounded-circle" alt="...">
+                          </div>
+                          <div class="col-8 d-inline-flex flex-column align-items-center justify-content-center">
+                            <p class="card-title fs-5">{{blogPost.authorUsername}}</p>
+                            <p class="card-subtitle text-secondary">{{blogPost.date}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    <!-- <span class="card-subtitle text-muted fs-3 ">By: {{blogPost.authorUsername}}  Published: {{blogPost.date}}</span>    -->
                 </div>
             </div>
-            <p class="card-text ps-5 pe-5" style="white-space: pre-wrap;">
+            <p class="card-text fs-2 pt-2 px-2 px-lg-4 " style="white-space: pre-wrap;">
                 {{ blogPost.content }}
             </p>
         </div>

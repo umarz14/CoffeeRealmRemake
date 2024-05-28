@@ -21,9 +21,9 @@
       <div *ngIf="favCoffeeShopsList.length == 0">
         <p class="card-text mb-1">You havent added any coffee shops to your favorites yet.</p>
       </div>
-      <div class="row row-cols-3 gx-3 d-flex flex-nowrap overflow-auto horizontal-scroll">
+      <div class="row row-cols-1 row-cols-lg-3 gx-3 d-flex flex-nowrap overflow-auto horizontal-scroll">
         <div class="col" *ngFor="let shop of favCoffeeShopsList">
-          <div class="card mb-1">
+          <div class="card h-100 mb-1">
             <img src="{{shop.imageUrl}}"  loading="lazy" class="card-img-top fluid-img" alt="..." >
             <div class="card-body">
               <h5 class="card-title">{{shop.name}}</h5>
@@ -70,7 +70,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col ">
           <h1 class="ps-2">
             Favorite Drinks
           </h1>

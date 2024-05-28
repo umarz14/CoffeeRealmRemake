@@ -24,6 +24,17 @@ html{
     scroll-behavior: smooth;
 }
 
+.row-container {
+  width: 100%;
+}
+
+.my-container{
+  @media screen and (min-width: 1200px) {
+    height: calc(100vh - 87px); 
+    width: auto;
+  }
+}
+
 /* We are going to have to do some media query so that are mobile veiorsion does not
 have the awkward space whitespace between pages */
 

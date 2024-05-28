@@ -30,6 +30,7 @@
                                 <input type="password" id="password" class="form-control" formControlName="password" aria-describedby="emailHelpBlock"
                                 [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.dirty }">
                             </div>
+                            <p *ngIf='loginMessage !== "Logged in successfully"' class="text-start text-danger ">{{this.loginMessage}}</p>
                             <div class="d-grid mb-2">
                                 <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Sign In</button>
                             </div>
