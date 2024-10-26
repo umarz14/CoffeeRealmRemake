@@ -44,7 +44,7 @@ export class GoogleMapsJsApiService {
     // used to intilize the maps center which is needed in initmap
   async getUserCurLocation(): Promise<google.maps.LatLngLiteral> {
     return new Promise<google.maps.LatLngLiteral>((resolve, reject) => {
-      if (navigator.geolocation) {
+      if ("geolocation" in navigator) {
         const options: PositionOptions = {
           enableHighAccuracy: true
         };
@@ -62,7 +62,7 @@ export class GoogleMapsJsApiService {
           options
         );
       } else {
-        alert('Please Enable Location');
+        console.log('Geolocation is not supported by your browser');
         reject();
       }
     });

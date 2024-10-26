@@ -51,6 +51,9 @@ export class CoffeeSearchComponent implements OnInit {
   async initMap() {
     try{
       this.curUserLoc = await this.googleMapsService.getUserCurLocation();
+      if(!this.curUserLoc) {
+        console.log("Error: Could not get user location");
+      }
       if(this.curUserLoc) {
         this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
           center: this.curUserLoc,
@@ -62,6 +65,11 @@ export class CoffeeSearchComponent implements OnInit {
       }
     } catch (err) {
       console.log(err);
+      console.log("using default location");
+      this.gmap = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+        center: { lat: 37.7749, lng: -122.4194 },
+        zoom: 14,
+      });
     }
   } // End of initMap()
 
